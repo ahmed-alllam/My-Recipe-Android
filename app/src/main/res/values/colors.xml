@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 25/03/20 19:53
+  -->
+
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#F8891C</color>
+    <color name="colorPrimaryDark">#FF5E19</color>
+    <color name="colorAccent">#F33579</color>
 </resources>
