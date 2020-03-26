@@ -1,0 +1,18 @@
+<!--
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 26/03/20 19:48
+  -->
+
+<resources>
+    <string name="app_name">My Recipe App</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_tutorial">TutorialActivity</string>
+    <string name="email">البريد الالكتروني</string>
+    <string name="password">كلمة السر</string>
+    <string name="login">سجل دخول</string>
+    <string name="forgot_password">نسيت كلمة السر؟</string>
+    <string name="don_t_have_an_account">ليس لديك حساب؟</string>
+    <string name="sign_up">انشاء حساب</string>
+    <string name="login2">تسجيل دخول</string>
+    <string name="welcome">مرحباً!</string>
+</resources>
