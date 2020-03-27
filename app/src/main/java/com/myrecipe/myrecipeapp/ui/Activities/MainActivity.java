@@ -1,11 +1,9 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 26/03/20 19:48
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 27/03/20 17:15
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
 
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
                 case 3:
                     tab.setIcon(R.drawable.profile);
             }
-            int color = getResources().getColor(R.color.colorPrimary);
-            tab.getIcon().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
         }).attach();
     }
 }

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 26/03/20 19:48
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 27/03/20 17:15
   -->
 
 <resources>
@@ -15,7 +15,6 @@
     <string name="sign_up">Sign Up</string>
     <string name="login2">Login</string>
     <string name="welcome">Welcome!</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="user_photo">user photo</string>
 </resources>

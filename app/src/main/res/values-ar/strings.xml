@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 26/03/20 19:48
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 27/03/20 17:15
   -->
 
 <resources>
@@ -9,10 +9,12 @@
     <string name="title_activity_tutorial">TutorialActivity</string>
     <string name="email">البريد الالكتروني</string>
     <string name="password">كلمة السر</string>
-    <string name="login">سجل دخول</string>
+    <string name="login">سجل الدخول</string>
     <string name="forgot_password">نسيت كلمة السر؟</string>
     <string name="don_t_have_an_account">ليس لديك حساب؟</string>
-    <string name="sign_up">انشاء حساب</string>
+    <string name="sign_up">إنشاء حساب</string>
     <string name="login2">تسجيل دخول</string>
     <string name="welcome">مرحباً!</string>
+    <string name="home">القائمة الرئيسية</string>
+    <string name="user_photo">الصورة الشخصية</string>
 </resources>
