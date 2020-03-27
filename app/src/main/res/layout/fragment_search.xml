@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 27/03/20 17:15
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 27/03/20 20:05
   -->
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,12 +12,12 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/searchLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif-black"
-        android:text="Search"
+        android:text="@string/search_recipes"
         android:textColor="@color/colorPrimary"
         android:textSize="27sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,70 +34,73 @@
         android:background="@drawable/grey_rounded_corner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/searchLabel">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/searchIcon"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_marginStart="4dp"
             android:src="@drawable/search"
             android:tint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/editText"
+            android:contentDescription="@string/search"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/searchEditText"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/searchEditText"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="35dp"
             android:background="@android:color/transparent"
-            android:hint="Search"
+            android:hint="@string/search"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"
             android:textSize="15sp"
+            android:inputType="textAutoComplete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="Autofill" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/categoriesLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:fontFamily="sans-serif-black"
-        android:text="Categories"
+        android:text="@string/categories"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/categoriesRecyclerView"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintStart_toStartOf="@+id/categoriesLabel"
+        app:layout_constraintTop_toBottomOf="@+id/categoriesLabel" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/popularRecipesLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:fontFamily="sans-serif-black"
-        android:text="Popular Recipes"
+        android:text="@string/popular_recipes"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/recyclerView"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        app:layout_constraintStart_toStartOf="@+id/categoriesRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/categoriesRecyclerView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
@@ -105,6 +108,6 @@
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintStart_toStartOf="@+id/popularRecipesLabel"
+        app:layout_constraintTop_toBottomOf="@+id/popularRecipesLabel" />
 </androidx.constraintlayout.widget.ConstraintLayout>

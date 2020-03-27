@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 27/03/20 17:15
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 27/03/20 20:05
   -->
 
 <resources>
@@ -17,4 +17,10 @@
     <string name="welcome">Welcome!</string>
     <string name="home">Home</string>
     <string name="user_photo">user photo</string>
+    <string name="your_favourites">Your Favourites</string>
+    <string name="favourites_empty">Your list is currently empty</string>
+    <string name="search_recipes">Search Recipes</string>
+    <string name="search">search</string>
+    <string name="categories">Categories</string>
+    <string name="popular_recipes">Popular Recipes</string>
 </resources>
