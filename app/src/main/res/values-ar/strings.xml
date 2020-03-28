@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 28/03/20 20:01
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 28/03/20 23:00
   -->
 
 <resources>
@@ -31,7 +31,7 @@
     <string name="add_icon">أيقونة الإضافة</string>
     <string name="add_a_recipe">أضف وصفة</string>
     <string name="edit_icon">أيقونة التعديل</string>
-    <string name="edit_profile">عدل صفحتك الشخصية</string>
+    <string name="edit_profile">تعديل الصفحة الشخصية</string>
     <string name="settings_icon">أيقونة الإعدادات</string>
-    <string name="login_or_sign_up">سجل الدخول أو أنشئ حساب</string>
+    <string name="login_or_sign_up">سجل الدخول</string>
 </resources>

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 28/03/20 20:01
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 28/03/20 23:00
   -->
 
 <resources>
@@ -33,5 +33,5 @@
     <string name="edit_icon">edit icon</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="settings_icon">settings icon</string>
-    <string name="login_or_sign_up">Login or Sign up</string>
+    <string name="login_or_sign_up">Login</string>
 </resources>
