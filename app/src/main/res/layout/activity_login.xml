@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 26/03/20 19:48
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 28/03/20 20:01
   -->
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,6 +29,7 @@
             android:layout_marginStart="16dp"
             android:background="@android:color/transparent"
             android:src="@drawable/email"
+            android:tint="#8A3D3D3D"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:contentDescription="@string/email"
@@ -74,6 +75,7 @@
             android:layout_marginStart="16dp"
             android:background="@android:color/transparent"
             android:src="@drawable/password"
+            android:tint="#8A3D3D3D"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:contentDescription="@string/password"
@@ -104,7 +106,7 @@
         android:id="@+id/loginButton"
         android:layout_width="320dp"
         android:layout_height="45dp"
-        android:background="@drawable/gradient_rounded_corner"
+        android:background="@drawable/rounded_corner_shape"
         android:text="@string/login"
         android:textColor="@color/design_default_color_on_primary"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -161,7 +163,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="70dp"
-        android:background="@drawable/void_view_gradient"
+        android:background="@drawable/void_view_drawable"
         app:layout_constraintBottom_toTopOf="@+id/emailGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

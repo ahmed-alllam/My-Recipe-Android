@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 27/03/20 20:05
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 28/03/20 20:01
   -->
 
 <resources>
@@ -23,4 +23,15 @@
     <string name="search">search</string>
     <string name="categories">Categories</string>
     <string name="popular_recipes">Popular Recipes</string>
+    <string name="user_profile_photo">user profile photo</string>
+    <string name="followers">Followers</string>
+    <string name="followings">Followings</string>
+    <string name="my_recipes_icon">my recipes icon</string>
+    <string name="my_recipes">My Recipes</string>
+    <string name="add_icon">add icon</string>
+    <string name="add_a_recipe">Add a Recipe</string>
+    <string name="edit_icon">edit icon</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="settings_icon">settings icon</string>
+    <string name="login_or_sign_up">Login or Sign up</string>
 </resources>

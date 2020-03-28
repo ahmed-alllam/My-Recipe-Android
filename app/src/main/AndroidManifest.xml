@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 27/03/20 17:15
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 28/03/20 20:01
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,13 +18,16 @@
         <activity
             android:name="com.myrecipe.myrecipeapp.ui.Activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="InnerclassSeparator">
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="InnerclassSeparator" />
 
-        </activity>
         <activity
             android:name="com.myrecipe.myrecipeapp.ui.Activities.SplashActivity"
             android:label="@string/title_activity_splash"
             android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             tools:ignore="InnerclassSeparator">
 
             <intent-filter>
@@ -39,6 +42,8 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             tools:ignore="InnerclassSeparator" />
     </application>
 

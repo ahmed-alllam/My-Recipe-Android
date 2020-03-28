@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 27/03/20 17:15
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 28/03/20 20:01
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ViewPager2 mainViewPager = findViewById(R.id.mainViewPager);
-        mainViewPager.setUserInputEnabled(false);
         MainViewPagerAdapter viewPagerAdapter = new MainViewPagerAdapter(this);
         viewPagerAdapter.addFragment(new HomeFragment());
         viewPagerAdapter.addFragment(new SearchFragment());

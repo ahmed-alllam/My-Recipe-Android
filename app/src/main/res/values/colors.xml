@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 27/03/20 17:15
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 28/03/20 20:01
   -->
 
 <resources>
     <color name="colorPrimary">#33BDE0</color>
     <color name="colorPrimaryDark">#33BDE0</color>
     <color name="colorAccent">#33BDE0</color>
+    <color name="colorRipple">#1133BDE0</color>
 </resources>

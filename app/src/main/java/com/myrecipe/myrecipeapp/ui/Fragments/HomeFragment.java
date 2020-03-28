@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 27/03/20 17:15
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 28/03/20 20:01
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -8,10 +8,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -23,7 +23,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageView userPhoto = view.findViewById(R.id.userPhoto);
+        CardView userPhoto = view.findViewById(R.id.userPhoto);
         ViewPager2 mainViewPager = getActivity().findViewById(R.id.mainViewPager);
         userPhoto.setOnClickListener(v -> mainViewPager.setCurrentItem(3));
     }
