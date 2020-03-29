@@ -1,12 +1,15 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 28/03/20 20:01
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 29/03/20 17:27
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
 
 import android.os.Bundle;
+import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -19,14 +22,16 @@ import com.myrecipe.myrecipeapp.ui.Fragments.ProfileFragment;
 import com.myrecipe.myrecipeapp.ui.Fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
+    MainViewPagerAdapter viewPagerAdapter;
+    ViewPager2 mainViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ViewPager2 mainViewPager = findViewById(R.id.mainViewPager);
-        MainViewPagerAdapter viewPagerAdapter = new MainViewPagerAdapter(this);
+        mainViewPager = findViewById(R.id.mainViewPager);
+        viewPagerAdapter = new MainViewPagerAdapter(this);
         viewPagerAdapter.addFragment(new HomeFragment());
         viewPagerAdapter.addFragment(new SearchFragment());
         viewPagerAdapter.addFragment(new FavouritesFragment());
@@ -49,5 +54,45 @@ public class MainActivity extends AppCompatActivity {
                     tab.setIcon(R.drawable.profile);
             }
         }).attach();
+
+        nav_view.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // returns to the main fragment if it has subfragments
+                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                    Fragment parentFragment = viewPagerAdapter.createFragment(tab.getPosition());
+                    if (((ViewGroup) fragment.getView().getParent()).getId() ==
+                            parentFragment.getView().getId()) {
+                        getSupportFragmentManager().beginTransaction().
+                                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).
+                                remove(fragment).
+                                commit();
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            Fragment parentFragment = viewPagerAdapter.createFragment(mainViewPager.getCurrentItem());
+            if (((ViewGroup) fragment.getView().getParent()).getId() ==
+                    parentFragment.getView().getId()) {
+                super.onBackPressed();
+                return;
+            }
+        }
+        finish();
     }
 }

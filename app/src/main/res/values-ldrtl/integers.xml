@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 29/03/20 17:27
+  -->
+
+<resources>
+    <integer name="locale_mirror_flip">180</integer>
+</resources>
