@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 29/03/20 17:27
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 29/03/20 18:08
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -89,7 +89,10 @@ public class MainActivity extends AppCompatActivity {
             Fragment parentFragment = viewPagerAdapter.createFragment(mainViewPager.getCurrentItem());
             if (((ViewGroup) fragment.getView().getParent()).getId() ==
                     parentFragment.getView().getId()) {
-                super.onBackPressed();
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .remove(fragment)
+                        .commit();
                 return;
             }
         }
