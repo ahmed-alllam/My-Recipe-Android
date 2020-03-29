@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 29/03/20 17:27
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 29/03/20 21:32
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -36,8 +36,8 @@ public class ProfileFragment extends Fragment {
 
         view.findViewById(R.id.myRecipesButton).setOnClickListener(v -> {
             MyRecipesFragment myRecipesFragment = new MyRecipesFragment();
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .add(R.id.main, myRecipesFragment)
                     .addToBackStack(null)
                     .commit();

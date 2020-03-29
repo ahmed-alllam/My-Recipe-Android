@@ -1,14 +1,16 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 26/03/20 19:48
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 29/03/20 21:32
  */
 
-package com.myrecipe.myrecipeapp.data.models;
+package com.myrecipe.myrecipeapp.models;
 
 public class UserModel {
     private String email;
     private String username;
     private String bio;
     private String image;
+    private int followers_count;
+    private int followings_count;
 
     public String getEmail() {
         return email;
@@ -40,5 +42,13 @@ public class UserModel {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getFollowers_count() {
+        return followers_count;
+    }
+
+    public int getFollowings_count() {
+        return followings_count;
     }
 }
