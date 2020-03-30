@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 18:26
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 23:47
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -10,8 +10,8 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RecipesClient {
-    public static final String BASE_URL = "http://10.0.2.2";
+class RecipesClient {
+    private static final String BASE_URL = "http://192.168.1.2";
     private RecipeInterface recipeInterface;
 
     RecipesClient() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 20:32
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 23:47
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -59,7 +59,7 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         List<String> tags = recipe.getTags();
         for (int i = 0; i < tags.size(); i++) {
             if (i != 0) {
-                sb.append(" , ");
+                sb.append(" · ");
             }
             sb.append(tags.get(i));
         }

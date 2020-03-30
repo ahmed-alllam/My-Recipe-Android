@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 29/03/20 21:32
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 23:47
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -35,6 +35,16 @@ public class MyRecipesFragment extends Fragment {
                     .beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .remove(this)
+                    .commit();
+        });
+
+        view.findViewById(R.id.noRecipesLabel).setOnClickListener((v) -> {
+            Fragment fragment = new MyRecipesFragment();
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .add(R.id.main, fragment)
+                    .addToBackStack(null)
                     .commit();
         });
     }

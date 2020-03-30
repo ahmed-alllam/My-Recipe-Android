@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 26/03/20 19:48
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 23:47
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -32,5 +32,9 @@ public class MainViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return fragmentsList.size();
+    }
+
+    public boolean contains(Fragment fragment) {
+        return fragmentsList.contains(fragment);
     }
 }
