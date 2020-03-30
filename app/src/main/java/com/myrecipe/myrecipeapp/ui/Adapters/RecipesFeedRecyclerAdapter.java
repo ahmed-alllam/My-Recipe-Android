@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 18:26
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 20:32
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,9 +52,8 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         viewHolder.name.setText(recipe.getName());
         viewHolder.description.setText(recipe.getDescription());
         viewHolder.favourites_count.setText(String.valueOf(recipe.getFavourites_count())); // ()
-        viewHolder.rating.setRating(recipe.getRating());
-        viewHolder.timeToFinish.setText(recipe.getTime_to_finish() + " Min.");
-        viewHolder.timestamp.setText(recipe.getTimestamp());  //todo
+        // viewHolder.rating.setRating(recipe.getRating());
+        viewHolder.timeToFinish.setText(recipe.getTime_to_finish() + " min");
 
         StringBuilder sb = new StringBuilder();
         List<String> tags = recipe.getTags();
@@ -91,21 +89,20 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
         ImageView mainImage;
         ImageButton favourite;
-        RatingBar rating;
+        // RatingBar rating;
         TextView favourites_count, name, description,
-                timeToFinish, timestamp, tags;
+                timeToFinish, tags;
 
         RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
 
             mainImage = itemView.findViewById(R.id.mainImage);
             favourite = itemView.findViewById(R.id.favourite);
-            rating = itemView.findViewById(R.id.rating);
+            // rating = itemView.findViewById(R.id.rating);
             favourites_count = itemView.findViewById(R.id.favourites_count);
             name = itemView.findViewById(R.id.name);
             description = itemView.findViewById(R.id.description);
             timeToFinish = itemView.findViewById(R.id.timeToFinish);
-            timestamp = itemView.findViewById(R.id.timestamp);
             tags = itemView.findViewById(R.id.tags);
         }
     }
