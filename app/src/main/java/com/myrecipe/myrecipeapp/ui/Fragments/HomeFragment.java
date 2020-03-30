@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 29/03/20 23:54
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 18:26
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
         RecyclerView recipesRecyclerView = view.findViewById(R.id.recipesRecyclerView);
         recipesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        RecipesFeedRecyclerAdapter recipesAdapter = new RecipesFeedRecyclerAdapter();
+        RecipesFeedRecyclerAdapter recipesAdapter = new RecipesFeedRecyclerAdapter(getContext());
         recipesRecyclerView.setAdapter(recipesAdapter);
 
         RecipesViewModel recipesViewModel = new ViewModelProvider(this)
@@ -44,9 +44,7 @@ public class HomeFragment extends Fragment {
         recipesViewModel.getFeed(25, 0);
 
         recipesViewModel.recipes.observe(getViewLifecycleOwner(), recipesAdapter::add);
-        recipesViewModel.error.observe(getViewLifecycleOwner(), s -> {
-            // todo
-        });
+        recipesViewModel.error.observe(getViewLifecycleOwner(), System.out::println);
 
         // todo add pagignation
 

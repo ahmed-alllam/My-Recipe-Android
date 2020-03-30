@@ -1,19 +1,17 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 29/03/20 23:54
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 18:26
  */
 
 package com.myrecipe.myrecipeapp.data;
 
-import com.myrecipe.myrecipeapp.models.RecipeModel;
-
-import java.util.List;
+import com.myrecipe.myrecipeapp.models.RecipesResultModel;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RecipesClient {
-    private static final String BASE_URL = "http://10.0.2.2";
+    public static final String BASE_URL = "http://10.0.2.2";
     private RecipeInterface recipeInterface;
 
     RecipesClient() {
@@ -24,7 +22,7 @@ public class RecipesClient {
         recipeInterface = retrofit.create(RecipeInterface.class);
     }
 
-    Call<List<RecipeModel>> getFeed(int limit, int offset) {
-        return recipeInterface.getFeed(limit, offset);
+    Call<RecipesResultModel> getFeed(int limit, int offset) {
+        return recipeInterface.getFeed(limit, offset, "json");
     }
 }
