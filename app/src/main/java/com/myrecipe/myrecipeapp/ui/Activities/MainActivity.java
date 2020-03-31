@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 23:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 31/03/20 17:47
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -31,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mainViewPager = findViewById(R.id.mainViewPager);
+        mainViewPager.setOffscreenPageLimit(4);
         viewPagerAdapter = new MainViewPagerAdapter(this);
         viewPagerAdapter.addFragment(new HomeFragment());
         viewPagerAdapter.addFragment(new SearchFragment());
@@ -68,15 +68,20 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                // returns to the main fragment if it has subfragments
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                    return;
+                }
+
                 for (Fragment fragment : getSupportFragmentManager().getFragments()) {
                     Fragment parentFragment = viewPagerAdapter.createFragment(tab.getPosition());
-                    if (((ViewGroup) fragment.getView().getParent()).getId() ==
-                            parentFragment.getView().getId()) {
-                        getSupportFragmentManager().beginTransaction().
-                                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).
-                                remove(fragment).
-                                commit();
+                    if (fragment.getView() != null && parentFragment.getView() != null) {
+                        if (((ViewGroup) fragment.getView().getParent()).getId() ==
+                                parentFragment.getView().getId()) {
+                            getSupportFragmentManager().beginTransaction().
+                                    remove(fragment).
+                                    commit();
+                            getSupportFragmentManager().popBackStackImmediate();
+                        }
                     }
                 }
             }
@@ -86,19 +91,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            finish();
+            if (mainViewPager.getCurrentItem() != 0)
+                mainViewPager.setCurrentItem(0);
+            else
+                finish();
             return;
         }
         for (int i = getSupportFragmentManager().getFragments().size() - 1; i >= 0; i--) {
             Fragment fragment = getSupportFragmentManager().getFragments().get(i);
             if (fragment.isVisible() && !viewPagerAdapter.contains(fragment)) {
                 getSupportFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .remove(fragment)
                         .commit();
+                getSupportFragmentManager().popBackStackImmediate();
                 return;
             }
         }
-        finish();
+        if (mainViewPager.getCurrentItem() != 0)
+            mainViewPager.setCurrentItem(0);
+        else
+            finish();
     }
 }
