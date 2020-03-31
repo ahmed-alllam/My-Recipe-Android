@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 18:26
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 31/03/20 22:40
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -26,12 +26,12 @@ public class RecipesViewModel extends ViewModel {
         new RecipesClient().getFeed(limit, offset).enqueue(new Callback<RecipesResultModel>() {
             @Override
             public void onResponse(@NonNull Call<RecipesResultModel> call, @NonNull Response<RecipesResultModel> response) {
-                if (response.body().getRecipes().isEmpty() && offset > 0) {
+                // if (response.body().getRecipes().isEmpty() && offset > 0) {
                     // TODO:
-                    return;
-                }
-                if (response.body().getRecipes().isEmpty()) {
-                    // todo: add to error
+                // return;
+                // }
+                if (response.body().getRecipes().isEmpty() && offset == 0) {
+                    error.setValue("Your Recipes Feed is Empty");
                     return;
                 }
                 recipes.setValue(response.body().getRecipes());
@@ -39,7 +39,8 @@ public class RecipesViewModel extends ViewModel {
 
             @Override
             public void onFailure(@NonNull Call<RecipesResultModel> call, @NonNull Throwable t) {
-                error.setValue(t.toString());
+                error.setValue("An Error occurred during connecting to the internet");
+                // todo add localization
             }
         });
     }

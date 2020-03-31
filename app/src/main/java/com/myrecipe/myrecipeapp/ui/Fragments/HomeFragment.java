@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 30/03/20 18:26
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 31/03/20 22:40
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +32,7 @@ public class HomeFragment extends Fragment {
 
         CardView userPhoto = view.findViewById(R.id.userPhoto);
         ViewPager2 mainViewPager = getActivity().findViewById(R.id.mainViewPager);
-        userPhoto.setOnClickListener(v -> mainViewPager.setCurrentItem(3));  // goes to profile page
+        userPhoto.setOnClickListener(v -> mainViewPager.setCurrentItem(3));
 
         RecyclerView recipesRecyclerView = view.findViewById(R.id.recipesRecyclerView);
         recipesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -43,8 +44,20 @@ public class HomeFragment extends Fragment {
                 .get(RecipesViewModel.class);
         recipesViewModel.getFeed(25, 0);
 
-        recipesViewModel.recipes.observe(getViewLifecycleOwner(), recipesAdapter::add);
-        recipesViewModel.error.observe(getViewLifecycleOwner(), System.out::println);
+        TextView errorLabel = view.findViewById(R.id.errorLabel);
+
+        recipesViewModel.recipes.observe(getViewLifecycleOwner(), (recipes) -> {
+            errorLabel.setVisibility(View.GONE);
+            view.findViewById(R.id.latestRecipesLabel).setVisibility(View.VISIBLE);
+            recipesRecyclerView.setVisibility(View.VISIBLE);
+            recipesAdapter.add(recipes);
+        });
+        recipesViewModel.error.observe(getViewLifecycleOwner(), (error) -> {
+            recipesRecyclerView.setVisibility(View.GONE);
+            view.findViewById(R.id.latestRecipesLabel).setVisibility(View.GONE);
+            errorLabel.setVisibility(View.VISIBLE);
+            errorLabel.setText(error);
+        });
 
         // todo add pagignation
 
