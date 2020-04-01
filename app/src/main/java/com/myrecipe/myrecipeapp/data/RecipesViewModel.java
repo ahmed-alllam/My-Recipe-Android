@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 31/03/20 22:40
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 16:38
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.RecipesResultModel;
 
@@ -19,7 +20,7 @@ import retrofit2.Response;
 
 public class RecipesViewModel extends ViewModel {
     public MutableLiveData<List<RecipeModel>> recipes = new MutableLiveData<>();
-    public MutableLiveData<String> error = new MutableLiveData<>();
+    public MutableLiveData<Integer> error = new MutableLiveData<>();
 
     public void getFeed(int limit, int offset) {
         // todo use rxjava
@@ -31,16 +32,15 @@ public class RecipesViewModel extends ViewModel {
                 // return;
                 // }
                 if (response.body().getRecipes().isEmpty() && offset == 0) {
-                    error.setValue("Your Recipes Feed is Empty");
-                    return;
+                    error.setValue(R.string.feed_empty);
+                } else {
+                    recipes.setValue(response.body().getRecipes());
                 }
-                recipes.setValue(response.body().getRecipes());
             }
 
             @Override
             public void onFailure(@NonNull Call<RecipesResultModel> call, @NonNull Throwable t) {
-                error.setValue("An Error occurred during connecting to the internet");
-                // todo add localization
+                error.setValue(R.string.network_error);
             }
         });
     }

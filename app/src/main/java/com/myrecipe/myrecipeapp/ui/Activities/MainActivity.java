@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 31/03/20 17:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 16:38
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -8,9 +8,13 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.myrecipe.myrecipeapp.R;
@@ -69,14 +73,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                    if (tab.getPosition() == 0) {
+                        if (viewPagerAdapter.createFragment(0).getView() != null) {
+                            scrollToTop();
+                        }
+                    }
                     return;
                 }
 
+                boolean subFragmentsForHome = false;
                 for (Fragment fragment : getSupportFragmentManager().getFragments()) {
                     Fragment parentFragment = viewPagerAdapter.createFragment(tab.getPosition());
                     if (fragment.getView() != null && parentFragment.getView() != null) {
                         if (((ViewGroup) fragment.getView().getParent()).getId() ==
                                 parentFragment.getView().getId()) {
+                            if (tab.getPosition() == 0)
+                                subFragmentsForHome = true;
                             getSupportFragmentManager().beginTransaction().
                                     remove(fragment).
                                     commit();
@@ -84,8 +96,29 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
+                if (!subFragmentsForHome) {  // home doesn't contain sub fragments
+                    if (viewPagerAdapter.createFragment(0).getView() != null)
+                        scrollToTop();
+                }
             }
         });
+    }
+
+    private void scrollToTop() {
+        RecyclerView recyclerView = findViewById(R.id.recipesRecyclerView);
+        RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(this) {
+            @Override
+            protected int getVerticalSnapPreference() {
+                return LinearSmoothScroller.SNAP_TO_START;
+            }
+        };
+        smoothScroller.setTargetPosition(0);
+        recyclerView.getLayoutManager().startSmoothScroll(smoothScroller);
+
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) findViewById(R.id.appbar).getLayoutParams();
+        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
+        if (behavior != null)
+            behavior.setTopAndBottomOffset(0);
     }
 
     @Override
@@ -93,8 +126,12 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             if (mainViewPager.getCurrentItem() != 0)
                 mainViewPager.setCurrentItem(0);
-            else
-                finish();
+            else {
+                if (((RecyclerView) findViewById(R.id.recipesRecyclerView)).computeVerticalScrollOffset() != 0)
+                    scrollToTop();
+                else
+                    finish();
+            }
             return;
         }
         for (int i = getSupportFragmentManager().getFragments().size() - 1; i >= 0; i--) {
@@ -109,7 +146,12 @@ public class MainActivity extends AppCompatActivity {
         }
         if (mainViewPager.getCurrentItem() != 0)
             mainViewPager.setCurrentItem(0);
-        else
-            finish();
+        else {
+            if (((RecyclerView) findViewById(R.id.recipesRecyclerView)).computeVerticalScrollOffset() != 0) {
+                scrollToTop();
+            } else {
+                finish();
+            }
+        }
     }
 }
