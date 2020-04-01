@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 31/03/20 22:40
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 04:13
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -48,13 +48,11 @@ public class HomeFragment extends Fragment {
 
         recipesViewModel.recipes.observe(getViewLifecycleOwner(), (recipes) -> {
             errorLabel.setVisibility(View.GONE);
-            view.findViewById(R.id.latestRecipesLabel).setVisibility(View.VISIBLE);
             recipesRecyclerView.setVisibility(View.VISIBLE);
             recipesAdapter.add(recipes);
         });
         recipesViewModel.error.observe(getViewLifecycleOwner(), (error) -> {
             recipesRecyclerView.setVisibility(View.GONE);
-            view.findViewById(R.id.latestRecipesLabel).setVisibility(View.GONE);
             errorLabel.setVisibility(View.VISIBLE);
             errorLabel.setText(error);
         });
