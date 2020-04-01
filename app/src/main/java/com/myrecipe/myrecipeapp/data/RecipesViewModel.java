@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 16:38
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 01:16
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -21,6 +21,7 @@ import retrofit2.Response;
 public class RecipesViewModel extends ViewModel {
     public MutableLiveData<List<RecipeModel>> recipes = new MutableLiveData<>();
     public MutableLiveData<Integer> error = new MutableLiveData<>();
+    public MutableLiveData<Integer> count = new MutableLiveData<>();
 
     public void getFeed(int limit, int offset) {
         // todo use rxjava
@@ -34,6 +35,7 @@ public class RecipesViewModel extends ViewModel {
                 if (response.body().getRecipes().isEmpty() && offset == 0) {
                     error.setValue(R.string.feed_empty);
                 } else {
+                    count.setValue(response.body().getCount());
                     recipes.setValue(response.body().getRecipes());
                 }
             }

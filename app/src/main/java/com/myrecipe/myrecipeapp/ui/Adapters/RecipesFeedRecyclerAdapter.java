@@ -1,10 +1,9 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 20:06
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 01:16
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +25,11 @@ import java.util.List;
 public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_EMPTY = 0;
     private static final int VIEW_TYPE_RECIPE = 1;
+    private static final int VIEW_TYPE_LOADING = 2;
+    private int offset;
+    private int count;
+    private boolean isLoadingAdded = false;
+    private boolean isLoading = false;
 
     private List<RecipeModel> recipesList = new ArrayList<>();
     private Context context;
@@ -41,16 +45,16 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         if (viewType == VIEW_TYPE_RECIPE)
             return new RecipeViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recipe_item, parent, false));
+        if (viewType == VIEW_TYPE_LOADING)
+            return new LoadingViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.loading_item, parent, false)); //todo not showing
         return new EmptyViewHolder(LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.empty_item, parent, false));
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        // todo add loading view
-
-        if (VIEW_TYPE_RECIPE == getItemViewType(0)) {
+        if (VIEW_TYPE_RECIPE == getItemViewType(position)) {
             RecipeModel recipe = recipesList.get(position);
             RecipeViewHolder viewHolder = (RecipeViewHolder) holder;
 
@@ -92,17 +96,72 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
     public int getItemViewType(int position) {
         if (recipesList.size() == 0)
             return VIEW_TYPE_EMPTY;
+        if (position == recipesList.size() - 1 && isLoadingAdded)
+            return VIEW_TYPE_LOADING;
         return VIEW_TYPE_RECIPE;
     }
 
-    public void add(List<RecipeModel> recipeModels) {
+    public void add(RecipeModel recipe) {
+        recipesList.add(recipe);
+        notifyItemInserted(recipesList.size() - 1);
+    }
+
+    public void addAll(List<RecipeModel> recipeModels) {
         recipesList.addAll(recipeModels);
         notifyDataSetChanged();
     }
 
+    public void remove(int position) {
+        recipesList.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public void clear() {
+        isLoadingAdded = false;
         recipesList.clear();
         notifyDataSetChanged();
+    }
+
+    public void addLoadingFooter() {
+        isLoadingAdded = true;
+        add(null);
+    }
+
+    public void removeLoadingFooter() {
+        isLoadingAdded = false;
+        int position = recipesList.size() - 1;
+        remove(position);
+    }
+
+    public boolean isLastPage() {
+        return offset >= count;
+    }
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+
+    class LoadingViewHolder extends RecyclerView.ViewHolder {
+        LoadingViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
     }
 
     class EmptyViewHolder extends RecyclerView.ViewHolder {

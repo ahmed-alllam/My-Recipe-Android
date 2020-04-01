@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 20:06
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 01:16
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -22,6 +22,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.RecipesViewModel;
 import com.myrecipe.myrecipeapp.ui.Adapters.RecipesFeedRecyclerAdapter;
+import com.myrecipe.myrecipeapp.ui.Adapters.RecipesPaginationScrollListener;
 
 
 public class HomeFragment extends Fragment {
@@ -35,7 +36,8 @@ public class HomeFragment extends Fragment {
         userPhoto.setOnClickListener(v -> mainViewPager.setCurrentItem(3));
 
         RecyclerView recipesRecyclerView = view.findViewById(R.id.recipesRecyclerView);
-        recipesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recipesRecyclerView.setLayoutManager(layoutManager);
         recipesRecyclerView.setNestedScrollingEnabled(false);
 
         RecipesFeedRecyclerAdapter recipesAdapter = new RecipesFeedRecyclerAdapter(getContext());
@@ -43,24 +45,67 @@ public class HomeFragment extends Fragment {
 
         RecipesViewModel recipesViewModel = new ViewModelProvider(this)
                 .get(RecipesViewModel.class);
-        recipesViewModel.getFeed(25, 0);
 
         TextView errorLabel = view.findViewById(R.id.errorLabel);
 
+        recipesRecyclerView.addOnScrollListener(new RecipesPaginationScrollListener(layoutManager) {
+            @Override
+            public void loadMoreRecipes() {
+                recipesAdapter.setLoading(true);
+
+                recipesAdapter.addLoadingFooter();
+                recipesViewModel.recipes.setValue(null);
+
+                recipesViewModel.getFeed(3, recipesAdapter.getOffset());
+
+                recipesViewModel.recipes.observe(getViewLifecycleOwner(), (recipes) -> {
+                    if (recipes != null) {
+                        recipesAdapter.setOffset(recipesAdapter.getOffset() + 3);
+                        recipesAdapter.removeLoadingFooter();
+                        recipesAdapter.setLoading(false);
+                        recipesAdapter.addAll(recipes);
+                    }
+                });
+                recipesViewModel.error.observe(getViewLifecycleOwner(), (error) -> {
+                    recipesAdapter.setLoading(false);
+                    recipesRecyclerView.setVisibility(View.GONE);
+                    errorLabel.setVisibility(View.VISIBLE);
+                    errorLabel.setText(error);
+                    // todo
+                });
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return recipesAdapter.isLastPage();
+            }
+
+            @Override
+            public boolean isLoading() {
+                return recipesAdapter.isLoading();
+            }
+        });
+
+        recipesAdapter.setLoading(true);
+        recipesViewModel.getFeed(3, 0);
+
         recipesViewModel.recipes.observe(getViewLifecycleOwner(), (recipes) -> {
+            recipesAdapter.setOffset(3);
+            recipesAdapter.setLoading(false);
             errorLabel.setVisibility(View.GONE);
             recipesRecyclerView.setVisibility(View.VISIBLE);
-            recipesAdapter.add(recipes);
+            recipesAdapter.addAll(recipes);
             recipesRecyclerView.setNestedScrollingEnabled(true);
+
+            recipesViewModel.recipes.removeObservers(getViewLifecycleOwner());
         });
         recipesViewModel.error.observe(getViewLifecycleOwner(), (error) -> {
+            recipesAdapter.setLoading(false);
             recipesRecyclerView.setVisibility(View.GONE);
             errorLabel.setVisibility(View.VISIBLE);
             errorLabel.setText(error);
         });
-
-        // todo add pagignation
-
+        recipesViewModel.count.observe(getViewLifecycleOwner(), recipesAdapter::setCount);
     }
 
     @Override
