@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 04:13
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 20:06
   -->
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -30,24 +30,22 @@
             android:id="@+id/favourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="5dp"
             android:background="@android:color/transparent"
             android:src="@drawable/favourite_border"
             android:tint="#F76767"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/timeToFinish" />
+            app:layout_constraintBottom_toBottomOf="@+id/rating"
+            app:layout_constraintEnd_toStartOf="@+id/favourites_count"
+            app:layout_constraintTop_toTopOf="@+id/rating" />
 
         <TextView
             android:id="@+id/favourites_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="2dp"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@+id/favourite"
-            app:layout_constraintEnd_toStartOf="@+id/favourite"
+            app:layout_constraintEnd_toEndOf="@+id/description"
             app:layout_constraintTop_toTopOf="@+id/favourite"
-            app:layout_constraintVertical_bias="1.0"
             tools:text="12" />
 
         <TextView
@@ -120,6 +118,27 @@
             app:layout_constraintStart_toStartOf="@+id/description"
             app:layout_constraintTop_toBottomOf="@+id/description"
             app:srcCompat="@drawable/clock" />
+
+        <ImageView
+            android:id="@+id/starIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:tint="#FFFF00"
+            app:layout_constraintBottom_toBottomOf="@+id/timeToFinish"
+            app:layout_constraintEnd_toStartOf="@+id/rating"
+            app:layout_constraintTop_toTopOf="@+id/timeToFinish"
+            app:srcCompat="@drawable/star" />
+
+        <TextView
+            android:id="@+id/rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/starIcon"
+            app:layout_constraintEnd_toStartOf="@+id/favourite"
+            app:layout_constraintTop_toTopOf="@+id/starIcon"
+            tools:text="4.6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

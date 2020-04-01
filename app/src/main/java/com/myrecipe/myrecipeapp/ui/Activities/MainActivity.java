@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 16:38
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 20:06
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -136,12 +136,16 @@ public class MainActivity extends AppCompatActivity {
         }
         for (int i = getSupportFragmentManager().getFragments().size() - 1; i >= 0; i--) {
             Fragment fragment = getSupportFragmentManager().getFragments().get(i);
-            if (fragment.isVisible() && !viewPagerAdapter.contains(fragment)) {
-                getSupportFragmentManager().beginTransaction()
-                        .remove(fragment)
-                        .commit();
-                getSupportFragmentManager().popBackStackImmediate();
-                return;
+            if (fragment.getView() != null) {
+                if (viewPagerAdapter.createFragment(mainViewPager.getCurrentItem())
+                        .getView() == fragment.getView().getParent()
+                        && !viewPagerAdapter.contains(fragment)) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(fragment)
+                            .commit();
+                    getSupportFragmentManager().popBackStackImmediate();
+                    return;
+                }
             }
         }
         if (mainViewPager.getCurrentItem() != 0)

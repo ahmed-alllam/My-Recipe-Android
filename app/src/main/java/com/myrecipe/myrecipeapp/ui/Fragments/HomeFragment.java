@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 04:13
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 20:06
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
 
         RecyclerView recipesRecyclerView = view.findViewById(R.id.recipesRecyclerView);
         recipesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recipesRecyclerView.setNestedScrollingEnabled(false);
 
         RecipesFeedRecyclerAdapter recipesAdapter = new RecipesFeedRecyclerAdapter(getContext());
         recipesRecyclerView.setAdapter(recipesAdapter);
@@ -50,6 +51,7 @@ public class HomeFragment extends Fragment {
             errorLabel.setVisibility(View.GONE);
             recipesRecyclerView.setVisibility(View.VISIBLE);
             recipesAdapter.add(recipes);
+            recipesRecyclerView.setNestedScrollingEnabled(true);
         });
         recipesViewModel.error.observe(getViewLifecycleOwner(), (error) -> {
             recipesRecyclerView.setVisibility(View.GONE);
