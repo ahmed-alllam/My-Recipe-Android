@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 01:16
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 21:12
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -21,8 +21,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.RecipesViewModel;
+import com.myrecipe.myrecipeapp.ui.Adapters.PaginationScrollListener;
 import com.myrecipe.myrecipeapp.ui.Adapters.RecipesFeedRecyclerAdapter;
-import com.myrecipe.myrecipeapp.ui.Adapters.RecipesPaginationScrollListener;
 
 
 public class HomeFragment extends Fragment {
@@ -40,7 +40,7 @@ public class HomeFragment extends Fragment {
         recipesRecyclerView.setLayoutManager(layoutManager);
         recipesRecyclerView.setNestedScrollingEnabled(false);
 
-        RecipesFeedRecyclerAdapter recipesAdapter = new RecipesFeedRecyclerAdapter(getContext());
+        RecipesFeedRecyclerAdapter recipesAdapter = new RecipesFeedRecyclerAdapter(getContext(), recipesRecyclerView);
         recipesRecyclerView.setAdapter(recipesAdapter);
 
         RecipesViewModel recipesViewModel = new ViewModelProvider(this)
@@ -48,31 +48,14 @@ public class HomeFragment extends Fragment {
 
         TextView errorLabel = view.findViewById(R.id.errorLabel);
 
-        recipesRecyclerView.addOnScrollListener(new RecipesPaginationScrollListener(layoutManager) {
+        int limitPerRequest = 25;
+
+        recipesRecyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
             @Override
             public void loadMoreRecipes() {
                 recipesAdapter.setLoading(true);
-
                 recipesAdapter.addLoadingFooter();
-                recipesViewModel.recipes.setValue(null);
-
-                recipesViewModel.getFeed(3, recipesAdapter.getOffset());
-
-                recipesViewModel.recipes.observe(getViewLifecycleOwner(), (recipes) -> {
-                    if (recipes != null) {
-                        recipesAdapter.setOffset(recipesAdapter.getOffset() + 3);
-                        recipesAdapter.removeLoadingFooter();
-                        recipesAdapter.setLoading(false);
-                        recipesAdapter.addAll(recipes);
-                    }
-                });
-                recipesViewModel.error.observe(getViewLifecycleOwner(), (error) -> {
-                    recipesAdapter.setLoading(false);
-                    recipesRecyclerView.setVisibility(View.GONE);
-                    errorLabel.setVisibility(View.VISIBLE);
-                    errorLabel.setText(error);
-                    // todo
-                });
+                recipesViewModel.getFeed(limitPerRequest, recipesAdapter.getOffset());
             }
 
             @Override
@@ -87,25 +70,22 @@ public class HomeFragment extends Fragment {
         });
 
         recipesAdapter.setLoading(true);
-        recipesViewModel.getFeed(3, 0);
+        recipesViewModel.getFeed(limitPerRequest, 0);
 
         recipesViewModel.recipes.observe(getViewLifecycleOwner(), (recipes) -> {
-            recipesAdapter.setOffset(3);
+            recipesAdapter.setOffset(recipesAdapter.getOffset() + limitPerRequest);
             recipesAdapter.setLoading(false);
-            errorLabel.setVisibility(View.GONE);
-            recipesRecyclerView.setVisibility(View.VISIBLE);
-            recipesAdapter.addAll(recipes);
+            recipesAdapter.removeLoadingFooter();
+            recipesAdapter.addAll(recipes.getRecipes());
+            recipesAdapter.setCount(recipes.getCount());
             recipesRecyclerView.setNestedScrollingEnabled(true);
-
-            recipesViewModel.recipes.removeObservers(getViewLifecycleOwner());
         });
-        recipesViewModel.error.observe(getViewLifecycleOwner(), (error) -> {
+        recipesViewModel.error.observe(getViewLifecycleOwner(), (error) -> { // todo
             recipesAdapter.setLoading(false);
             recipesRecyclerView.setVisibility(View.GONE);
             errorLabel.setVisibility(View.VISIBLE);
             errorLabel.setText(error);
         });
-        recipesViewModel.count.observe(getViewLifecycleOwner(), recipesAdapter::setCount);
     }
 
     @Override

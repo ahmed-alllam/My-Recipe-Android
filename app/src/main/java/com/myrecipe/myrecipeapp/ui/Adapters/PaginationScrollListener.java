@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 01:16
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 21:12
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -8,10 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public abstract class RecipesPaginationScrollListener extends RecyclerView.OnScrollListener {
+public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
     private LinearLayoutManager layoutManager;
 
-    protected RecipesPaginationScrollListener(LinearLayoutManager layoutManager) {
+    protected PaginationScrollListener(LinearLayoutManager layoutManager) {
         this.layoutManager = layoutManager;
     }
 
@@ -25,7 +25,7 @@ public abstract class RecipesPaginationScrollListener extends RecyclerView.OnScr
 
         if (!isLastPage() && !isLoading()) {
             if ((visibleItemCount + firstVisibleItemPosition) >=
-                    totalItemCount && firstVisibleItemPosition >= 0) { // todo verstehen
+                    totalItemCount && firstVisibleItemPosition >= 0) {
                 loadMoreRecipes();
             }
         }

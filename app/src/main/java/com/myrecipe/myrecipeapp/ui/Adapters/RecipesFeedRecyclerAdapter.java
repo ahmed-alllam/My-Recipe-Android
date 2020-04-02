@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 01:16
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 21:12
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -33,11 +33,12 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private List<RecipeModel> recipesList = new ArrayList<>();
     private Context context;
+    private RecyclerView recyclerView;
 
-    public RecipesFeedRecyclerAdapter(Context context) {
+    public RecipesFeedRecyclerAdapter(Context context, RecyclerView recyclerView) {
         this.context = context;
+        this.recyclerView = recyclerView;
     }
-
 
     @NonNull
     @Override
@@ -47,7 +48,7 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
                     .inflate(R.layout.recipe_item, parent, false));
         if (viewType == VIEW_TYPE_LOADING)
             return new LoadingViewHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.loading_item, parent, false)); //todo not showing
+                    .inflate(R.layout.loading_item, parent, false));
         return new EmptyViewHolder(LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.empty_item, parent, false));
     }
@@ -65,9 +66,9 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
             viewHolder.name.setText(recipe.getName());
             viewHolder.description.setText(recipe.getDescription());
-            viewHolder.favourites_count.setText(String.valueOf(recipe.getFavourites_count())); // ()
+            viewHolder.favourites_count.setText(String.valueOf(recipe.getFavourites_count()));
             viewHolder.rating.setText(String.valueOf(recipe.getRating()));
-            viewHolder.timeToFinish.setText(recipe.getTime_to_finish() + " min");
+            viewHolder.timeToFinish.setText(String.format("%s %s", recipe.getTime_to_finish(), context.getResources().getString(R.string.minutes)));
 
             StringBuilder sb = new StringBuilder();
             List<String> tags = recipe.getTags();
@@ -87,9 +88,7 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        if (recipesList.size() != 0)
-            return recipesList.size();
-        return 2;
+        return recipesList.size() != 0 ? recipesList.size() : 2;
     }
 
     @Override
@@ -101,36 +100,42 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         return VIEW_TYPE_RECIPE;
     }
 
-    public void add(RecipeModel recipe) {
-        recipesList.add(recipe);
-        notifyItemInserted(recipesList.size() - 1);
-    }
-
     public void addAll(List<RecipeModel> recipeModels) {
-        recipesList.addAll(recipeModels);
-        notifyDataSetChanged();
+        if (recipesList.size() != 0) {
+            recyclerView.post(() -> {
+                recipesList.addAll(recipeModels);
+                notifyItemRangeInserted(recipesList.size() - recipeModels.size(),
+                        recipeModels.size());
+            });
+        } else {
+            recyclerView.post(() -> {
+                recipesList.addAll(recipeModels);
+                notifyDataSetChanged();
+            });
+        }
     }
 
-    public void remove(int position) {
-        recipesList.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    public void clear() {
-        isLoadingAdded = false;
-        recipesList.clear();
-        notifyDataSetChanged();
+    private void remove(int position) {
+        recyclerView.post(() -> {
+            recipesList.remove(position);
+            notifyItemRemoved(position);
+        });
     }
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(null);
+        recyclerView.post(() -> {
+            recipesList.add(null);
+            notifyItemInserted(recipesList.size() - 1);
+        });
     }
 
     public void removeLoadingFooter() {
-        isLoadingAdded = false;
-        int position = recipesList.size() - 1;
-        remove(position);
+        if (isLoadingAdded) {
+            isLoadingAdded = false;
+            int position = recipesList.size() - 1;
+            remove(position);
+        }
     }
 
     public boolean isLastPage() {
@@ -171,7 +176,6 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     class RecipeViewHolder extends RecyclerView.ViewHolder {
-
         ImageView mainImage;
         ImageButton favourite;
         TextView favourites_count, name, description,
