@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 03/04/20 21:32
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 00:49
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -7,6 +7,7 @@ package com.myrecipe.myrecipeapp.data;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.models.UserLoginModel;
 
 import retrofit2.Call;
@@ -23,12 +24,15 @@ public class LoginViewModel extends ViewModel {
         loginAPIInterface.loginUser(email, password).enqueue(new Callback<UserLoginModel>() {
             @Override
             public void onResponse(Call<UserLoginModel> call, Response<UserLoginModel> response) {
-                userLoginModel.setValue(response.body());
+                if (response.code() == 400)
+                    error.setValue(R.string.wrong_email_or_password);
+                else
+                    userLoginModel.setValue(response.body());
             }
 
             @Override
             public void onFailure(Call<UserLoginModel> call, Throwable t) {
-                // todo
+                error.setValue(R.string.network_error);
             }
         });
     }

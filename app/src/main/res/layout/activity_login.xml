@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 03/04/20 21:32
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 00:49
   -->
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -207,6 +207,7 @@
         android:layout_marginStart="16dp"
         android:textAllCaps="false"
         android:textColor="@android:color/holo_red_light"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintStart_toStartOf="@+id/passwordGroup"
         app:layout_constraintTop_toBottomOf="@+id/forgotPasswordLabel"
@@ -215,7 +216,6 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

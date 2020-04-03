@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 21:12
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 00:49
   -->
 
 <resources>
@@ -36,6 +36,7 @@
     <string name="login_or_sign_up">سجل الدخول</string>
     <string name="latest_recipes">أحدث الوصفات</string>
     <string name="network_error">لقد حدث خطأ أثناء الاتصال بالأنترنت</string>
+    <string name="wrong_email_or_password">البريد الإكتروني أو كلمه السر خطئ</string>
     <string name="feed_empty">لا يوجد وصفات لك حالياً</string>
     <string name="loading">جارٍ التحميل…</string>
     <string name="minutes"> دقيقة </string>
