@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 00:49
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 01:22
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.LoginViewModel;
+import com.myrecipe.myrecipeapp.data.PreferencesManager;
 
 public class LoginActivity extends AppCompatActivity {
     LoginViewModel loginViewModel;
@@ -27,12 +28,11 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         loginViewModel.userLoginModel.observe(this, userLoginModel -> {
-            // todo
-            System.out.println("observer 1");
+            PreferencesManager.setToken(this, userLoginModel.getToken());
             findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+            finish();
         });
         loginViewModel.error.observe(this, error -> {
-            System.out.println("observer 2");
             ((TextView) findViewById(R.id.error)).setText(error);
             findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
         });
