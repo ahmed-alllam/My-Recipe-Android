@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 21:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 03/04/20 17:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -80,11 +80,16 @@ public class HomeFragment extends Fragment {
             recipesAdapter.setCount(recipes.getCount());
             recipesRecyclerView.setNestedScrollingEnabled(true);
         });
-        recipesViewModel.error.observe(getViewLifecycleOwner(), (error) -> { // todo
-            recipesAdapter.setLoading(false);
-            recipesRecyclerView.setVisibility(View.GONE);
-            errorLabel.setVisibility(View.VISIBLE);
-            errorLabel.setText(error);
+        recipesViewModel.error.observe(getViewLifecycleOwner(), (error) -> {
+            if (recipesAdapter.isEmpty()) {
+                recipesAdapter.setLoading(false);
+                recipesRecyclerView.setVisibility(View.GONE);
+                errorLabel.setVisibility(View.VISIBLE);
+                errorLabel.setText(error);
+            } else {
+                recipesAdapter.setLoading(false);
+                recipesAdapter.removeLoadingFooter();
+            }
         });
     }
 

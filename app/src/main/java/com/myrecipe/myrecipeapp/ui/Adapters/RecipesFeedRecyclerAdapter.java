@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 21:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 03/04/20 17:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -160,6 +160,10 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public boolean isEmpty() {
+        return recipesList.isEmpty();
     }
 
 
