@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 02/04/20 21:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 03/04/20 21:32
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -21,7 +21,10 @@ public class RecipesViewModel extends ViewModel {
 
     public void getFeed(int limit, int offset) {
         // todo use rxjava
-        new RecipesClient().getFeed(limit, offset).enqueue(new Callback<RecipesResultModel>() {
+
+        APIInterface RecipesAPIInterface = APIClient.getClient().create(APIInterface.class);
+
+        RecipesAPIInterface.getFeed(limit, offset).enqueue(new Callback<RecipesResultModel>() {
             @Override
             public void onResponse(@NonNull Call<RecipesResultModel> call, @NonNull Response<RecipesResultModel> response) {
                 if (response.body().getRecipes().isEmpty() && offset == 0) {
