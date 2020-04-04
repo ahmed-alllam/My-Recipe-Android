@@ -1,8 +1,10 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 03/04/20 21:32
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 20:30
  */
 
 package com.myrecipe.myrecipeapp.data;
+
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -19,12 +21,20 @@ public class RecipesViewModel extends ViewModel {
     public MutableLiveData<RecipesResultModel> recipes = new MutableLiveData<>();
     public MutableLiveData<Integer> error = new MutableLiveData<>();
 
-    public void getFeed(int limit, int offset) {
-        // todo use rxjava
-
+    public void getFeed(Context context, int limit, int offset) {
         APIInterface RecipesAPIInterface = APIClient.getClient().create(APIInterface.class);
 
-        RecipesAPIInterface.getFeed(limit, offset).enqueue(new Callback<RecipesResultModel>() {
+        String token = PreferencesManager.getToken(context);
+
+        Call<RecipesResultModel> call;
+
+        if (token.length() > 0) {
+            call = RecipesAPIInterface.getFeed(token, limit, offset);
+        } else {
+            call = RecipesAPIInterface.getFeed(limit, offset);
+        }
+
+        call.enqueue(new Callback<RecipesResultModel>() {
             @Override
             public void onResponse(@NonNull Call<RecipesResultModel> call, @NonNull Response<RecipesResultModel> response) {
                 if (response.body().getRecipes().isEmpty() && offset == 0) {

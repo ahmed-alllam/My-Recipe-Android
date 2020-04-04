@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 03/04/20 17:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 20:30
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
             public void loadMoreRecipes() {
                 recipesAdapter.setLoading(true);
                 recipesAdapter.addLoadingFooter();
-                recipesViewModel.getFeed(limitPerRequest, recipesAdapter.getOffset());
+                recipesViewModel.getFeed(getContext(), limitPerRequest, recipesAdapter.getOffset());
             }
 
             @Override
@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
         });
 
         recipesAdapter.setLoading(true);
-        recipesViewModel.getFeed(limitPerRequest, 0);
+        recipesViewModel.getFeed(getContext(), limitPerRequest, 0);
 
         recipesViewModel.recipes.observe(getViewLifecycleOwner(), (recipes) -> {
             recipesAdapter.setOffset(recipesAdapter.getOffset() + limitPerRequest);

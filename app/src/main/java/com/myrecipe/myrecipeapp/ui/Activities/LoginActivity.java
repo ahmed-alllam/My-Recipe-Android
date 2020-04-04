@@ -1,9 +1,11 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 01:22
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 20:30
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -23,13 +25,16 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login);  // todo add back button
 
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         loginViewModel.userLoginModel.observe(this, userLoginModel -> {
             PreferencesManager.setToken(this, userLoginModel.getToken());
             findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+            Intent intent = new Intent();
+            intent.putExtra("token", userLoginModel.getToken());
+            setResult(Activity.RESULT_OK, intent);
             finish();
         });
         loginViewModel.error.observe(this, error -> {
