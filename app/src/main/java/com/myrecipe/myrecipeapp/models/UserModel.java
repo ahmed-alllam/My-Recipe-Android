@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 20:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 21:43
  */
 
 package com.myrecipe.myrecipeapp.models;
@@ -14,8 +14,18 @@ public class UserModel {
     private int followers_count;
     private int followings_count;
 
+    public UserModel(String name, String email, String username, String bio, String image, int followers_count, int followings_count) {
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.bio = bio;
+        this.image = image;
+        this.followers_count = followers_count;
+        this.followings_count = followings_count;
+    }
+
     public String getName() {
-        return name;
+        return name != null ? name : "";
     }
 
     public void setName(String name) {
@@ -31,7 +41,7 @@ public class UserModel {
     }
 
     public String getEmail() {
-        return email;
+        return email != null ? email : "";
     }
 
     public void setEmail(String email) {
@@ -39,7 +49,7 @@ public class UserModel {
     }
 
     public String getUsername() {
-        return username;
+        return username != null ? username : "";
     }
 
     public void setUsername(String username) {
@@ -47,7 +57,7 @@ public class UserModel {
     }
 
     public String getBio() {
-        return bio;
+        return bio != null ? bio : "";
     }
 
     public void setBio(String bio) {
@@ -55,7 +65,7 @@ public class UserModel {
     }
 
     public String getImage() {
-        return image;
+        return image != null ? image : "";
     }
 
     public void setImage(String image) {
@@ -68,5 +78,17 @@ public class UserModel {
 
     public int getFollowings_count() {
         return followings_count;
+    }
+
+    public boolean equals(UserModel user) {
+        if (user == null)
+            return false;
+        return user.getName().equals(getName()) &&
+                user.getEmail().equals(getEmail()) &&
+                user.getUsername().equals(getUsername()) &&
+                user.getBio().equals(getBio()) &&
+                user.getImage().equals(getImage()) &&
+                user.getFollowers_count() == getFollowers_count() &&
+                user.getFollowings_count() == getFollowings_count();
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 20:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 21:43
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
+import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.UserViewModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Activities.LoginActivity;
@@ -31,6 +32,7 @@ public class ProfileFragment extends Fragment {
     private static final int LAUNCH_LOGIN_ACTIVITY = 0;
 
     private UserViewModel userViewModel;
+    private UserModel storedUserModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +43,15 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+
+        String token = PreferencesManager.getToken(getContext());
+        if (token.length() > 0) {
+            storedUserModel = getStoredUserInfo();
+            refreshUserUIINfo(view, storedUserModel);
+            userViewModel.getMyProfile(token);
+        }
 
         view.findViewById(R.id.loginLabel).setOnClickListener(v -> {
             Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
@@ -56,18 +67,20 @@ public class ProfileFragment extends Fragment {
                     .commit();
         });
 
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-
         userViewModel.userProfile.observe(getViewLifecycleOwner(), userProfile -> {
-            refreshUserUIINfo(view, userProfile);
-            storeUserInfo(userProfile);
+            if (storedUserModel == null || !storedUserModel.equals(userProfile)) {
+                refreshUserUIINfo(view, userProfile);
+                storeUserInfo(userProfile);
+            }
         });
         userViewModel.error.observe(getViewLifecycleOwner(), error -> {
-            view.findViewById(R.id.loginLabel).setVisibility(View.INVISIBLE);
+            if (storedUserModel == null) {
+                view.findViewById(R.id.loginLabel).setVisibility(View.INVISIBLE);
 
-            TextView name = view.findViewById(R.id.name);
-            name.setVisibility(View.VISIBLE);
-            name.setText(R.string.network_error);
+                TextView name = view.findViewById(R.id.name);
+                name.setVisibility(View.VISIBLE);
+                name.setText(R.string.profile_network_error);
+            }
         });
     }
 
@@ -79,15 +92,10 @@ public class ProfileFragment extends Fragment {
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
                     String token = data.getStringExtra("token");
-                    getMyUserProfile(true, token);
+                    userViewModel.getMyProfile(token);
                 }
             }
         }
-    }
-
-    private void getMyUserProfile(boolean loggedIn, String token) {
-        if (loggedIn && !token.isEmpty())
-            userViewModel.getMyProfile(token);
     }
 
     private void refreshUserUIINfo(View view, UserModel user) {
@@ -119,7 +127,12 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    private UserModel getStoredUserInfo() {
+        return PreferencesManager.getStoredUser(getContext());
+    }
+
     private void storeUserInfo(UserModel user) {
-        // todo
+        storedUserModel = user;
+        PreferencesManager.storeUser(getContext(), user);
     }
 }
