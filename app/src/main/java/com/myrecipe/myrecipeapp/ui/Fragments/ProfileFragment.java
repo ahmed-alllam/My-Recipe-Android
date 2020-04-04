@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 21:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 22:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -93,6 +93,12 @@ public class ProfileFragment extends Fragment {
                 if (data != null) {
                     String token = data.getStringExtra("token");
                     userViewModel.getMyProfile(token);
+
+                    getView().findViewById(R.id.loginLabel).setVisibility(View.INVISIBLE);
+
+                    TextView name = getView().findViewById(R.id.name);
+                    name.setVisibility(View.VISIBLE);
+                    name.setText(R.string.loading);
                 }
             }
         }

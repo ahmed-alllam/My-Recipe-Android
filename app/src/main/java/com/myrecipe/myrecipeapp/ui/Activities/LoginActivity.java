@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 20:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 22:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);  // todo add back button
+        setContentView(R.layout.activity_login);
 
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 

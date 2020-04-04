@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 21:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 22:55
  */
 
 package com.myrecipe.myrecipeapp.models;
@@ -13,6 +13,9 @@ public class UserModel {
     private String image;
     private int followers_count;
     private int followings_count;
+
+    public UserModel() {
+    }
 
     public UserModel(String name, String email, String username, String bio, String image, int followers_count, int followings_count) {
         this.name = name;
