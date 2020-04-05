@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -8,19 +8,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
+import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.RecipesViewModel;
+import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Adapters.PaginationScrollListener;
 import com.myrecipe.myrecipeapp.ui.Adapters.RecipesFeedRecyclerAdapter;
 
@@ -31,9 +34,10 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        CardView userPhoto = view.findViewById(R.id.userPhoto);
+        ImageView userImage = view.findViewById(R.id.userImage);
         ViewPager2 mainViewPager = getActivity().findViewById(R.id.mainViewPager);
-        userPhoto.setOnClickListener(v -> mainViewPager.setCurrentItem(3));
+        userImage.setOnClickListener(v -> mainViewPager.setCurrentItem(3));
+        refreshUserImage(PreferencesManager.getStoredUser(getContext()));
 
         RecyclerView recipesRecyclerView = view.findViewById(R.id.recipesRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -98,5 +102,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    void refreshUserImage(UserModel user) {
+        ImageView userImage = getView().findViewById(R.id.userImage);
+        if (!user.getImage().isEmpty()) {
+            Glide.with(getContext())
+                    .load(user.getImage())
+                    .placeholder(R.drawable.user)
+                    .into(userImage);
+        }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -46,7 +46,7 @@ public class PreferencesManager {
         setPreference(context, "user_email", user.getEmail());
         setPreference(context, "user_username", user.getUsername());
         setPreference(context, "user_bio", user.getBio());
-
+        setPreference(context, "user_image", user.getImage());
         setPreference(context, "user_followers_count",
                 String.valueOf(user.getFollowers_count()));
         setPreference(context, "user_followings_count",

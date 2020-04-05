@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -88,6 +88,11 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
             sb.append(tags.get(i));
         }
         viewHolder.tags.setText(sb.toString());
+
+        if (recipe.isFavouritedByUser())
+            viewHolder.favourite.setImageResource(R.drawable.favourite2);
+        else
+            viewHolder.favourite.setImageResource(R.drawable.favourite_border);
 
         viewHolder.favourite.setOnClickListener(v -> {
             String token = PreferencesManager.getToken(recyclerView.getContext());

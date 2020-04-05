@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 00:49
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -24,7 +24,7 @@ public class LoginViewModel extends ViewModel {
         loginAPIInterface.loginUser(email, password).enqueue(new Callback<UserLoginModel>() {
             @Override
             public void onResponse(Call<UserLoginModel> call, Response<UserLoginModel> response) {
-                if (response.code() == 400)
+                if (response.code() >= 400)
                     error.setValue(R.string.wrong_email_or_password);
                 else
                     userLoginModel.setValue(response.body());

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 20:06
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -54,6 +54,7 @@
                     app:layout_constraintTop_toTopOf="@+id/homeLabel">
 
                     <ImageView
+                        android:id="@+id/userImage"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/user" />

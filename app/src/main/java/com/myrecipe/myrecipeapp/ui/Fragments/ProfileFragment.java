@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
@@ -25,6 +26,7 @@ import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.UserViewModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Activities.LoginActivity;
+import com.myrecipe.myrecipeapp.ui.Adapters.MainViewPagerAdapter;
 
 
 public class ProfileFragment extends Fragment {
@@ -71,6 +73,11 @@ public class ProfileFragment extends Fragment {
             if (storedUserModel == null || !storedUserModel.equals(userProfile)) {
                 refreshUserUIINfo(view, userProfile);
                 storeUserInfo(userProfile);
+
+                // gets the home fragment instance and calls its refreshUserImage method
+                ViewPager2 viewPager = getActivity().findViewById(R.id.mainViewPager);
+                MainViewPagerAdapter adapter = (MainViewPagerAdapter) viewPager.getAdapter();
+                ((HomeFragment) adapter.createFragment(0)).refreshUserImage(userProfile);
             }
         });
         userViewModel.error.observe(getViewLifecycleOwner(), error -> {

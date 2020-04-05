@@ -1,8 +1,10 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
  */
 
 package com.myrecipe.myrecipeapp.models;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
@@ -23,6 +25,7 @@ public class RecipeModel {
     private int favourites_count;
     private int reviews_count;
     private float rating;
+    @SerializedName("is_favourited_by_user")
     private boolean isFavouritedByUser;
 
     public boolean isFavouritedByUser() {

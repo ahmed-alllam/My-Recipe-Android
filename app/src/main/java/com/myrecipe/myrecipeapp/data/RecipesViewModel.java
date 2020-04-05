@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 20:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -29,6 +29,7 @@ public class RecipesViewModel extends ViewModel {
         Call<RecipesResultModel> call;
 
         if (token.length() > 0) {
+            token = "Token " + token;
             call = RecipesAPIInterface.getFeed(token, limit, offset);
         } else {
             call = RecipesAPIInterface.getFeed(limit, offset);
@@ -37,11 +38,12 @@ public class RecipesViewModel extends ViewModel {
         call.enqueue(new Callback<RecipesResultModel>() {
             @Override
             public void onResponse(@NonNull Call<RecipesResultModel> call, @NonNull Response<RecipesResultModel> response) {
-                if (response.body().getRecipes().isEmpty() && offset == 0) {
+                if (response.code() >= 400)
+                    error.setValue(R.string.network_error);
+                else if (response.body().getRecipes().isEmpty())
                     error.setValue(R.string.feed_empty);
-                } else {
+                else
                     recipes.setValue(response.body());
-                }
             }
 
             @Override

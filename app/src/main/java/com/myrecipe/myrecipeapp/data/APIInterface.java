@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -36,6 +36,12 @@ public interface APIInterface {
     @DELETE("recipes/{slug}/favourite/?format=json")
     Call<Void> removeFavouriteRecipe(@Header("Authorization") String token,
                                      @Path("slug") String slug);
+
+    @GET("users/{username}/favourites/?format=json")
+    Call<RecipesResultModel> getFavouriteRecipes(@Header("Authorization") String token,
+                                                 @Path("username") String username,
+                                                 @Query("limit") int limit,
+                                                 @Query("offset") int offset);
 
     @FormUrlEncoded
     @POST("users/token/?format=json")

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -24,11 +24,10 @@ public class UserViewModel extends ViewModel {
         userAPIInterface.getMyProfile("Token " + token).enqueue(new Callback<UserModel>() {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-                if (response.code() >= 400) {
+                if (response.code() >= 400)
                     error.setValue(R.string.profile_network_error);
-                } else {
+                else
                     userProfile.setValue(response.body());
-                }
             }
 
             @Override
