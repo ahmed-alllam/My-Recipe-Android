@@ -1,12 +1,16 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 20:30
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 19:16
   -->
 
 <resources>
+
+    <!-- Manifest strings-->
     <string name="app_name">My Recipe App</string>
     <string name="action_settings">الإعدادات</string>
     <string name="title_activity_splash">SplashActivity</string>
-    <string name="title_activity_tutorial">TutorialActivity</string>
+
+    <!-- Login activity strings-->
+    <string name="welcome">مرحباً!</string>
     <string name="email">البريد الالكتروني</string>
     <string name="password">كلمة السر</string>
     <string name="login">سجل الدخول</string>
@@ -14,15 +18,23 @@
     <string name="don_t_have_an_account">ليس لديك حساب؟</string>
     <string name="sign_up">إنشاء حساب</string>
     <string name="login2">تسجيل دخول</string>
-    <string name="welcome">مرحباً!</string>
+
+    <!-- Home fragment strings-->
     <string name="home">القائمة الرئيسية</string>
     <string name="user_photo">الصورة الشخصية</string>
+    <string name="minutes"> دقيقة </string>
+
+    <!-- Favourites fragment strings-->
     <string name="your_favourites">الوصفات المفضلة لك</string>
     <string name="favourites_empty">لا يوجد شئ في قائمتك حالياً</string>
+
+    <!-- Search fragment strings-->
     <string name="search_recipes">إبحث عن وصفة</string>
     <string name="search">إبحث</string>
     <string name="categories">التصنيفات</string>
     <string name="popular_recipes">أشهر الوصفات</string>
+
+    <!-- profile fragment strings-->
     <string name="user_profile_photo">صورة صفحة المستخدم</string>
     <string name="followers">المتابعون</string>
     <string name="followings">يتابع</string>
@@ -34,11 +46,11 @@
     <string name="edit_profile">تعديل الصفحة الشخصية</string>
     <string name="settings_icon">أيقونة الإعدادات</string>
     <string name="login_or_sign_up">سجل الدخول</string>
-    <string name="latest_recipes">أحدث الوصفات</string>
+
+    <!-- Error strings-->
     <string name="network_error">لقد حدث خطأ أثناء الاتصال بالأنترنت</string>
     <string name="profile_network_error">خطأ في التحميل</string>
     <string name="wrong_email_or_password">البريد الإكتروني أو كلمه السر خطئ</string>
     <string name="feed_empty">لا يوجد وصفات لك حالياً</string>
     <string name="loading">جارٍ التحميل…</string>
-    <string name="minutes"> دقيقة </string>
 </resources>
