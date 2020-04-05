@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 29/03/20 21:32
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
  */
 
 package com.myrecipe.myrecipeapp.models;
@@ -23,6 +23,19 @@ public class RecipeModel {
     private int favourites_count;
     private int reviews_count;
     private float rating;
+    private boolean isFavouritedByUser;
+
+    public boolean isFavouritedByUser() {
+        return isFavouritedByUser;
+    }
+
+    public void setFavouritedByUser(boolean favouritedByUser) {
+        isFavouritedByUser = favouritedByUser;
+    }
+
+    public void setFavourites_count(int favourites_count) {
+        this.favourites_count = favourites_count;
+    }
 
     public ArrayList<String> getTags() {
         return tags;

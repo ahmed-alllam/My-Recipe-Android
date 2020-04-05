@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 20:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -9,14 +9,16 @@ import com.myrecipe.myrecipeapp.models.UserLoginModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-interface APIInterface {
+public interface APIInterface {
 
     @GET("recipes/feed/?format=json")
     Call<RecipesResultModel> getFeed(@Query("limit") int limit,
@@ -26,6 +28,14 @@ interface APIInterface {
     Call<RecipesResultModel> getFeed(@Header("Authorization") String token,
                                      @Query("limit") int limit,
                                      @Query("offset") int offset);
+
+    @POST("recipes/{slug}/favourite/?format=json")
+    Call<Void> addFavouriteRecipe(@Header("Authorization") String token,
+                                  @Path("slug") String slug);
+
+    @DELETE("recipes/{slug}/favourite/?format=json")
+    Call<Void> removeFavouriteRecipe(@Header("Authorization") String token,
+                                     @Path("slug") String slug);
 
     @FormUrlEncoded
     @POST("users/token/?format=json")

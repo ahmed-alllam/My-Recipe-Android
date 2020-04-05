@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 22:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -41,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.error)).setText(error);
             findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
         });
+
+        findViewById(R.id.backButton).setOnClickListener(v -> finish());
     }
 
     public void login(View view) {

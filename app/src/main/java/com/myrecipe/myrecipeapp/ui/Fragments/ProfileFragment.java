@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 22:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -79,7 +79,7 @@ public class ProfileFragment extends Fragment {
 
                 TextView name = view.findViewById(R.id.name);
                 name.setVisibility(View.VISIBLE);
-                name.setText(R.string.profile_network_error);
+                name.setText(error);
             }
         });
     }

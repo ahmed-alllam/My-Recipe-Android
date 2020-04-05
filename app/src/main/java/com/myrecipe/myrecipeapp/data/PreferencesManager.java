@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 21:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -15,7 +15,6 @@ public class PreferencesManager {
     //a helper class used to make some changes or get some data from the shared preferences
 
     public static String TOKEN_PREFERENCE = "user_token";
-    // todo add token as a variable in memory
 
     private static String getPreference(Context context, String preference, String default_value) {
         //returns the value of a shared preference given the key

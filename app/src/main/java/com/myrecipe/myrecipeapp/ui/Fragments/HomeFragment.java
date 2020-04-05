@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 20:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -72,6 +72,7 @@ public class HomeFragment extends Fragment {
         recipesAdapter.setLoading(true);
         recipesViewModel.getFeed(getContext(), limitPerRequest, 0);
 
+        // todo: solve pagination after login problem
         recipesViewModel.recipes.observe(getViewLifecycleOwner(), (recipes) -> {
             recipesAdapter.setOffset(recipesAdapter.getOffset() + limitPerRequest);
             recipesAdapter.setLoading(false);

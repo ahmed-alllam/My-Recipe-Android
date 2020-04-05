@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 03/04/20 17:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -17,10 +17,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
+import com.myrecipe.myrecipeapp.data.APIClient;
+import com.myrecipe.myrecipeapp.data.APIInterface;
+import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_EMPTY = 0;
@@ -55,35 +62,71 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (VIEW_TYPE_RECIPE == getItemViewType(position)) {
-            RecipeModel recipe = recipesList.get(position);
-            RecipeViewHolder viewHolder = (RecipeViewHolder) holder;
+        if (getItemViewType(position) != VIEW_TYPE_RECIPE)
+            return;
 
-            Glide.with(context)
-                    .load(recipe.getMain_image())
-                    .placeholder(R.drawable.placeholder)
-                    .into(viewHolder.mainImage);
+        RecipeModel recipe = recipesList.get(position);
+        RecipeViewHolder viewHolder = (RecipeViewHolder) holder;
 
-            viewHolder.name.setText(recipe.getName());
-            viewHolder.description.setText(recipe.getDescription());
-            viewHolder.favourites_count.setText(String.valueOf(recipe.getFavourites_count()));
-            viewHolder.rating.setText(String.valueOf(recipe.getRating()));
-            viewHolder.timeToFinish.setText(String.format("%s %s", recipe.getTime_to_finish(), context.getResources().getString(R.string.minutes)));
+        Glide.with(context)
+                .load(recipe.getMain_image())
+                .placeholder(R.drawable.placeholder)
+                .into(viewHolder.mainImage);
 
-            StringBuilder sb = new StringBuilder();
-            List<String> tags = recipe.getTags();
-            for (int i = 0; i < tags.size(); i++) {
-                if (i != 0) {
-                    sb.append(" · ");
-                }
-                sb.append(tags.get(i));
+        viewHolder.name.setText(recipe.getName());
+        viewHolder.description.setText(recipe.getDescription());
+        viewHolder.favourites_count.setText(String.valueOf(recipe.getFavourites_count()));
+        viewHolder.rating.setText(String.valueOf(recipe.getRating()));
+        viewHolder.timeToFinish.setText(String.format("%s %s", recipe.getTime_to_finish(), context.getResources().getString(R.string.minutes)));
+
+        StringBuilder sb = new StringBuilder();
+        List<String> tags = recipe.getTags();
+        for (int i = 0; i < tags.size(); i++) {
+            if (i != 0) {
+                sb.append(" · ");
             }
-            viewHolder.tags.setText(sb.toString());
-
-            viewHolder.favourite.setOnClickListener(v -> {  // todo
-
-            });
+            sb.append(tags.get(i));
         }
+        viewHolder.tags.setText(sb.toString());
+
+        viewHolder.favourite.setOnClickListener(v -> {
+            String token = PreferencesManager.getToken(recyclerView.getContext());
+            if (token.length() <= 0)
+                return;
+            token = "Token " + token;
+
+            APIInterface APIInterface = APIClient.getClient().create(APIInterface.class);
+            String slug = recipe.getSlug();
+
+            if (!recipe.isFavouritedByUser()) {
+                ((ImageButton) v).setImageResource(R.drawable.favourite2);
+                recipe.setFavourites_count(recipe.getFavourites_count() + 1);
+                recipe.setFavouritedByUser(true);
+                APIInterface.addFavouriteRecipe(token, slug).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                    }
+                });
+            } else {
+                ((ImageButton) v).setImageResource(R.drawable.favourite_border);
+                recipe.setFavourites_count(recipe.getFavourites_count() - 1);
+                recipe.setFavouritedByUser(false);
+                APIInterface.removeFavouriteRecipe(token, slug).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                    }
+                });
+            }
+            viewHolder.favourites_count.setText(String.valueOf(recipe.getFavourites_count()));
+        });
     }
 
     @Override

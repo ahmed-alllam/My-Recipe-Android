@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 04/04/20 20:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -7,6 +7,7 @@ package com.myrecipe.myrecipeapp.data;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.models.UserModel;
 
 import retrofit2.Call;
@@ -24,16 +25,15 @@ public class UserViewModel extends ViewModel {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 if (response.code() >= 400) {
-                    // todo
+                    error.setValue(R.string.profile_network_error);
                 } else {
-                    System.out.println(response.body());
                     userProfile.setValue(response.body());
                 }
             }
 
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
-                System.out.println(t.toString());
+                error.setValue(R.string.profile_network_error);
             }
         });
     }
