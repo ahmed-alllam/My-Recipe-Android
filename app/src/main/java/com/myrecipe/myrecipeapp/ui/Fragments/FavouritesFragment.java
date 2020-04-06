@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 06/04/20 21:09
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 00:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -46,8 +46,6 @@ public class FavouritesFragment extends BaseRecipesFragment {
         error = favouritesModelView.error;
 
         super.onViewCreated(view, savedInstanceState);
-
-        // todo: solve pagination after favourite problem
     }
 
     protected void callModelView(int offset) {
@@ -77,7 +75,7 @@ public class FavouritesFragment extends BaseRecipesFragment {
             recipe.setFavouritedByUser(false);
             recipe.setFavourites_count(recipe.getFavourites_count() - 1);
 
-            adapter.removeRecipe(position);
+            adapter.removeRecipe(slug);
 
             recyclerView.post(() -> {
                 HomeFragment homeFragment = null;

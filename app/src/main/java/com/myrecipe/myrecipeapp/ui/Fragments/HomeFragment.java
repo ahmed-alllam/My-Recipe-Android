@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 06/04/20 21:09
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 00:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -96,9 +96,12 @@ public class HomeFragment extends BaseRecipesFragment {
             String slug = recipe.getSlug();
 
             BaseRecipesAdapter favouriteAdapter = null;
+            FavouritesFragment favouritesFragment = null;
             for (Fragment fragment : fragmentList) {
-                if (fragment instanceof FavouritesFragment)
-                    favouriteAdapter = (BaseRecipesAdapter) ((FavouritesFragment) fragment).recyclerView.getAdapter();
+                if (fragment instanceof FavouritesFragment) {
+                    favouritesFragment = (FavouritesFragment) fragment;
+                    favouriteAdapter = (BaseRecipesAdapter) favouritesFragment.recyclerView.getAdapter();
+                }
             }
 
             if (!recipe.isFavouritedByUser()) {
@@ -106,7 +109,6 @@ public class HomeFragment extends BaseRecipesFragment {
                 recipe.setFavourites_count(recipe.getFavourites_count() + 1);
                 recipe.setFavouritedByUser(true);
 
-                favouriteAdapter.addRecipe(recipe);
                 APIInterface.addFavouriteRecipe(token, slug).enqueue(new emptyCallBack());
             } else {
                 ((ImageButton) v).setImageResource(R.drawable.favourite_border);

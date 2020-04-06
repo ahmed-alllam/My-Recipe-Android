@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 06/04/20 21:09
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 00:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -38,6 +38,8 @@ public abstract class BaseRecipesFragment extends Fragment {
     public BaseRecipesFragment() {
         fragmentList.add(this);
     }
+
+    // todo: add refreshing
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

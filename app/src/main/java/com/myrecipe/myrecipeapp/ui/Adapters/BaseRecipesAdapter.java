@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 06/04/20 21:09
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 00:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -63,6 +63,10 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
             return;
 
         RecipeModel recipe = recipesList.get(position);
+
+        if (recipe == null)
+            return;
+
         BaseRecipesAdapter.RecipeViewHolder viewHolder = (BaseRecipesAdapter.RecipeViewHolder) holder;
 
         Glide.with(context)
@@ -171,25 +175,17 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
         return recipesList.isEmpty();
     }
 
-
-    public void addRecipe(RecipeModel recipe) {
-        recyclerView.post(() -> {
-            recipesList.add(recipe);
-            notifyItemInserted(recipesList.size() - 1);
-            recyclerView.setVisibility(View.VISIBLE);
-            fragment.getView().findViewById(R.id.errorLabel).setVisibility(View.INVISIBLE);
-        });
-    }
-
     public void removeRecipe(String slug) {
         for (int i = 0; i < recipesList.size(); i++) {
+            if (recipesList.get(i) == null)
+                continue;
             if (recipesList.get(i).getSlug().equals(slug)) {
                 removeRecipe(i);
             }
         }
     }
 
-    public void removeRecipe(int position) {
+    private void removeRecipe(int position) {
         recyclerView.post(() -> {
             recipesList.remove(position);
             notifyItemRemoved(position);
@@ -204,6 +200,9 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
 
     public void updateRecipe(String slug, RecipeModel recipe) {
         for (int i = 0; i < recipesList.size(); i++) {
+            if (recipesList.get(i) == null)
+                continue;
+
             if (recipesList.get(i).getSlug().equals(slug)) {
                 int j = i;
                 recyclerView.post(() -> {
