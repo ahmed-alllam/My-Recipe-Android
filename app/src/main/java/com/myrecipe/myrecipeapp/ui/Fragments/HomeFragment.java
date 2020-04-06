@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 06/04/20 21:09
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -8,100 +8,60 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
+import com.myrecipe.myrecipeapp.data.APIClient;
+import com.myrecipe.myrecipeapp.data.APIInterface;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.RecipesViewModel;
+import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
-import com.myrecipe.myrecipeapp.ui.Adapters.PaginationScrollListener;
-import com.myrecipe.myrecipeapp.ui.Adapters.RecipesFeedRecyclerAdapter;
+import com.myrecipe.myrecipeapp.ui.Adapters.BaseRecipesAdapter;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseRecipesFragment {
+
+    private RecipesViewModel recipesViewModel;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         ImageView userImage = view.findViewById(R.id.userImage);
         ViewPager2 mainViewPager = getActivity().findViewById(R.id.mainViewPager);
         userImage.setOnClickListener(v -> mainViewPager.setCurrentItem(3));
         refreshUserImage(PreferencesManager.getStoredUser(getContext()));
 
-        RecyclerView recipesRecyclerView = view.findViewById(R.id.recipesRecyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recipesRecyclerView.setLayoutManager(layoutManager);
-        recipesRecyclerView.setNestedScrollingEnabled(false);
+        recyclerView = view.findViewById(R.id.recipesRecyclerView);
 
-        RecipesFeedRecyclerAdapter recipesAdapter = new RecipesFeedRecyclerAdapter(getContext(), recipesRecyclerView);
-        recipesRecyclerView.setAdapter(recipesAdapter);
-
-        RecipesViewModel recipesViewModel = new ViewModelProvider(this)
+        recipesViewModel = new ViewModelProvider(this)
                 .get(RecipesViewModel.class);
+        recipes = recipesViewModel.recipes;
+        error = recipesViewModel.error;
 
-        TextView errorLabel = view.findViewById(R.id.errorLabel);
-
-        int limitPerRequest = 25;
-
-        recipesRecyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
-            @Override
-            public void loadMoreRecipes() {
-                recipesAdapter.setLoading(true);
-                recipesAdapter.addLoadingFooter();
-                recipesViewModel.getFeed(getContext(), limitPerRequest, recipesAdapter.getOffset());
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return recipesAdapter.isLastPage();
-            }
-
-            @Override
-            public boolean isLoading() {
-                return recipesAdapter.isLoading();
-            }
-        });
-
-        recipesAdapter.setLoading(true);
-        recipesViewModel.getFeed(getContext(), limitPerRequest, 0);
-
+        super.onViewCreated(view, savedInstanceState);
         // todo: solve pagination after login problem
-        recipesViewModel.recipes.observe(getViewLifecycleOwner(), (recipes) -> {
-            recipesAdapter.setOffset(recipesAdapter.getOffset() + limitPerRequest);
-            recipesAdapter.setLoading(false);
-            recipesAdapter.removeLoadingFooter();
-            recipesAdapter.addAll(recipes.getRecipes());
-            recipesAdapter.setCount(recipes.getCount());
-            recipesRecyclerView.setNestedScrollingEnabled(true);
-        });
-        recipesViewModel.error.observe(getViewLifecycleOwner(), (error) -> {
-            if (recipesAdapter.isEmpty()) {
-                recipesAdapter.setLoading(false);
-                recipesRecyclerView.setVisibility(View.GONE);
-                errorLabel.setVisibility(View.VISIBLE);
-                errorLabel.setText(error);
-            } else {
-                recipesAdapter.setLoading(false);
-                recipesAdapter.removeLoadingFooter();
-            }
-        });
     }
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+    protected void callModelView(int offset) {
+        recipesViewModel.getFeed(getContext(), limitPerRequest, offset);
     }
 
     void refreshUserImage(UserModel user) {
@@ -112,5 +72,53 @@ public class HomeFragment extends Fragment {
                     .placeholder(R.drawable.user)
                     .into(userImage);
         }
+    }
+
+    @Override
+    protected void setOnFavouriteButtonPressed(RecyclerView.ViewHolder holder, int position,
+                                               BaseRecipesAdapter adapter, View view) {
+
+        RecipeModel recipe = adapter.getRecipesList().get(position);
+        BaseRecipesAdapter.RecipeViewHolder viewHolder = (BaseRecipesAdapter.RecipeViewHolder) holder;
+
+        if (recipe.isFavouritedByUser())
+            viewHolder.favourite.setImageResource(R.drawable.favourite2);
+        else
+            viewHolder.favourite.setImageResource(R.drawable.favourite_border);
+
+        viewHolder.favourite.setOnClickListener(v -> {
+            String token = PreferencesManager.getToken(recyclerView.getContext());
+            if (token.length() <= 0)
+                return;
+            token = "Token " + token;
+
+            APIInterface APIInterface = APIClient.getClient().create(APIInterface.class);
+            String slug = recipe.getSlug();
+
+            BaseRecipesAdapter favouriteAdapter = null;
+            for (Fragment fragment : fragmentList) {
+                if (fragment instanceof FavouritesFragment)
+                    favouriteAdapter = (BaseRecipesAdapter) ((FavouritesFragment) fragment).recyclerView.getAdapter();
+            }
+
+            if (!recipe.isFavouritedByUser()) {
+                ((ImageButton) v).setImageResource(R.drawable.favourite2);
+                recipe.setFavourites_count(recipe.getFavourites_count() + 1);
+                recipe.setFavouritedByUser(true);
+
+                favouriteAdapter.addRecipe(recipe);
+                APIInterface.addFavouriteRecipe(token, slug).enqueue(new emptyCallBack());
+            } else {
+                ((ImageButton) v).setImageResource(R.drawable.favourite_border);
+                recipe.setFavourites_count(recipe.getFavourites_count() - 1);
+                recipe.setFavouritedByUser(false);
+
+                favouriteAdapter.removeRecipe(recipe.getSlug());
+
+                APIInterface.removeFavouriteRecipe(token, slug).enqueue(new emptyCallBack());
+            }
+
+            viewHolder.favourites_count.setText(String.valueOf(recipe.getFavourites_count()));
+        });
     }
 }

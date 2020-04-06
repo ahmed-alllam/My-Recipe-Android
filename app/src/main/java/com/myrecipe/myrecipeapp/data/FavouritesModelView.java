@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 06/04/20 21:09
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -23,7 +23,7 @@ public class FavouritesModelView extends ViewModel {
     public void getFavouriteRecipes(Context context, String username, int limit, int offset) {
 
         String token = PreferencesManager.getToken(context);
-        if (token.length() <= 0) {
+        if (token.length() <= 0 || username.length() <= 0) {
             error.setValue(R.string.favourites_empty);
             return;
         }

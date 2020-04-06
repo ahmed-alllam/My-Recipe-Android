@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 16:00
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 06/04/20 21:09
   -->
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -213,6 +213,8 @@
         android:textColor="@android:color/holo_red_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/passwordGroup"
         app:layout_constraintTop_toBottomOf="@+id/forgotPasswordLabel"
         app:layout_constraintVertical_bias="0.1"

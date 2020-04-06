@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 06/04/20 21:09
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -13,25 +13,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
-import com.myrecipe.myrecipeapp.data.APIClient;
-import com.myrecipe.myrecipeapp.data.APIInterface;
-import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+public class BaseRecipesAdapter extends RecyclerView.Adapter {
 
-public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static final int VIEW_TYPE_RECIPE = 1;
     private static final int VIEW_TYPE_EMPTY = 0;
-    private static final int VIEW_TYPE_RECIPE = 1;
     private static final int VIEW_TYPE_LOADING = 2;
     private int offset;
     private int count;
@@ -40,10 +35,12 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private List<RecipeModel> recipesList = new ArrayList<>();
     private Context context;
+    private Fragment fragment;
     private RecyclerView recyclerView;
 
-    public RecipesFeedRecyclerAdapter(Context context, RecyclerView recyclerView) {
+    protected BaseRecipesAdapter(Context context, Fragment fragment, RecyclerView recyclerView) {
         this.context = context;
+        this.fragment = fragment;
         this.recyclerView = recyclerView;
     }
 
@@ -51,12 +48,12 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_RECIPE)
-            return new RecipeViewHolder(LayoutInflater.from(parent.getContext())
+            return new BaseRecipesAdapter.RecipeViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recipe_item, parent, false));
         if (viewType == VIEW_TYPE_LOADING)
-            return new LoadingViewHolder(LayoutInflater.from(parent.getContext())
+            return new BaseRecipesAdapter.LoadingViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.loading_item, parent, false));
-        return new EmptyViewHolder(LayoutInflater.from(parent.getContext()).
+        return new BaseRecipesAdapter.EmptyViewHolder(LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.empty_item, parent, false));
     }
 
@@ -66,7 +63,7 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
             return;
 
         RecipeModel recipe = recipesList.get(position);
-        RecipeViewHolder viewHolder = (RecipeViewHolder) holder;
+        BaseRecipesAdapter.RecipeViewHolder viewHolder = (BaseRecipesAdapter.RecipeViewHolder) holder;
 
         Glide.with(context)
                 .load(recipe.getMain_image())
@@ -88,55 +85,11 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
             sb.append(tags.get(i));
         }
         viewHolder.tags.setText(sb.toString());
-
-        if (recipe.isFavouritedByUser())
-            viewHolder.favourite.setImageResource(R.drawable.favourite2);
-        else
-            viewHolder.favourite.setImageResource(R.drawable.favourite_border);
-
-        viewHolder.favourite.setOnClickListener(v -> {
-            String token = PreferencesManager.getToken(recyclerView.getContext());
-            if (token.length() <= 0)
-                return;
-            token = "Token " + token;
-
-            APIInterface APIInterface = APIClient.getClient().create(APIInterface.class);
-            String slug = recipe.getSlug();
-
-            if (!recipe.isFavouritedByUser()) {
-                ((ImageButton) v).setImageResource(R.drawable.favourite2);
-                recipe.setFavourites_count(recipe.getFavourites_count() + 1);
-                recipe.setFavouritedByUser(true);
-                APIInterface.addFavouriteRecipe(token, slug).enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                    }
-                });
-            } else {
-                ((ImageButton) v).setImageResource(R.drawable.favourite_border);
-                recipe.setFavourites_count(recipe.getFavourites_count() - 1);
-                recipe.setFavouritedByUser(false);
-                APIInterface.removeFavouriteRecipe(token, slug).enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                    }
-                });
-            }
-            viewHolder.favourites_count.setText(String.valueOf(recipe.getFavourites_count()));
-        });
     }
 
     @Override
     public int getItemCount() {
-        return recipesList.size() != 0 ? recipesList.size() : 2;
+        return recipesList.size() != 0 || !isLoading ? recipesList.size() : 2;
     }
 
     @Override
@@ -198,6 +151,10 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         isLoading = loading;
     }
 
+    public List<RecipeModel> getRecipesList() {
+        return recipesList;
+    }
+
     public int getOffset() {
         return offset;
     }
@@ -215,6 +172,48 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
 
+    public void addRecipe(RecipeModel recipe) {
+        recyclerView.post(() -> {
+            recipesList.add(recipe);
+            notifyItemInserted(recipesList.size() - 1);
+            recyclerView.setVisibility(View.VISIBLE);
+            fragment.getView().findViewById(R.id.errorLabel).setVisibility(View.INVISIBLE);
+        });
+    }
+
+    public void removeRecipe(String slug) {
+        for (int i = 0; i < recipesList.size(); i++) {
+            if (recipesList.get(i).getSlug().equals(slug)) {
+                removeRecipe(i);
+            }
+        }
+    }
+
+    public void removeRecipe(int position) {
+        recyclerView.post(() -> {
+            recipesList.remove(position);
+            notifyItemRemoved(position);
+            if (isEmpty()) {
+                recyclerView.setVisibility(View.INVISIBLE);
+                TextView errorLabel = fragment.getView().findViewById(R.id.errorLabel);
+                errorLabel.setText(R.string.favourites_empty);
+                errorLabel.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void updateRecipe(String slug, RecipeModel recipe) {
+        for (int i = 0; i < recipesList.size(); i++) {
+            if (recipesList.get(i).getSlug().equals(slug)) {
+                int j = i;
+                recyclerView.post(() -> {
+                    recipesList.set(j, recipe);
+                    notifyItemChanged(j);
+                });
+            }
+        }
+    }
+
     class LoadingViewHolder extends RecyclerView.ViewHolder {
         LoadingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -227,10 +226,11 @@ public class RecipesFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
-    class RecipeViewHolder extends RecyclerView.ViewHolder {
-        ImageView mainImage;
-        ImageButton favourite;
-        TextView favourites_count, name, description,
+    public class RecipeViewHolder extends RecyclerView.ViewHolder {
+        public ImageButton favourite;
+        public TextView favourites_count;
+        private ImageView mainImage;
+        private TextView name, description,
                 timeToFinish, tags, rating;
 
         RecipeViewHolder(@NonNull View itemView) {

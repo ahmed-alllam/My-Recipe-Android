@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 28/03/20 20:01
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 06/04/20 21:09
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,39 +10,51 @@
     android:background="@android:color/white"
     tools:context=".ui.Fragments.FavouritesFragment">
 
-
-    <TextView
-        android:id="@+id/yourFavouritesLabel"
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:fontFamily="sans-serif-black"
-        android:text="@string/your_favourites"
-        android:textColor="@color/colorPrimary"
-        android:textSize="27sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@android:color/white">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="enterAlways|scroll|snapMargins">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/yourFavouritesLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="@string/your_favourites"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="27sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favouritesRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yourFavouritesLabel" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <TextView
-        android:id="@+id/noFavouritesLabel"
+        android:id="@+id/errorLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/favourites_empty"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
