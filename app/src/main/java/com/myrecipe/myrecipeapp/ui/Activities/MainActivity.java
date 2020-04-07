@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 20:06
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 18:25
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -72,23 +72,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-                    if (tab.getPosition() == 0) {
-                        if (viewPagerAdapter.createFragment(0).getView() != null) {
-                            scrollToTop();
-                        }
-                    }
-                    return;
-                }
+                boolean subFragments = false;
+                int position = tab.getPosition();
+                Fragment parentFragment = viewPagerAdapter.createFragment(position);
 
-                boolean subFragmentsForHome = false;
                 for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                    Fragment parentFragment = viewPagerAdapter.createFragment(tab.getPosition());
                     if (fragment.getView() != null && parentFragment.getView() != null) {
                         if (((ViewGroup) fragment.getView().getParent()).getId() ==
                                 parentFragment.getView().getId()) {
-                            if (tab.getPosition() == 0)
-                                subFragmentsForHome = true;
+                            subFragments = true;
                             getSupportFragmentManager().beginTransaction().
                                     remove(fragment).
                                     commit();
@@ -96,50 +88,24 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
-                if (!subFragmentsForHome) {  // home doesn't contain sub fragments
-                    if (viewPagerAdapter.createFragment(0).getView() != null)
-                        scrollToTop();
+                if (!subFragments) {  // parent fragment doesn't contain sub fragments
+                    if (parentFragment.getView() != null) {
+                        if (position == 0 || position == 2) // home or favourites fragments
+                            scrollToTop(parentFragment);
+                    }
                 }
             }
         });
     }
 
-    private void scrollToTop() {
-        RecyclerView recyclerView = findViewById(R.id.recipesRecyclerView);
-        RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(this) {
-            @Override
-            protected int getVerticalSnapPreference() {
-                return LinearSmoothScroller.SNAP_TO_START;
-            }
-        };
-        smoothScroller.setTargetPosition(0);
-        recyclerView.getLayoutManager().startSmoothScroll(smoothScroller);
-
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) findViewById(R.id.appbar).getLayoutParams();
-        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
-        if (behavior != null)
-            behavior.setTopAndBottomOffset(0);
-    }
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            if (mainViewPager.getCurrentItem() != 0)
-                mainViewPager.setCurrentItem(0);
-            else {
-                if (((RecyclerView) findViewById(R.id.recipesRecyclerView)).computeVerticalScrollOffset() != 0)
-                    scrollToTop();
-                else
-                    finish();
-            }
-            return;
-        }
+        Fragment parentFragment = viewPagerAdapter.createFragment(mainViewPager.getCurrentItem());
         for (int i = getSupportFragmentManager().getFragments().size() - 1; i >= 0; i--) {
             Fragment fragment = getSupportFragmentManager().getFragments().get(i);
             if (fragment.getView() != null) {
-                if (viewPagerAdapter.createFragment(mainViewPager.getCurrentItem())
-                        .getView() == fragment.getView().getParent()
-                        && !viewPagerAdapter.contains(fragment)) {
+                if (parentFragment.getView() == fragment.getView().getParent()) {
                     getSupportFragmentManager().beginTransaction()
                             .remove(fragment)
                             .commit();
@@ -151,11 +117,28 @@ public class MainActivity extends AppCompatActivity {
         if (mainViewPager.getCurrentItem() != 0)
             mainViewPager.setCurrentItem(0);
         else {
-            if (((RecyclerView) findViewById(R.id.recipesRecyclerView)).computeVerticalScrollOffset() != 0) {
-                scrollToTop();
-            } else {
+            RecyclerView homerecyclerView = parentFragment.getView().findViewById(R.id.recipesRecyclerView);
+            if (homerecyclerView.computeVerticalScrollOffset() != 0)
+                scrollToTop(parentFragment);
+            else
                 finish();
-            }
         }
+    }
+
+    private void scrollToTop(Fragment fragment) {
+        RecyclerView recyclerView = fragment.getView().findViewById(R.id.recipesRecyclerView);
+        RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(this) {
+            @Override
+            protected int getVerticalSnapPreference() {
+                return LinearSmoothScroller.SNAP_TO_START;
+            }
+        };
+        smoothScroller.setTargetPosition(0);
+        recyclerView.getLayoutManager().startSmoothScroll(smoothScroller);
+
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fragment.getView().findViewById(R.id.appbar).getLayoutParams();
+        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
+        if (behavior != null)
+            behavior.setTopAndBottomOffset(0);
     }
 }

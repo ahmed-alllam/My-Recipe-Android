@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 15:16
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 18:25
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -160,10 +160,6 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
 
     public boolean isLoading() {
         return isLoading;
-    }
-
-    public boolean isLoadingAdded() {
-        return isLoadingAdded;
     }
 
     public void setLoading(boolean loading) {

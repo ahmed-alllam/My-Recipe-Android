@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 15:16
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 18:25
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -34,7 +34,7 @@ public abstract class BaseRecipesFragment extends Fragment {
     static List<BaseRecipesFragment> fragmentList = new ArrayList<>();
     MutableLiveData<RecipesResultModel> recipes;
     MutableLiveData<Integer> error;
-    RecyclerView recyclerView;
+    protected RecyclerView recyclerView;
     int limitPerRequest = 25;
     private BaseRecipesAdapter adapter;
 
@@ -47,6 +47,7 @@ public abstract class BaseRecipesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        recyclerView = view.findViewById(R.id.recipesRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
@@ -84,7 +85,7 @@ public abstract class BaseRecipesFragment extends Fragment {
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeLayout);
 
         int primaryColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
-        swipeRefreshLayout.setColorSchemeColors(primaryColor, Color.YELLOW, primaryColor);
+        swipeRefreshLayout.setColorSchemeColors(primaryColor, Color.YELLOW, Color.GREEN);
 
         recipes.observe(getViewLifecycleOwner(), (recipes) -> {
             adapter.setOffset(adapter.getOffset() + limitPerRequest);
@@ -107,7 +108,7 @@ public abstract class BaseRecipesFragment extends Fragment {
         });
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            if (!adapter.isLoading() && !adapter.isLoadingAdded()) {
+            if (!adapter.isLoading()) {
                 adapter.clear();
                 adapter.setOffset(0);
                 callModelView(0);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 13:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 18:25
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -37,8 +37,6 @@ public class FavouritesFragment extends BaseRecipesFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        recyclerView = view.findViewById(R.id.favouritesRecyclerView);
-
         favouritesModelView = new ViewModelProvider(this)
                 .get(FavouritesModelView.class);
 
@@ -64,7 +62,7 @@ public class FavouritesFragment extends BaseRecipesFragment {
         viewHolder.favourite.setImageResource(R.drawable.favourite2);
 
         viewHolder.favourite.setOnClickListener(v -> {
-            String token = PreferencesManager.getToken(recyclerView.getContext());
+            String token = PreferencesManager.getToken(getContext());
             if (token.length() <= 0)
                 return;
             token = "Token " + token;
