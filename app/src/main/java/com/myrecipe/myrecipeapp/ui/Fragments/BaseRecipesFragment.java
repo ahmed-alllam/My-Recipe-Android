@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 00:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 13:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -32,7 +32,7 @@ public abstract class BaseRecipesFragment extends Fragment {
     MutableLiveData<RecipesResultModel> recipes;
     MutableLiveData<Integer> error;
     RecyclerView recyclerView;
-    int limitPerRequest = 25;
+    int limitPerRequest = 1;
     private BaseRecipesAdapter adapter;
 
     public BaseRecipesFragment() {
@@ -88,14 +88,13 @@ public abstract class BaseRecipesFragment extends Fragment {
             adapter.setCount(recipes.getCount());
         });
         error.observe(getViewLifecycleOwner(), (error) -> {
+            adapter.setLoading(false);
+            adapter.removeLoadingFooter();
+
             if (adapter.isEmpty()) {
-                adapter.setLoading(false);
                 recyclerView.setVisibility(View.GONE);
                 errorLabel.setVisibility(View.VISIBLE);
                 errorLabel.setText(error);
-            } else {
-                adapter.setLoading(false);
-                adapter.removeLoadingFooter();
             }
         });
 

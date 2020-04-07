@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 00:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 13:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -105,6 +105,10 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
         return VIEW_TYPE_RECIPE;
     }
 
+    public RecipeModel get(int position) {
+        return recipesList.get(position);
+    }
+
     public void addAll(List<RecipeModel> recipeModels) {
         if (recipesList.size() != 0) {
             recyclerView.post(() -> {
@@ -153,10 +157,6 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
 
     public void setLoading(boolean loading) {
         isLoading = loading;
-    }
-
-    public List<RecipeModel> getRecipesList() {
-        return recipesList;
     }
 
     public int getOffset() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 00:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 13:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -78,7 +78,7 @@ public class HomeFragment extends BaseRecipesFragment {
     protected void setOnFavouriteButtonPressed(RecyclerView.ViewHolder holder, int position,
                                                BaseRecipesAdapter adapter, View view) {
 
-        RecipeModel recipe = adapter.getRecipesList().get(position);
+        RecipeModel recipe = adapter.get(position);
         BaseRecipesAdapter.RecipeViewHolder viewHolder = (BaseRecipesAdapter.RecipeViewHolder) holder;
 
         if (recipe.isFavouritedByUser())
