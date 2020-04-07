@@ -1,19 +1,22 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 13:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 15:16
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.models.RecipesResultModel;
@@ -32,14 +35,13 @@ public abstract class BaseRecipesFragment extends Fragment {
     MutableLiveData<RecipesResultModel> recipes;
     MutableLiveData<Integer> error;
     RecyclerView recyclerView;
-    int limitPerRequest = 1;
+    int limitPerRequest = 25;
     private BaseRecipesAdapter adapter;
 
     public BaseRecipesFragment() {
         fragmentList.add(this);
     }
 
-    // todo: add refreshing
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -59,7 +61,7 @@ public abstract class BaseRecipesFragment extends Fragment {
         };
         recyclerView.setAdapter(adapter);
 
-        recyclerView.addOnScrollListener(new PaginationScrollListener((LinearLayoutManager) recyclerView.getLayoutManager()) {
+        recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
             @Override
             public void loadMoreRecipes() {
                 adapter.setLoading(true);
@@ -79,10 +81,15 @@ public abstract class BaseRecipesFragment extends Fragment {
         });
 
         TextView errorLabel = view.findViewById(R.id.errorLabel);
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeLayout);
+
+        int primaryColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+        swipeRefreshLayout.setColorSchemeColors(primaryColor, Color.YELLOW, primaryColor);
 
         recipes.observe(getViewLifecycleOwner(), (recipes) -> {
             adapter.setOffset(adapter.getOffset() + limitPerRequest);
             adapter.setLoading(false);
+            swipeRefreshLayout.setRefreshing(false);
             adapter.removeLoadingFooter();
             adapter.addAll(recipes.getRecipes());
             adapter.setCount(recipes.getCount());
@@ -90,12 +97,25 @@ public abstract class BaseRecipesFragment extends Fragment {
         error.observe(getViewLifecycleOwner(), (error) -> {
             adapter.setLoading(false);
             adapter.removeLoadingFooter();
+            swipeRefreshLayout.setRefreshing(false);
 
             if (adapter.isEmpty()) {
                 recyclerView.setVisibility(View.GONE);
                 errorLabel.setVisibility(View.VISIBLE);
                 errorLabel.setText(error);
             }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (!adapter.isLoading() && !adapter.isLoadingAdded()) {
+                adapter.clear();
+                adapter.setOffset(0);
+                callModelView(0);
+                adapter.setLoading(true);
+                recyclerView.setVisibility(View.VISIBLE);
+                errorLabel.setVisibility(View.GONE);
+            } else
+                swipeRefreshLayout.setRefreshing(false);
         });
 
         callModelView(0);

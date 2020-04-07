@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 13:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 15:16
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -124,6 +124,13 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public void clear() {
+        recyclerView.post(() -> {
+            recipesList.clear();
+            notifyDataSetChanged();
+        });
+    }
+
     private void remove(int position) {
         recyclerView.post(() -> {
             recipesList.remove(position);
@@ -153,6 +160,10 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
 
     public boolean isLoading() {
         return isLoading;
+    }
+
+    public boolean isLoadingAdded() {
+        return isLoadingAdded;
     }
 
     public void setLoading(boolean loading) {
