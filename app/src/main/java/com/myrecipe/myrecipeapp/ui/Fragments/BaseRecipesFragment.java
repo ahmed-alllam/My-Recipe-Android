@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 18:25
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 08/04/20 17:10
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -51,12 +51,23 @@ public abstract class BaseRecipesFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new BaseRecipesAdapter(getContext(), this, recyclerView) {
+        adapter = new BaseRecipesAdapter(getActivity(), this, recyclerView) {
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 super.onBindViewHolder(holder, position);
                 if (adapter.getItemViewType(position) == BaseRecipesAdapter.VIEW_TYPE_RECIPE) {
-                    setOnFavouriteButtonPressed(holder, position, adapter, view);
+
+                    BaseRecipesAdapter.RecipeViewHolder viewHolder = (BaseRecipesAdapter.RecipeViewHolder) holder;
+
+                    setOnFavouriteButtonPressed(viewHolder, position, adapter, view);
+
+                    viewHolder.recipeItem.setOnClickListener(v -> {
+                        RecipeDetailFragment recipeFragment = RecipeDetailFragment.newInstance(adapter.get(position));
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .add(view.getId(), recipeFragment)
+                                .addToBackStack(null)
+                                .commit();
+                    });
                 }
             }
         };
@@ -125,7 +136,7 @@ public abstract class BaseRecipesFragment extends Fragment {
 
     protected abstract void callModelView(int offset);
 
-    protected abstract void setOnFavouriteButtonPressed(RecyclerView.ViewHolder holder,
+    protected abstract void setOnFavouriteButtonPressed(BaseRecipesAdapter.RecipeViewHolder holder,
                                                         int position,
                                                         BaseRecipesAdapter adapter,
                                                         View view);

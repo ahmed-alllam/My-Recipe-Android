@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 01/04/20 20:06
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 08/04/20 17:10
   -->
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,6 +12,10 @@
     android:layout_marginEnd="10dp"
     android:layout_marginBottom="10dp"
     app:cardCornerRadius="23dp"
+    android:id="@+id/recipeItem"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     app:cardElevation="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout

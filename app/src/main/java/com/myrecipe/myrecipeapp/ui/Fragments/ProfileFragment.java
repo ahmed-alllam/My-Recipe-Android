@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 08/04/20 17:10
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -16,7 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -63,8 +62,7 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.myRecipesButton).setOnClickListener(v -> {
             MyRecipesFragment myRecipesFragment = new MyRecipesFragment();
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .add(R.id.main, myRecipesFragment)
+                    .add(R.id.profileFragment, myRecipesFragment)
                     .addToBackStack(null)
                     .commit();
         });

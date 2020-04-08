@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 18:25
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 08/04/20 17:10
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -235,6 +236,7 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
         public ImageButton favourite;
         public TextView favourites_count;
+        public CardView recipeItem;
         private ImageView mainImage;
         private TextView name, description,
                 timeToFinish, tags, rating;
@@ -242,6 +244,7 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
         RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            recipeItem = itemView.findViewById(R.id.recipeItem);
             mainImage = itemView.findViewById(R.id.mainImage);
             favourite = itemView.findViewById(R.id.favourite);
             rating = itemView.findViewById(R.id.rating);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 07/04/20 18:25
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 08/04/20 17:10
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
@@ -73,18 +72,17 @@ public class HomeFragment extends BaseRecipesFragment {
     }
 
     @Override
-    protected void setOnFavouriteButtonPressed(RecyclerView.ViewHolder holder, int position,
+    protected void setOnFavouriteButtonPressed(BaseRecipesAdapter.RecipeViewHolder holder, int position,
                                                BaseRecipesAdapter adapter, View view) {
 
         RecipeModel recipe = adapter.get(position);
-        BaseRecipesAdapter.RecipeViewHolder viewHolder = (BaseRecipesAdapter.RecipeViewHolder) holder;
 
         if (recipe.isFavouritedByUser())
-            viewHolder.favourite.setImageResource(R.drawable.favourite2);
+            holder.favourite.setImageResource(R.drawable.favourite2);
         else
-            viewHolder.favourite.setImageResource(R.drawable.favourite_border);
+            holder.favourite.setImageResource(R.drawable.favourite_border);
 
-        viewHolder.favourite.setOnClickListener(v -> {
+        holder.favourite.setOnClickListener(v -> {
             String token = PreferencesManager.getToken(getContext());
             if (token.length() <= 0)
                 return;
@@ -118,7 +116,7 @@ public class HomeFragment extends BaseRecipesFragment {
                 APIInterface.removeFavouriteRecipe(token, slug).enqueue(new emptyCallBack());
             }
 
-            viewHolder.favourites_count.setText(String.valueOf(recipe.getFavourites_count()));
+            holder.favourites_count.setText(String.valueOf(recipe.getFavourites_count()));
         });
     }
 }
