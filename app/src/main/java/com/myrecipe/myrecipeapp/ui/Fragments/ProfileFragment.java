@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 08/04/20 17:10
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 10/04/20 20:43
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -60,9 +60,8 @@ public class ProfileFragment extends Fragment {
         });
 
         view.findViewById(R.id.myRecipesButton).setOnClickListener(v -> {
-            MyRecipesFragment myRecipesFragment = new MyRecipesFragment();
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.profileFragment, myRecipesFragment)
+                    .add(view.getId(), new MyRecipesFragment())
                     .addToBackStack(null)
                     .commit();
         });

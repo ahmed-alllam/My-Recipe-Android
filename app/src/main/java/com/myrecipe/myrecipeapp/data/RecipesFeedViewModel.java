@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 10/04/20 20:43
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecipesViewModel extends ViewModel {
+public class RecipesFeedViewModel extends ViewModel {
     public MutableLiveData<RecipesResultModel> recipes = new MutableLiveData<>();
     public MutableLiveData<Integer> error = new MutableLiveData<>();
 
@@ -38,7 +38,7 @@ public class RecipesViewModel extends ViewModel {
         call.enqueue(new Callback<RecipesResultModel>() {
             @Override
             public void onResponse(@NonNull Call<RecipesResultModel> call, @NonNull Response<RecipesResultModel> response) {
-                if (response.code() >= 400)
+                if (!response.isSuccessful())
                     error.setValue(R.string.network_error);
                 else if (response.body().getRecipes().isEmpty())
                     error.setValue(R.string.feed_empty);

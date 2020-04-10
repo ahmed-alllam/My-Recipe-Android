@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 08/04/20 17:10
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 10/04/20 20:43
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -22,7 +22,7 @@ import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.APIClient;
 import com.myrecipe.myrecipeapp.data.APIInterface;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
-import com.myrecipe.myrecipeapp.data.RecipesViewModel;
+import com.myrecipe.myrecipeapp.data.RecipesFeedViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Adapters.BaseRecipesAdapter;
@@ -30,7 +30,7 @@ import com.myrecipe.myrecipeapp.ui.Adapters.BaseRecipesAdapter;
 
 public class HomeFragment extends BaseRecipesFragment {
 
-    private RecipesViewModel recipesViewModel;
+    private RecipesFeedViewModel recipesFeedViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,10 +46,10 @@ public class HomeFragment extends BaseRecipesFragment {
         userImage.setOnClickListener(v -> mainViewPager.setCurrentItem(3));
         refreshUserImage(PreferencesManager.getStoredUser(getContext()));
 
-        recipesViewModel = new ViewModelProvider(this)
-                .get(RecipesViewModel.class);
-        recipes = recipesViewModel.recipes;
-        error = recipesViewModel.error;
+        recipesFeedViewModel = new ViewModelProvider(this)
+                .get(RecipesFeedViewModel.class);
+        recipes = recipesFeedViewModel.recipes;
+        error = recipesFeedViewModel.error;
 
         super.onViewCreated(view, savedInstanceState);
         // todo: solve pagination after login problem
@@ -58,7 +58,7 @@ public class HomeFragment extends BaseRecipesFragment {
 
     @Override
     protected void callModelView(int offset) {
-        recipesViewModel.getFeed(getContext(), limitPerRequest, offset);
+        recipesFeedViewModel.getFeed(getContext(), limitPerRequest, offset);
     }
 
     void refreshUserImage(UserModel user) {
@@ -96,7 +96,8 @@ public class HomeFragment extends BaseRecipesFragment {
             for (Fragment fragment : fragmentList) {
                 if (fragment instanceof FavouritesFragment) {
                     favouritesFragment = (FavouritesFragment) fragment;
-                    favouriteAdapter = (BaseRecipesAdapter) favouritesFragment.recyclerView.getAdapter();
+                    if (favouritesFragment.recyclerView != null)
+                        favouriteAdapter = (BaseRecipesAdapter) favouritesFragment.recyclerView.getAdapter();
                 }
             }
 

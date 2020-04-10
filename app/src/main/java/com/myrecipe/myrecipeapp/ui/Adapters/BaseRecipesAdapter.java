@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 08/04/20 17:10
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 10/04/20 20:43
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -248,7 +248,7 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
             mainImage = itemView.findViewById(R.id.mainImage);
             favourite = itemView.findViewById(R.id.favourite);
             rating = itemView.findViewById(R.id.rating);
-            favourites_count = itemView.findViewById(R.id.favourites_count);
+            favourites_count = itemView.findViewById(R.id.favouritesCount);
             name = itemView.findViewById(R.id.name);
             description = itemView.findViewById(R.id.description);
             timeToFinish = itemView.findViewById(R.id.timeToFinish);
