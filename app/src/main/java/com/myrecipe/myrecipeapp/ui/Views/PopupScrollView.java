@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 10/04/20 20:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 01:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Views;
@@ -13,8 +13,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class PopupScrollView extends ScrollView {
 
-    private static final int MAX_MARGIN = 300;
-    private static final int MIN_MARGIN = 100;
+    private static final int MAX_MARGIN = 350;
+    private static final int MIN_MARGIN = 200;
     float y;
     int topMargin;
 
