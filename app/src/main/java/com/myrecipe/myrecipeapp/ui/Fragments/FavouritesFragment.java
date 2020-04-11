@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 10/04/20 20:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:30
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.myrecipe.myrecipeapp.R;
@@ -73,16 +72,6 @@ public class FavouritesFragment extends BaseRecipesFragment {
 
             adapter.removeRecipe(slug);
 
-            recyclerView.post(() -> {
-                HomeFragment homeFragment = null;
-                for (Fragment fragment : fragmentList) {
-                    if (fragment instanceof HomeFragment)
-                        homeFragment = (HomeFragment) fragment;
-                }
-                if (homeFragment != null && homeFragment.recyclerView != null
-                        && homeFragment.recyclerView.getAdapter() != null)
-                    ((BaseRecipesAdapter) homeFragment.recyclerView.getAdapter()).updateRecipe(slug, recipe);
-            });
 
             APIInterface.removeFavouriteRecipe(token, slug).enqueue(new emptyCallBack());
         });

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 10/04/20 20:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:30
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -13,7 +13,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -91,15 +90,6 @@ public class HomeFragment extends BaseRecipesFragment {
             APIInterface APIInterface = APIClient.getClient().create(APIInterface.class);
             String slug = recipe.getSlug();
 
-            BaseRecipesAdapter favouriteAdapter = null;
-            FavouritesFragment favouritesFragment = null;
-            for (Fragment fragment : fragmentList) {
-                if (fragment instanceof FavouritesFragment) {
-                    favouritesFragment = (FavouritesFragment) fragment;
-                    if (favouritesFragment.recyclerView != null)
-                        favouriteAdapter = (BaseRecipesAdapter) favouritesFragment.recyclerView.getAdapter();
-                }
-            }
 
             if (!recipe.isFavouritedByUser()) {
                 ((ImageButton) v).setImageResource(R.drawable.favourite2);
@@ -111,8 +101,6 @@ public class HomeFragment extends BaseRecipesFragment {
                 ((ImageButton) v).setImageResource(R.drawable.favourite_border);
                 recipe.setFavourites_count(recipe.getFavourites_count() - 1);
                 recipe.setFavouritedByUser(false);
-
-                favouriteAdapter.removeRecipe(recipe.getSlug());
 
                 APIInterface.removeFavouriteRecipe(token, slug).enqueue(new emptyCallBack());
             }

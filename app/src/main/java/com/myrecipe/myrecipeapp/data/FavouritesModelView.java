@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 06/04/20 21:09
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:30
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -35,7 +35,7 @@ public class FavouritesModelView extends ViewModel {
         recipesAPIInterface.getFavouriteRecipes(token, username, limit, offset).enqueue(new Callback<RecipesResultModel>() {
             @Override
             public void onResponse(Call<RecipesResultModel> call, Response<RecipesResultModel> response) {
-                if (response.code() >= 400)
+                if (!response.isSuccessful())
                     error.setValue(R.string.network_error);
                 else if (response.body().getRecipes().isEmpty())
                     error.setValue(R.string.favourites_empty);

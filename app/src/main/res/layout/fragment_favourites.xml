@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 10/04/20 20:43
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:30
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -67,9 +67,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="18sp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
+            android:textAlignment="center"
+            android:textSize="18sp"
             android:visibility="invisible" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>

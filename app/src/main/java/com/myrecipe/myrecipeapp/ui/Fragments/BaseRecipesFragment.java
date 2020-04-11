@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 08/04/20 17:10
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:30
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -23,46 +23,37 @@ import com.myrecipe.myrecipeapp.models.RecipesResultModel;
 import com.myrecipe.myrecipeapp.ui.Adapters.BaseRecipesAdapter;
 import com.myrecipe.myrecipeapp.ui.Adapters.PaginationScrollListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public abstract class BaseRecipesFragment extends Fragment {
-    static List<BaseRecipesFragment> fragmentList = new ArrayList<>();
     MutableLiveData<RecipesResultModel> recipes;
     MutableLiveData<Integer> error;
-    protected RecyclerView recyclerView;
     int limitPerRequest = 25;
-    private BaseRecipesAdapter adapter;
-
-    public BaseRecipesFragment() {
-        fragmentList.add(this);
-    }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.recipesRecyclerView);
+
+        RecyclerView recyclerView = view.findViewById(R.id.recipesRecyclerView);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new BaseRecipesAdapter(getActivity(), this, recyclerView) {
+        BaseRecipesAdapter adapter = new BaseRecipesAdapter(getActivity(), this, recyclerView) {
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 super.onBindViewHolder(holder, position);
-                if (adapter.getItemViewType(position) == BaseRecipesAdapter.VIEW_TYPE_RECIPE) {
+                if (this.getItemViewType(position) == BaseRecipesAdapter.VIEW_TYPE_RECIPE) {
 
                     BaseRecipesAdapter.RecipeViewHolder viewHolder = (BaseRecipesAdapter.RecipeViewHolder) holder;
 
-                    setOnFavouriteButtonPressed(viewHolder, position, adapter, view);
+                    setOnFavouriteButtonPressed(viewHolder, position, this, view);
 
                     viewHolder.recipeItem.setOnClickListener(v -> {
-                        RecipeDetailFragment recipeFragment = RecipeDetailFragment.newInstance(adapter.get(position));
+                        RecipeDetailFragment recipeFragment = new RecipeDetailFragment(this.get(position), this);
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .add(view.getId(), recipeFragment)
                                 .addToBackStack(null)

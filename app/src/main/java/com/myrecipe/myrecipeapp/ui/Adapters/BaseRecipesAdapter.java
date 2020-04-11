@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 10/04/20 20:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:30
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -187,26 +187,29 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
         for (int i = 0; i < recipesList.size(); i++) {
             if (recipesList.get(i) == null)
                 continue;
+
             if (recipesList.get(i).getSlug().equals(slug)) {
-                removeRecipe(i);
+                int j = i;
+                recyclerView.post(() -> {
+                    recipesList.remove(j);
+                    notifyItemRemoved(j);
+                    if (isEmpty()) {
+                        if (fragment.getView() != null) {
+                            TextView errorLabel = fragment.getView().findViewById(R.id.errorLabel);
+                            fragment.getView().findViewById(R.id.recipesRecyclerView);
+                            errorLabel.setText(R.string.favourites_empty);
+                            errorLabel.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+                break;
             }
         }
     }
 
-    private void removeRecipe(int position) {
-        recyclerView.post(() -> {
-            recipesList.remove(position);
-            notifyItemRemoved(position);
-            if (isEmpty()) {
-                recyclerView.setVisibility(View.INVISIBLE);
-                TextView errorLabel = fragment.getView().findViewById(R.id.errorLabel);
-                errorLabel.setText(R.string.favourites_empty);
-                errorLabel.setVisibility(View.VISIBLE);
-            }
-        });
-    }
+    public void updateRecipe(RecipeModel recipe) {
+        String slug = recipe.getSlug();
 
-    public void updateRecipe(String slug, RecipeModel recipe) {
         for (int i = 0; i < recipesList.size(); i++) {
             if (recipesList.get(i) == null)
                 continue;
@@ -217,9 +220,11 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
                     recipesList.set(j, recipe);
                     notifyItemChanged(j);
                 });
+                break;
             }
         }
     }
+
 
     class LoadingViewHolder extends RecyclerView.ViewHolder {
         LoadingViewHolder(@NonNull View itemView) {
