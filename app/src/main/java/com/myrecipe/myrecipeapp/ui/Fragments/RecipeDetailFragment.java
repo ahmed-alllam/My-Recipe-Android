@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:44
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -103,6 +103,7 @@ public class RecipeDetailFragment extends Fragment {
                 .load(recipe.getMain_image())
                 .placeholder(R.drawable.placeholder)
                 .into(recipeImage);
+
 
         TextView recipeName = view.findViewById(R.id.recipeName);
         recipeName.setText(recipe.getName());

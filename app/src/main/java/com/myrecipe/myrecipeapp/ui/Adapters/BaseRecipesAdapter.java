@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:44
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -196,7 +196,7 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
                     if (isEmpty()) {
                         if (fragment.getView() != null) {
                             TextView errorLabel = fragment.getView().findViewById(R.id.errorLabel);
-                            fragment.getView().findViewById(R.id.recipesRecyclerView);
+                            fragment.getView().findViewById(R.id.recipesRecyclerView).setVisibility(View.INVISIBLE);
                             errorLabel.setText(R.string.favourites_empty);
                             errorLabel.setVisibility(View.VISIBLE);
                         }
