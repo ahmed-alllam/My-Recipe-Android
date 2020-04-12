@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:44
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 16:57
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -187,6 +188,31 @@ public class RecipeDetailFragment extends Fragment {
 
         TextView recipeBody = view.findViewById(R.id.recipeBody);
         recipeBody.setText(recipe.getBody());
+
+
+        if (!recipe.getImages().isEmpty()) {
+            LinearLayout images = view.findViewById(R.id.images);
+
+            for (int i = 0; i < recipe.getImages().size(); i++) {
+                ImageView imageView = new ImageView(getContext());
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+
+                if (i != 0)
+                    layoutParams.setMarginStart(32);
+
+                imageView.setLayoutParams(layoutParams);
+                images.addView(imageView);
+
+                Glide.with(getContext())
+                        .load(recipe.getImages().get(i))
+                        .into(imageView);
+            }
+        } else {
+            view.findViewById(R.id.imagesLabel).setVisibility(View.GONE);
+            view.findViewById(R.id.imagesScrollView).setVisibility(View.GONE);
+        }
     }
 
     private String parseTime(String time) {
