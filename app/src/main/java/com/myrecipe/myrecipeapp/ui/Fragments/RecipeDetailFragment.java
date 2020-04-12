@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 16:57
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 17:06
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -48,14 +48,18 @@ public class RecipeDetailFragment extends Fragment {
 
     private RecipeModel recipe;
     private BaseRecipesAdapter adapter;
+    final static int HOME_FRAGMENT = 0;
+    final static int FAVOURITES_FRAGMENT = 1;
+    private int fragmentType;
 
     RecipeDetailFragment(RecipeModel recipe) {
         this.recipe = recipe;
     }
 
-    RecipeDetailFragment(RecipeModel recipe, BaseRecipesAdapter adapter) {
+    RecipeDetailFragment(RecipeModel recipe, BaseRecipesAdapter adapter, int fragmentType) {
         this.recipe = recipe;
         this.adapter = adapter;
+        this.fragmentType = fragmentType;
     }
 
     @Override
@@ -69,7 +73,10 @@ public class RecipeDetailFragment extends Fragment {
         super.onDestroyView();
 
         if (adapter != null) {
-            adapter.updateRecipe(recipe);
+            if (fragmentType == HOME_FRAGMENT)
+                adapter.updateRecipe(recipe);
+            else if (fragmentType == FAVOURITES_FRAGMENT)
+                adapter.removeRecipe(recipe.getSlug());
         }
     }
 

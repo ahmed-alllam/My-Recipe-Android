@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 17:06
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -42,6 +42,12 @@ public abstract class BaseRecipesFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
+        int fragmentType;
+        if (this instanceof HomeFragment)
+            fragmentType = RecipeDetailFragment.HOME_FRAGMENT;
+        else
+            fragmentType = RecipeDetailFragment.FAVOURITES_FRAGMENT;
+
         BaseRecipesAdapter adapter = new BaseRecipesAdapter(getActivity(), this, recyclerView) {
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -53,7 +59,7 @@ public abstract class BaseRecipesFragment extends Fragment {
                     setOnFavouriteButtonPressed(viewHolder, position, this, view);
 
                     viewHolder.recipeItem.setOnClickListener(v -> {
-                        RecipeDetailFragment recipeFragment = new RecipeDetailFragment(this.get(position), this);
+                        RecipeDetailFragment recipeFragment = new RecipeDetailFragment(this.get(position), this, fragmentType);
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .add(view.getId(), recipeFragment)
                                 .addToBackStack(null)
