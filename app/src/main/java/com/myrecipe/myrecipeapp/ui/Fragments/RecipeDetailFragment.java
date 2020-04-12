@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 17:06
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 17:19
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -75,8 +75,10 @@ public class RecipeDetailFragment extends Fragment {
         if (adapter != null) {
             if (fragmentType == HOME_FRAGMENT)
                 adapter.updateRecipe(recipe);
-            else if (fragmentType == FAVOURITES_FRAGMENT)
-                adapter.removeRecipe(recipe.getSlug());
+            else if (fragmentType == FAVOURITES_FRAGMENT) {
+                if (!recipe.isFavouritedByUser())
+                    adapter.removeRecipe(recipe.getSlug());
+            }
         }
     }
 
