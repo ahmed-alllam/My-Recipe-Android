@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.myrecipe.myrecipeapp.R;
@@ -20,9 +21,10 @@ import com.myrecipe.myrecipeapp.data.FavouritesModelView;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.ui.Adapters.BaseRecipesAdapter;
+import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 
 
-public class FavouritesFragment extends BaseRecipesFragment {
+public class FavouritesFragment extends BaseRecipesFragment implements OnRecipeDataChangedListener {
 
     private FavouritesModelView favouritesModelView;
 
@@ -72,8 +74,21 @@ public class FavouritesFragment extends BaseRecipesFragment {
 
             adapter.removeRecipe(slug);
 
+            for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
+                if (f instanceof OnRecipeDataChangedListener && f != this) {
+                    ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
+                }
+            }
 
             APIInterface.removeFavouriteRecipe(token, slug).enqueue(new emptyCallBack());
         });
+    }
+
+    @Override
+    public void onRecipeChanged(RecipeModel recipe) {
+        if (!recipe.isFavouritedByUser())
+            adapter.removeRecipe(recipe.getSlug());
+        else
+            adapter.updateRecipe(recipe);
     }
 }

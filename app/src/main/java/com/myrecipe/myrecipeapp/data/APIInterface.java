@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 10/04/20 20:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -33,6 +33,10 @@ public interface APIInterface {
     @GET("recipes/{slug}/?format=json")
     Call<RecipeModel> getRecipe(@Path("slug") String Slug);
 
+    @GET("recipes/{slug}/?format=json")
+    Call<RecipeModel> getRecipe(@Header("Authorization") String token,
+                                @Path("slug") String Slug);
+
     @POST("recipes/{slug}/favourite/?format=json")
     Call<Void> addFavouriteRecipe(@Header("Authorization") String token,
                                   @Path("slug") String slug);
@@ -54,4 +58,12 @@ public interface APIInterface {
 
     @GET("users/me/?format=json")
     Call<UserModel> getMyProfile(@Header("Authorization") String token);
+
+    @POST("users/{username}/follow/")
+    Call<Void> followUser(@Header("Authorization") String token,
+                          @Path("username") String username);
+
+    @DELETE("users/{username}/follow/")
+    Call<Void> unFollowUser(@Header("Authorization") String token,
+                            @Path("username") String username);
 }

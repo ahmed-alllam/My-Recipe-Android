@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 17:06
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -31,6 +31,7 @@ public abstract class BaseRecipesFragment extends Fragment {
     MutableLiveData<RecipesResultModel> recipes;
     MutableLiveData<Integer> error;
     int limitPerRequest = 25;
+    protected BaseRecipesAdapter adapter;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -42,13 +43,7 @@ public abstract class BaseRecipesFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        int fragmentType;
-        if (this instanceof HomeFragment)
-            fragmentType = RecipeDetailFragment.HOME_FRAGMENT;
-        else
-            fragmentType = RecipeDetailFragment.FAVOURITES_FRAGMENT;
-
-        BaseRecipesAdapter adapter = new BaseRecipesAdapter(getActivity(), this, recyclerView) {
+        adapter = new BaseRecipesAdapter(getActivity(), this, recyclerView) {
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 super.onBindViewHolder(holder, position);
@@ -59,7 +54,7 @@ public abstract class BaseRecipesFragment extends Fragment {
                     setOnFavouriteButtonPressed(viewHolder, position, this, view);
 
                     viewHolder.recipeItem.setOnClickListener(v -> {
-                        RecipeDetailFragment recipeFragment = new RecipeDetailFragment(this.get(position), this, fragmentType);
+                        RecipeDetailFragment recipeFragment = new RecipeDetailFragment(this.get(position));
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .add(view.getId(), recipeFragment)
                                 .addToBackStack(null)

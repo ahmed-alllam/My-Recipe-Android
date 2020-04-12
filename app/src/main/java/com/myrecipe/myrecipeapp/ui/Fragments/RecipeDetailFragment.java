@@ -1,16 +1,19 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 17:19
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
 
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,7 +33,7 @@ import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.RecipeDetailViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
-import com.myrecipe.myrecipeapp.ui.Adapters.BaseRecipesAdapter;
+import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,42 +47,19 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class RecipeDetailFragment extends Fragment {
+public class RecipeDetailFragment extends Fragment implements OnRecipeDataChangedListener {
 
     private RecipeModel recipe;
-    private BaseRecipesAdapter adapter;
-    final static int HOME_FRAGMENT = 0;
-    final static int FAVOURITES_FRAGMENT = 1;
-    private int fragmentType;
 
     RecipeDetailFragment(RecipeModel recipe) {
         this.recipe = recipe;
     }
 
-    RecipeDetailFragment(RecipeModel recipe, BaseRecipesAdapter adapter, int fragmentType) {
-        this.recipe = recipe;
-        this.adapter = adapter;
-        this.fragmentType = fragmentType;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_recipe_detail, container, false);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        if (adapter != null) {
-            if (fragmentType == HOME_FRAGMENT)
-                adapter.updateRecipe(recipe);
-            else if (fragmentType == FAVOURITES_FRAGMENT) {
-                if (!recipe.isFavouritedByUser())
-                    adapter.removeRecipe(recipe.getSlug());
-            }
-        }
     }
 
     @Override
@@ -89,7 +69,10 @@ public class RecipeDetailFragment extends Fragment {
         RecipeDetailViewModel viewModel = new ViewModelProvider(this)
                 .get(RecipeDetailViewModel.class);
 
-        viewModel.recipe.observe(getViewLifecycleOwner(), (recipe) -> refreshRecipeData(recipe, view));
+        viewModel.recipe.observe(getViewLifecycleOwner(), (recipe) -> {
+            this.recipe = recipe;
+            refreshRecipeData(view);
+        });
 
         viewModel.error.observe(getViewLifecycleOwner(), error -> {
             // todo
@@ -97,7 +80,7 @@ public class RecipeDetailFragment extends Fragment {
 
         String recipeSlug = recipe.getSlug();
 
-        viewModel.getRecipe(recipeSlug);
+        viewModel.getRecipe(getContext(), recipeSlug);
 
 
         view.findViewById(R.id.backButton).setOnClickListener((v) -> {
@@ -131,11 +114,42 @@ public class RecipeDetailFragment extends Fragment {
         TextView recipeDescription = view.findViewById(R.id.recipeDescription);
         recipeDescription.setText(recipe.getDescription());
 
+
+        if (!recipe.getTags().isEmpty()) {
+            LinearLayout tags = view.findViewById(R.id.tags);
+
+            float density = getContext().getResources().getDisplayMetrics().density;
+
+            for (int i = 0; i < recipe.getTags().size(); i++) {
+                TextView textView = new TextView(getContext());
+                textView.setBackgroundColor(Color.rgb(245, 245, 245));
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                textView.setTextColor(Color.BLACK);
+                textView.setPadding((int) (8 * density), 0, (int) (8 * density), 0);
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                if (i != 0)
+                    layoutParams.setMarginStart((int) (8 * density));
+
+                textView.setLayoutParams(layoutParams);
+                tags.addView(textView);
+
+                textView.setText(recipe.getTags().get(i));
+            }
+        } else {
+            view.findViewById(R.id.tagsLabel).setVisibility(View.GONE);
+            view.findViewById(R.id.tagsScrollView).setVisibility(View.GONE);
+        }
+
         ImageButton favourite = view.findViewById(R.id.favourite);
         boolean isFavouritedByUser = recipe.isFavouritedByUser();
 
         if (isFavouritedByUser)
             favourite.setImageResource(R.drawable.favourite2);
+        else
+            favourite.setImageResource(R.drawable.favourite_border);
 
         favourite.setOnClickListener(v -> {
             String token = PreferencesManager.getToken(getContext());
@@ -161,11 +175,17 @@ public class RecipeDetailFragment extends Fragment {
                 APIInterface.removeFavouriteRecipe(token, recipeSlug).enqueue(new emptyCallBack());
             }
 
+            for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
+                if (f instanceof OnRecipeDataChangedListener && f != this) {
+                    ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
+                }
+            }
+
             favouritesCount.setText(String.valueOf(recipe.getFavourites_count()));
         });
     }
 
-    private void refreshRecipeData(RecipeModel recipe, View view) {
+    private void refreshRecipeData(View view) {
         UserModel user = recipe.getUser();
         ImageView userImage = view.findViewById(R.id.userImage);
         Glide.with(getContext())
@@ -175,10 +195,61 @@ public class RecipeDetailFragment extends Fragment {
 
         TextView userName = view.findViewById(R.id.userName);
         userName.setText(user.getName());
-        // todo follow button
+
+        Button followUser = view.findViewById(R.id.followUser);
+
+        if (!user.getUsername().equals(PreferencesManager.getStoredUser(getContext()).getUsername())) {
+            followUser.setVisibility(View.VISIBLE);
+
+            if (recipe.getUser().isFollowedByUser())
+                followUser.setText(R.string.unfollow);
+            else
+                followUser.setText(R.string.follow);
+
+            followUser.setOnClickListener(v -> {
+                String username = user.getUsername();
+
+                String token = PreferencesManager.getToken(getContext());
+                if (token.length() <= 0 || username.length() <= 0) {
+                    return;
+                }
+                token = "Token " + token;
+
+                APIInterface recipesAPIInterface = APIClient.getClient().create(APIInterface.class);
+
+                if (!user.isFollowedByUser()) {
+                    recipesAPIInterface.followUser(token, username).enqueue(new emptyCallBack());
+                    ((Button) v).setText(R.string.unfollow);
+                    user.setFollowedByUser(true);
+                } else {
+                    recipesAPIInterface.unFollowUser(token, username).enqueue(new emptyCallBack());
+                    ((Button) v).setText(R.string.follow);
+                    user.setFollowedByUser(false);
+                }
+
+                for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
+                    if (f instanceof OnRecipeDataChangedListener && f != this) {
+                        ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
+                    }
+                }
+            });
+        } else {
+            followUser.setVisibility(View.INVISIBLE);
+        }
+
 
         TextView timeStamp = view.findViewById(R.id.timeStamp);
         timeStamp.setText(parseTime(recipe.getTimestamp()));
+
+        TextView favouritesCount = view.findViewById(R.id.favouritesCount);
+        favouritesCount.setText(String.valueOf(recipe.getFavourites_count()));
+
+        ImageButton favourite = view.findViewById(R.id.favourite);
+
+        if (recipe.isFavouritedByUser())
+            favourite.setImageResource(R.drawable.favourite2);
+        else
+            favourite.setImageResource(R.drawable.favourite_border);
 
         TextView recipeIngredients = view.findViewById(R.id.recipeIngredients);
 
@@ -201,6 +272,7 @@ public class RecipeDetailFragment extends Fragment {
 
         if (!recipe.getImages().isEmpty()) {
             LinearLayout images = view.findViewById(R.id.images);
+            float density = getContext().getResources().getDisplayMetrics().density;
 
             for (int i = 0; i < recipe.getImages().size(); i++) {
                 ImageView imageView = new ImageView(getContext());
@@ -209,7 +281,7 @@ public class RecipeDetailFragment extends Fragment {
                         LinearLayout.LayoutParams.MATCH_PARENT);
 
                 if (i != 0)
-                    layoutParams.setMarginStart(32);
+                    layoutParams.setMarginStart((int) (12 * density));
 
                 imageView.setLayoutParams(layoutParams);
                 images.addView(imageView);
@@ -240,6 +312,14 @@ public class RecipeDetailFragment extends Fragment {
             return String.valueOf(DateUtils.getRelativeTimeSpanString(parsedDate.getTime(), System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS));
         } catch (ParseException e) {
             return "";
+        }
+    }
+
+    @Override
+    public void onRecipeChanged(RecipeModel recipe) {
+        if (this.recipe.getSlug() != null && this.recipe.getSlug().equals(recipe.getSlug())) {
+            this.recipe = recipe;
+            refreshRecipeData(getView());
         }
     }
 

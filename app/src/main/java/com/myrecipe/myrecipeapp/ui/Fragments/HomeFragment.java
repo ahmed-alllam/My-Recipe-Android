@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -25,9 +26,10 @@ import com.myrecipe.myrecipeapp.data.RecipesFeedViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Adapters.BaseRecipesAdapter;
+import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 
 
-public class HomeFragment extends BaseRecipesFragment {
+public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataChangedListener {
 
     private RecipesFeedViewModel recipesFeedViewModel;
 
@@ -51,7 +53,6 @@ public class HomeFragment extends BaseRecipesFragment {
         error = recipesFeedViewModel.error;
 
         super.onViewCreated(view, savedInstanceState);
-        // todo: solve pagination after login problem
     }
 
 
@@ -105,7 +106,18 @@ public class HomeFragment extends BaseRecipesFragment {
                 APIInterface.removeFavouriteRecipe(token, slug).enqueue(new emptyCallBack());
             }
 
+            for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
+                if (f instanceof OnRecipeDataChangedListener && f != this) {
+                    ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
+                }
+            }
+
             holder.favourites_count.setText(String.valueOf(recipe.getFavourites_count()));
         });
+    }
+
+    @Override
+    public void onRecipeChanged(RecipeModel recipe) {
+        adapter.updateRecipe(recipe);
     }
 }
