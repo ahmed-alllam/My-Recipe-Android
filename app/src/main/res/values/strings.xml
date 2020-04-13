@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 16:57
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 01:05
   -->
 
 <resources>
@@ -63,4 +63,6 @@
     <string name="unfollow">Unfollow</string>
     <string name="tags">Tags</string>
     <string name="reviews">Reviews</string>
+    <string name="see_all_reviews">See all reviews</string>
+    <string name="add_a_review">Add a Review</string>
 </resources>

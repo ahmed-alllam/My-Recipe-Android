@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 20:46
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 01:05
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -122,7 +123,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
                 TextView textView = new TextView(getContext());
                 textView.setBackgroundColor(Color.rgb(245, 245, 245));
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-                textView.setTextColor(Color.BLACK);
+                textView.setTextColor(getResources().getColor(R.color.colorPrimary));
                 textView.setPadding((int) (8 * density), 0, (int) (8 * density), 0);
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -274,15 +275,23 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
             for (int i = 0; i < recipe.getImages().size(); i++) {
                 ImageView imageView = new ImageView(getContext());
+                CardView cardView = new CardView(getContext());
 
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams imagelayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+
+                LinearLayout.LayoutParams cardlayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.MATCH_PARENT);
 
                 if (i != 0)
-                    layoutParams.setMarginStart((int) (8 * density));
+                    cardlayoutParams.setMarginStart((int) (8 * density));
 
-                imageView.setLayoutParams(layoutParams);
-                images.addView(imageView);
+                cardView.setLayoutParams(cardlayoutParams);
+                imageView.setLayoutParams(imagelayoutParams);
+                cardView.setRadius(25 * density);
+
+                cardView.addView(imageView);
+                images.addView(cardView);
 
                 Glide.with(getContext())
                         .load(recipe.getImages().get(i))
@@ -293,7 +302,15 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
             view.findViewById(R.id.imagesScrollView).setVisibility(View.GONE);
         }
 
+        if (PreferencesManager.getToken(getContext()).length() > 0) {
+            view.findViewById(R.id.ratingBar2).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.addReviewLabel).setVisibility(View.VISIBLE);
+        }
+
         if (!recipe.getReviews().isEmpty()) {
+            if (recipe.getReviews().size() > 3) {
+                view.findViewById(R.id.allreviewsLabel).setVisibility(View.VISIBLE);
+            }
 
             TextView reviewsCount = view.findViewById(R.id.reviewsCount);
             reviewsCount.setText(String.format("(%s)", recipe.getReviews_count()));
@@ -318,6 +335,9 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
                 reviewsLayout.addView(reviewView);
 
+                if (i == 2) {
+                    break;
+                }
             }
         } else {
             view.findViewById(R.id.reviewsLabel).setVisibility(View.GONE);

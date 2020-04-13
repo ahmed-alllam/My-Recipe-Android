@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 06/04/20 21:09
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 01:05
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -14,7 +14,8 @@ public class PreferencesManager {
 
     //a helper class used to make some changes or get some data from the shared preferences
 
-    public static String TOKEN_PREFERENCE = "user_token";
+    private static String TOKEN_PREFERENCE = "user_token";
+    private static String token = "";
 
     public static String getPreference(Context context, String preference, String default_value) {
         //returns the value of a shared preference given the key
@@ -22,7 +23,7 @@ public class PreferencesManager {
         return prefs.getString(preference, default_value);
     }
 
-    public static void setPreference(Context context, String preference, String value) {
+    private static void setPreference(Context context, String preference, String value) {
         // makes some changes to the shared preferences
         // or adds new preference
         SharedPreferences prefs = context.getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
@@ -33,12 +34,13 @@ public class PreferencesManager {
 
     public static void setToken(Context context, String token) {
         // sets a user token value in shared preferences
+        PreferencesManager.token = token;
         setPreference(context, TOKEN_PREFERENCE, token);
     }
 
     public static String getToken(Context context) {
         // gets the stored user token in shared preferences
-        return getPreference(context, TOKEN_PREFERENCE, "");
+        return !token.equals("") ? token : getPreference(context, TOKEN_PREFERENCE, "");
     }
 
     public static void storeUser(Context context, UserModel user) {
