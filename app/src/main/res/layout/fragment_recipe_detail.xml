@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 16:57
   -->
 
 
@@ -317,6 +317,29 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal" />
             </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/reviewsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/reviews"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="@+id/stepsLabel"
+                app:layout_constraintTop_toBottomOf="@+id/tagsScrollView" />
+
+            <LinearLayout
+                android:id="@+id/reviews"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/reviewsLabel"
+                app:layout_constraintTop_toBottomOf="@id/reviewsLabel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.myrecipe.myrecipeapp.ui.Views.PopupScrollView>

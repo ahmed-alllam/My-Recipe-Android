@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 16:57
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -32,6 +32,7 @@ import com.myrecipe.myrecipeapp.data.APIInterface;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.RecipeDetailViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
+import com.myrecipe.myrecipeapp.models.RecipeReviewModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 
@@ -293,6 +294,33 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         } else {
             view.findViewById(R.id.imagesLabel).setVisibility(View.GONE);
             view.findViewById(R.id.imagesScrollView).setVisibility(View.GONE);
+        }
+
+        if (!recipe.getReviews().isEmpty()) {
+            for (int i = 0; i < recipe.getReviews().size(); i++) {
+                RecipeReviewModel review = recipe.getReviews().get(i);
+
+                LinearLayout reviewsLayout = view.findViewById(R.id.reviews);
+
+                View reviewView = LayoutInflater.from(getContext()).
+                        inflate(R.layout.recipe_review_item, reviewsLayout, false);
+
+                Glide.with(getContext())
+                        .load(review.getUser().getImage())
+                        .placeholder(R.drawable.user)
+                        .into((ImageView) reviewView.findViewById(R.id.userPhoto));
+
+                ((TextView) reviewView.findViewById(R.id.userName)).setText(review.getUser().getName());
+                ((TextView) reviewView.findViewById(R.id.timeStamp)).setText(parseTime(review.getTimestamp()));
+                ((TextView) reviewView.findViewById(R.id.body)).setText(review.getBody());
+                ((RatingBar) reviewView.findViewById(R.id.ratingBar)).setRating(review.getRating());
+
+                reviewsLayout.addView(reviewView);
+
+            }
+        } else {
+            view.findViewById(R.id.reviewsLabel).setVisibility(View.GONE);
+            view.findViewById(R.id.reviews).setVisibility(View.GONE);
         }
     }
 

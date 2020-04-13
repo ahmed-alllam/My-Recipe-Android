@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 29/03/20 21:32
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 16:57
  */
 
 package com.myrecipe.myrecipeapp.models;
@@ -7,18 +7,11 @@ package com.myrecipe.myrecipeapp.models;
 
 public class RecipeReviewModel {
     private UserModel user;
-    private String title;
     private String slug;
     private String body;
     private String timestamp;
+    private int rating;
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getBody() {
         return body;
@@ -26,6 +19,14 @@ public class RecipeReviewModel {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     public UserModel getUser() {

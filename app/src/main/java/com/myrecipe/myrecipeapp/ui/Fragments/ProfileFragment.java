@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 10/04/20 20:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 16:57
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -72,6 +72,7 @@ public class ProfileFragment extends Fragment {
                 storeUserInfo(userProfile);
 
                 // gets the home fragment instance and calls its refreshUserImage method
+                // todo: replace with onuserdatachanged
                 ViewPager2 viewPager = getActivity().findViewById(R.id.mainViewPager);
                 MainViewPagerAdapter adapter = (MainViewPagerAdapter) viewPager.getAdapter();
                 ((HomeFragment) adapter.createFragment(0)).refreshUserImage(userProfile);
