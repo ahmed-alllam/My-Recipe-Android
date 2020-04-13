@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 16:57
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 17:26
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -297,6 +297,10 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         }
 
         if (!recipe.getReviews().isEmpty()) {
+
+            TextView reviewsCount = view.findViewById(R.id.reviewsCount);
+            reviewsCount.setText(String.format("(%s)", recipe.getReviews_count()));
+
             for (int i = 0; i < recipe.getReviews().size(); i++) {
                 RecipeReviewModel review = recipe.getReviews().get(i);
 
