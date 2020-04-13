@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 17:26
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 20:46
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -75,9 +75,6 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
             refreshRecipeData(view);
         });
 
-        viewModel.error.observe(getViewLifecycleOwner(), error -> {
-            // todo
-        });
 
         String recipeSlug = recipe.getSlug();
 
@@ -282,7 +279,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
                         LinearLayout.LayoutParams.MATCH_PARENT);
 
                 if (i != 0)
-                    layoutParams.setMarginStart((int) (12 * density));
+                    layoutParams.setMarginStart((int) (8 * density));
 
                 imageView.setLayoutParams(layoutParams);
                 images.addView(imageView);

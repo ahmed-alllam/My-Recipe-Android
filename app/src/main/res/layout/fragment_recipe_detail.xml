@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 17:26
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 20:46
   -->
 
 
@@ -293,13 +293,13 @@
                 android:id="@+id/tagsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/tags"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="@+id/recipeBody"
-                app:layout_constraintTop_toBottomOf="@+id/imagesScrollView" />
+                app:layout_constraintTop_toBottomOf="@+id/reviews" />
 
             <HorizontalScrollView
                 android:id="@+id/tagsScrollView"
@@ -328,7 +328,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="@+id/stepsLabel"
-                app:layout_constraintTop_toBottomOf="@+id/tagsScrollView" />
+                app:layout_constraintTop_toBottomOf="@+id/imagesScrollView" />
 
             <TextView
                 android:id="@+id/reviewsCount"

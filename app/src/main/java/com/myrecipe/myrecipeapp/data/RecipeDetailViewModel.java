@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 20:46
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -17,7 +17,6 @@ import retrofit2.Response;
 
 public class RecipeDetailViewModel extends ViewModel {
     public MutableLiveData<RecipeModel> recipe = new MutableLiveData<>();
-    public MutableLiveData<Integer> error = new MutableLiveData<>();
 
     public void getRecipe(Context context, String slug) {
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -38,15 +37,11 @@ public class RecipeDetailViewModel extends ViewModel {
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
                     recipe.setValue(response.body());
-                } else {
-                    // todo
                 }
-
             }
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                error.setValue(1);  // todo
             }
         });
     }
