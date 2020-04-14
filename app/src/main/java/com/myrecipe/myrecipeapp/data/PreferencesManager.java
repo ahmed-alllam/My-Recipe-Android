@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 01:05
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 21:12
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -44,15 +44,15 @@ public class PreferencesManager {
     }
 
     public static void storeUser(Context context, UserModel user) {
-        setPreference(context, "user_name", user.getName());
-        setPreference(context, "user_email", user.getEmail());
-        setPreference(context, "user_username", user.getUsername());
-        setPreference(context, "user_bio", user.getBio());
-        setPreference(context, "user_image", user.getImage());
+        setPreference(context, "user_name", user != null ? user.getName() : "");
+        setPreference(context, "user_email", user != null ? user.getEmail() : "");
+        setPreference(context, "user_username", user != null ? user.getUsername() : "");
+        setPreference(context, "user_bio", user != null ? user.getBio() : "");
+        setPreference(context, "user_image", user != null ? user.getImage() : "");
         setPreference(context, "user_followers_count",
-                String.valueOf(user.getFollowers_count()));
+                user != null ? String.valueOf(user.getFollowers_count()) : "0");
         setPreference(context, "user_followings_count",
-                String.valueOf(user.getFollowings_count()));
+                user != null ? String.valueOf(user.getFollowings_count()) : "0");
     }
 
     public static UserModel getStoredUser(Context context) {

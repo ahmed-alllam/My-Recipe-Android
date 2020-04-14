@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 21:12
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -27,9 +27,10 @@ import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Adapters.BaseRecipesAdapter;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
+import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
 
 
-public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataChangedListener {
+public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataChangedListener, OnUserProfileChangedListener {
 
     private RecipesFeedViewModel recipesFeedViewModel;
 
@@ -45,7 +46,7 @@ public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataCha
         ImageView userImage = view.findViewById(R.id.userImage);
         ViewPager2 mainViewPager = getActivity().findViewById(R.id.mainViewPager);
         userImage.setOnClickListener(v -> mainViewPager.setCurrentItem(3));
-        refreshUserImage(PreferencesManager.getStoredUser(getContext()));
+        refreshUserImage(PreferencesManager.getStoredUser(getContext()).getImage());
 
         recipesFeedViewModel = new ViewModelProvider(this)
                 .get(RecipesFeedViewModel.class);
@@ -61,14 +62,22 @@ public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataCha
         recipesFeedViewModel.getFeed(getContext(), limitPerRequest, offset);
     }
 
-    void refreshUserImage(UserModel user) {
+    void refreshUserImage(String image) {
         ImageView userImage = getView().findViewById(R.id.userImage);
-        if (!user.getImage().isEmpty()) {
-            Glide.with(getContext())
-                    .load(user.getImage())
-                    .placeholder(R.drawable.user)
-                    .into(userImage);
-        }
+        Glide.with(getContext())
+                .load(image)
+                .placeholder(R.drawable.user)
+                .into(userImage);
+    }
+
+    @Override
+    public void onUserProfileChanged(UserModel user) {
+        String image;
+        if (user != null)
+            image = user.getImage();
+        else
+            image = "";
+        refreshUserImage(image);
     }
 
     @Override

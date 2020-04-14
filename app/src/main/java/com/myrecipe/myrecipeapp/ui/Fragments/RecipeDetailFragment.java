@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 01:05
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 21:12
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -36,6 +36,7 @@ import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.RecipeReviewModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
+import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,7 +50,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class RecipeDetailFragment extends Fragment implements OnRecipeDataChangedListener {
+public class RecipeDetailFragment extends Fragment implements OnRecipeDataChangedListener, OnUserProfileChangedListener {
 
     private RecipeModel recipe;
 
@@ -197,7 +198,9 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
         Button followUser = view.findViewById(R.id.followUser);
 
-        if (!user.getUsername().equals(PreferencesManager.getStoredUser(getContext()).getUsername())) {
+        UserModel me = PreferencesManager.getStoredUser(getContext());
+
+        if (!me.getUsername().equals("") && !user.getUsername().equals(me.getUsername())) {
             followUser.setVisibility(View.VISIBLE);
 
             if (recipe.getUser().isFollowedByUser())
@@ -220,15 +223,21 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
                     recipesAPIInterface.followUser(token, username).enqueue(new emptyCallBack());
                     ((Button) v).setText(R.string.unfollow);
                     user.setFollowedByUser(true);
+                    me.setFollowings_count(me.getFollowings_count() + 1);
                 } else {
                     recipesAPIInterface.unFollowUser(token, username).enqueue(new emptyCallBack());
                     ((Button) v).setText(R.string.follow);
                     user.setFollowedByUser(false);
+                    me.setFollowings_count(me.getFollowings_count() - 1);
                 }
 
                 for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
                     if (f instanceof OnRecipeDataChangedListener && f != this) {
                         ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
+                    }
+
+                    if (f instanceof OnUserProfileChangedListener && f != this) {
+                        ((OnUserProfileChangedListener) f).onUserProfileChanged(me);
                     }
                 }
             });
@@ -370,6 +379,11 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
             this.recipe = recipe;
             refreshRecipeData(getView());
         }
+    }
+
+    @Override
+    public void onUserProfileChanged(UserModel user) {
+        refreshRecipeData(getView());
     }
 
     private class emptyCallBack implements Callback<Void> {
