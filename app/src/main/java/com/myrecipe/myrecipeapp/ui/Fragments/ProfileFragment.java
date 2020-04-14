@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 21:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 23:38
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -179,7 +179,7 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
 
     private void launchFragment(Fragment fragment) {
         getActivity().getSupportFragmentManager().beginTransaction()
-                .add(R.id.profileFragment, fragment)
+                .add(getView().getId(), fragment)
                 .addToBackStack(null)
                 .commit();
     }

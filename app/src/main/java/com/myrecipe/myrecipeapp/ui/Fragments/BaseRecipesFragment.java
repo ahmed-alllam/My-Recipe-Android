@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 23:38
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -7,6 +7,7 @@ package com.myrecipe.myrecipeapp.ui.Fragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,9 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.myrecipe.myrecipeapp.R;
+import com.myrecipe.myrecipeapp.data.APIClient;
+import com.myrecipe.myrecipeapp.data.APIInterface;
+import com.myrecipe.myrecipeapp.data.PreferencesManager;
+import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.RecipesResultModel;
 import com.myrecipe.myrecipeapp.ui.Adapters.BaseRecipesAdapter;
 import com.myrecipe.myrecipeapp.ui.Adapters.PaginationScrollListener;
+import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,7 +42,6 @@ public abstract class BaseRecipesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         RecyclerView recyclerView = view.findViewById(R.id.recipesRecyclerView);
 
@@ -90,6 +95,7 @@ public abstract class BaseRecipesFragment extends Fragment {
         int primaryColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
         swipeRefreshLayout.setColorSchemeColors(primaryColor, Color.YELLOW, Color.GREEN);
 
+        // todo: add checking for duplicates
         recipes.observe(getViewLifecycleOwner(), (recipes) -> {
             adapter.setOffset(adapter.getOffset() + limitPerRequest);
             adapter.setLoading(false);
@@ -128,10 +134,49 @@ public abstract class BaseRecipesFragment extends Fragment {
 
     protected abstract void callModelView(int offset);
 
-    protected abstract void setOnFavouriteButtonPressed(BaseRecipesAdapter.RecipeViewHolder holder,
-                                                        int position,
-                                                        BaseRecipesAdapter adapter,
-                                                        View view);
+    protected void setOnFavouriteButtonPressed(BaseRecipesAdapter.RecipeViewHolder holder, int position,
+                                               BaseRecipesAdapter adapter, View view) {
+
+        RecipeModel recipe = adapter.get(position);
+
+        if (recipe.isFavouritedByUser())
+            holder.favourite.setImageResource(R.drawable.favourite2);
+        else
+            holder.favourite.setImageResource(R.drawable.favourite_border);
+
+        holder.favourite.setOnClickListener(v -> {
+            String token = PreferencesManager.getToken(getContext());
+            if (token.length() <= 0)
+                return;
+            token = "Token " + token;
+
+            APIInterface APIInterface = APIClient.getClient().create(APIInterface.class);
+            String slug = recipe.getSlug();
+
+
+            if (!recipe.isFavouritedByUser()) {
+                ((ImageButton) v).setImageResource(R.drawable.favourite2);
+                recipe.setFavourites_count(recipe.getFavourites_count() + 1);
+                recipe.setFavouritedByUser(true);
+
+                APIInterface.addFavouriteRecipe(token, slug).enqueue(new emptyCallBack());
+            } else {
+                ((ImageButton) v).setImageResource(R.drawable.favourite_border);
+                recipe.setFavourites_count(recipe.getFavourites_count() - 1);
+                recipe.setFavouritedByUser(false);
+
+                APIInterface.removeFavouriteRecipe(token, slug).enqueue(new emptyCallBack());
+            }
+
+            for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
+                if (f instanceof OnRecipeDataChangedListener && f != this) {
+                    ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
+                }
+            }
+
+            holder.favourites_count.setText(String.valueOf(recipe.getFavourites_count()));
+        });
+    }
 
     protected class emptyCallBack implements Callback<Void> {
         @Override

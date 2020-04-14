@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 23:38
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -50,6 +50,17 @@ public interface APIInterface {
                                                  @Path("username") String username,
                                                  @Query("limit") int limit,
                                                  @Query("offset") int offset);
+
+    @GET("users/{username}/recipes/?format=json")
+    Call<RecipesResultModel> getUsersRecipes(@Path("username") String username,
+                                             @Query("limit") int limit,
+                                             @Query("offset") int offset);
+
+    @GET("users/{username}/recipes/?format=json")
+    Call<RecipesResultModel> getUsersRecipes(@Header("Authorization") String token,
+                                             @Path("username") String username,
+                                             @Query("limit") int limit,
+                                             @Query("offset") int offset);
 
     @FormUrlEncoded
     @POST("users/token/?format=json")

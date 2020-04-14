@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 21:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 23:38
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -8,24 +8,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
-import com.myrecipe.myrecipeapp.data.APIClient;
-import com.myrecipe.myrecipeapp.data.APIInterface;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.RecipesFeedViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
-import com.myrecipe.myrecipeapp.ui.Adapters.BaseRecipesAdapter;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
 
@@ -78,51 +73,6 @@ public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataCha
         else
             image = "";
         refreshUserImage(image);
-    }
-
-    @Override
-    protected void setOnFavouriteButtonPressed(BaseRecipesAdapter.RecipeViewHolder holder, int position,
-                                               BaseRecipesAdapter adapter, View view) {
-
-        RecipeModel recipe = adapter.get(position);
-
-        if (recipe.isFavouritedByUser())
-            holder.favourite.setImageResource(R.drawable.favourite2);
-        else
-            holder.favourite.setImageResource(R.drawable.favourite_border);
-
-        holder.favourite.setOnClickListener(v -> {
-            String token = PreferencesManager.getToken(getContext());
-            if (token.length() <= 0)
-                return;
-            token = "Token " + token;
-
-            APIInterface APIInterface = APIClient.getClient().create(APIInterface.class);
-            String slug = recipe.getSlug();
-
-
-            if (!recipe.isFavouritedByUser()) {
-                ((ImageButton) v).setImageResource(R.drawable.favourite2);
-                recipe.setFavourites_count(recipe.getFavourites_count() + 1);
-                recipe.setFavouritedByUser(true);
-
-                APIInterface.addFavouriteRecipe(token, slug).enqueue(new emptyCallBack());
-            } else {
-                ((ImageButton) v).setImageResource(R.drawable.favourite_border);
-                recipe.setFavourites_count(recipe.getFavourites_count() - 1);
-                recipe.setFavouritedByUser(false);
-
-                APIInterface.removeFavouriteRecipe(token, slug).enqueue(new emptyCallBack());
-            }
-
-            for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
-                if (f instanceof OnRecipeDataChangedListener && f != this) {
-                    ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
-                }
-            }
-
-            holder.favourites_count.setText(String.valueOf(recipe.getFavourites_count()));
-        });
     }
 
     @Override
