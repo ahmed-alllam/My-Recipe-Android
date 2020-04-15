@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 17:20
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 17:37
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -105,6 +105,22 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
                 name.setText(error);
             }
         });
+
+        View.OnClickListener onRelatedUsersClicked = v -> {
+            int type = -1;
+            switch (v.getId()) {
+                case R.id.followers:
+                    type = RelatedUsersFragment.FOLLOWERS_TYPE;
+                    break;
+                case R.id.followings:
+                    type = RelatedUsersFragment.FOLLOWINGS_TYPE;
+            }
+
+            launchFragment(new RelatedUsersFragment(type));
+        };
+
+        view.findViewById(R.id.followings).setOnClickListener(onRelatedUsersClicked);
+        view.findViewById(R.id.followers).setOnClickListener(onRelatedUsersClicked);
     }
 
     @Override
