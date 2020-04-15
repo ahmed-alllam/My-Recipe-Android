@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 23:38
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 17:20
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,13 +63,9 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
             startActivityForResult(loginIntent, LAUNCH_LOGIN_ACTIVITY);
         });
 
-        view.findViewById(R.id.myRecipesButton).setOnClickListener(v -> {
-            launchFragment(new MyRecipesFragment());
-        });
+        view.findViewById(R.id.myRecipesButton).setOnClickListener(v -> launchFragment(new MyRecipesFragment()));
 
-        view.findViewById(R.id.settingsButton).setOnClickListener(v -> {
-            launchFragment(new SettingsFragment());
-        });
+        view.findViewById(R.id.settingsButton).setOnClickListener(v -> launchFragment(new SettingsFragment()));
 
         SwipeRefreshLayout profileFragmentSwipe = view.findViewById(R.id.profileFragmentSwipe);
 
@@ -139,6 +136,8 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
         TextView followersLabel = view.findViewById(R.id.followersLabel);
         TextView followingsNumber = view.findViewById(R.id.followingsNumber);
         TextView followingsLabel = view.findViewById(R.id.followingsLabel);
+        LinearLayout followers = view.findViewById(R.id.followers);
+        LinearLayout followings = view.findViewById(R.id.followings);
 
         if (user != null) {
             Glide.with(getContext())
@@ -154,22 +153,18 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
             bio.setVisibility(View.VISIBLE);
             bio.setText(user.getBio());
 
-            followersNumber.setVisibility(View.VISIBLE);
+            followers.setVisibility(View.VISIBLE);
             followersNumber.setText(String.valueOf(user.getFollowers_count()));
-            followersLabel.setVisibility(View.VISIBLE);
 
-            followingsNumber.setVisibility(View.VISIBLE);
+            followings.setVisibility(View.VISIBLE);
             followingsNumber.setText(String.valueOf(user.getFollowings_count()));
-            followingsLabel.setVisibility(View.VISIBLE);
         } else {
             imageView.setImageResource(R.drawable.user);
             loginLabel.setVisibility(View.VISIBLE);
             name.setVisibility(View.INVISIBLE);
             bio.setVisibility(View.INVISIBLE);
-            followersNumber.setVisibility(View.INVISIBLE);
-            followersLabel.setVisibility(View.INVISIBLE);
-            followingsNumber.setVisibility(View.INVISIBLE);
-            followingsLabel.setVisibility(View.INVISIBLE);
+            followers.setVisibility(View.INVISIBLE);
+            followings.setVisibility(View.INVISIBLE);
         }
     }
 

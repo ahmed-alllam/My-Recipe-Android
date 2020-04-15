@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 21:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 17:20
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -183,6 +183,44 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
             favouritesCount.setText(String.valueOf(recipe.getFavourites_count()));
         });
+
+        Button followUser = view.findViewById(R.id.followUser);
+        UserModel me = PreferencesManager.getStoredUser(getContext());
+        UserModel user = recipe.getUser();
+
+        followUser.setOnClickListener(v -> {
+            String username = user.getUsername();
+
+            String token = PreferencesManager.getToken(getContext());
+            if (token.length() <= 0 || username.length() <= 0) {
+                return;
+            }
+            token = "Token " + token;
+
+            APIInterface recipesAPIInterface = APIClient.getClient().create(APIInterface.class);
+
+            if (!user.isFollowedByUser()) {
+                recipesAPIInterface.followUser(token, username).enqueue(new emptyCallBack());
+                ((Button) v).setText(R.string.unfollow);
+                user.setFollowedByUser(true);
+                me.setFollowings_count(me.getFollowings_count() + 1);
+            } else {
+                recipesAPIInterface.unFollowUser(token, username).enqueue(new emptyCallBack());
+                ((Button) v).setText(R.string.follow);
+                user.setFollowedByUser(false);
+                me.setFollowings_count(me.getFollowings_count() - 1);
+            }
+
+            for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
+                if (f instanceof OnRecipeDataChangedListener && f != this) {
+                    ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
+                }
+
+                if (f instanceof OnUserProfileChangedListener && f != this) {
+                    ((OnUserProfileChangedListener) f).onUserProfileChanged(me);
+                }
+            }
+        });
     }
 
     private void refreshRecipeData(View view) {
@@ -196,8 +234,8 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         TextView userName = view.findViewById(R.id.userName);
         userName.setText(user.getName());
 
-        Button followUser = view.findViewById(R.id.followUser);
 
+        Button followUser = view.findViewById(R.id.followUser);
         UserModel me = PreferencesManager.getStoredUser(getContext());
 
         if (!me.getUsername().equals("") && !user.getUsername().equals(me.getUsername())) {
@@ -207,40 +245,6 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
                 followUser.setText(R.string.unfollow);
             else
                 followUser.setText(R.string.follow);
-
-            followUser.setOnClickListener(v -> {
-                String username = user.getUsername();
-
-                String token = PreferencesManager.getToken(getContext());
-                if (token.length() <= 0 || username.length() <= 0) {
-                    return;
-                }
-                token = "Token " + token;
-
-                APIInterface recipesAPIInterface = APIClient.getClient().create(APIInterface.class);
-
-                if (!user.isFollowedByUser()) {
-                    recipesAPIInterface.followUser(token, username).enqueue(new emptyCallBack());
-                    ((Button) v).setText(R.string.unfollow);
-                    user.setFollowedByUser(true);
-                    me.setFollowings_count(me.getFollowings_count() + 1);
-                } else {
-                    recipesAPIInterface.unFollowUser(token, username).enqueue(new emptyCallBack());
-                    ((Button) v).setText(R.string.follow);
-                    user.setFollowedByUser(false);
-                    me.setFollowings_count(me.getFollowings_count() - 1);
-                }
-
-                for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
-                    if (f instanceof OnRecipeDataChangedListener && f != this) {
-                        ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
-                    }
-
-                    if (f instanceof OnUserProfileChangedListener && f != this) {
-                        ((OnUserProfileChangedListener) f).onUserProfileChanged(me);
-                    }
-                }
-            });
         } else {
             followUser.setVisibility(View.INVISIBLE);
         }
