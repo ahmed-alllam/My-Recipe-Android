@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 21:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 23:36
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -53,7 +54,8 @@ public class SettingsFragment extends Fragment {
         });
 
         view.findViewById(R.id.changeLanguage).setOnClickListener(v -> {
-            // todo add dialog fragment
+            DialogFragment dialog = new ChangeLanguageFragment();
+            dialog.show(getActivity().getSupportFragmentManager(), "ChooseLanguageFragment");
         });
     }
 }

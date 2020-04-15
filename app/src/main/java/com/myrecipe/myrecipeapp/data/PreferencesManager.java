@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 21:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 23:36
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -14,7 +14,11 @@ public class PreferencesManager {
 
     //a helper class used to make some changes or get some data from the shared preferences
 
-    private static String TOKEN_PREFERENCE = "user_token";
+    public static final String LANGUAGE_ARABIC = "ar";
+    public static final String LANGUAGE_ENGLISH = "en";
+    private static final String TOKEN_PREFERENCE = "user_token";
+    private static final String LANGUAGE_PREFERENCE = "language";
+
     private static String token = "";
 
     public static String getPreference(Context context, String preference, String default_value) {
@@ -65,6 +69,22 @@ public class PreferencesManager {
                 Integer.valueOf(getPreference(context, "user_followers_count", "0")),
                 Integer.valueOf(getPreference(context, "user_followings_count", "0"))
         );
+    }
+
+    public static int changeLanguage(Context context, String language) {
+        if (!getLanguage(context).equals(language)) {
+            setPreference(context, LANGUAGE_PREFERENCE, language);
+            return 0;
+        }
+        return -1;
+    }
+
+    private static String getLanguage(Context context) {
+        return context.getResources().getConfiguration().locale.getLanguage();
+    }
+
+    public static String getStoredLanguage(Context context) {
+        return getPreference(context, LANGUAGE_PREFERENCE, "");
     }
 }
 

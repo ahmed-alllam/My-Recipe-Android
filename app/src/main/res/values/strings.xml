@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 23:38
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 23:36
   -->
 
 <resources>
@@ -74,4 +74,7 @@
     <!-- My Recipes fragment -->
     <string name="recipes_list_empty">This list is empty</string>
 
+    <!-- languages strings -->
+    <string name="arabic" translatable="false">العربية</string>
+    <string name="english" translatable="false">English</string>
 </resources>
