@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:44
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 18:48
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -8,6 +8,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
     private int count;
     private boolean isLoadingAdded = false;
     private boolean isLoading = false;
+    private int lastPosition = -1;
 
     private List<RecipeModel> recipesList = new ArrayList<>();
     private Context context;
@@ -90,6 +93,22 @@ public class BaseRecipesAdapter extends RecyclerView.Adapter {
             sb.append(tags.get(i));
         }
         viewHolder.tags.setText(sb.toString());
+
+        startAnimation(viewHolder.itemView, position);
+    }
+
+    private void startAnimation(View viewToAnimate, int position) {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.recyclerview_animation);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
+        holder.itemView.clearAnimation();
     }
 
     @Override

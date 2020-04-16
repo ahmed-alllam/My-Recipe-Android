@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 23:38
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 18:48
   -->
 
 
@@ -137,6 +137,7 @@
                         android:id="@+id/userImage"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/user" />
                 </androidx.cardview.widget.CardView>
 

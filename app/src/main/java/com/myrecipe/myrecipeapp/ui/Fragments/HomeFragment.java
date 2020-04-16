@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 23:38
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 18:48
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -16,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.RecipesFeedViewModel;
@@ -57,10 +59,11 @@ public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataCha
         recipesFeedViewModel.getFeed(getContext(), limitPerRequest, offset);
     }
 
-    void refreshUserImage(String image) {
+    private void refreshUserImage(String image) {
         ImageView userImage = getView().findViewById(R.id.userImage);
         Glide.with(getContext())
                 .load(image)
+                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                 .placeholder(R.drawable.user)
                 .into(userImage);
     }

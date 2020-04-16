@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 17:37
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 18:48
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -23,6 +23,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.UserViewModel;
@@ -149,15 +151,14 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
         TextView name = view.findViewById(R.id.name);
         TextView bio = view.findViewById(R.id.bio);
         TextView followersNumber = view.findViewById(R.id.followersNumber);
-        TextView followersLabel = view.findViewById(R.id.followersLabel);
         TextView followingsNumber = view.findViewById(R.id.followingsNumber);
-        TextView followingsLabel = view.findViewById(R.id.followingsLabel);
         LinearLayout followers = view.findViewById(R.id.followers);
         LinearLayout followings = view.findViewById(R.id.followings);
 
         if (user != null) {
             Glide.with(getContext())
                     .load(user.getImage())
+                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                     .placeholder(R.drawable.user)
                     .into(imageView);
 

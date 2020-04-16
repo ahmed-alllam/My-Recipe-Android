@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 17:20
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 18:48
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -46,6 +46,7 @@
                     android:id="@+id/profilePhoto"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
+                    android:scaleType="centerCrop"
                     android:contentDescription="@string/user_profile_photo"
                     android:src="@drawable/user" />
             </androidx.cardview.widget.CardView>
@@ -108,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="24dp"
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical"
                 android:visibility="invisible"
@@ -139,7 +140,7 @@
                 android:id="@+id/followings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical"
