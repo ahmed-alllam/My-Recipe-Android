@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 17:20
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 19:32
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -54,7 +54,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
     private RecipeModel recipe;
 
-    RecipeDetailFragment(RecipeModel recipe) {
+    public RecipeDetailFragment(RecipeModel recipe) {
         this.recipe = recipe;
     }
 
@@ -86,9 +86,9 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         view.findViewById(R.id.backButton).setOnClickListener((v) -> {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
+                    .setCustomAnimations(R.anim.fragment_exit, R.anim.fragment_exit)
                     .remove(this)
                     .commit();
-            getActivity().getSupportFragmentManager().popBackStack();
         });
 
         ImageView recipeImage = view.findViewById(R.id.recipeImage);
@@ -185,10 +185,13 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         });
 
         Button followUser = view.findViewById(R.id.followUser);
-        UserModel me = PreferencesManager.getStoredUser(getContext());
-        UserModel user = recipe.getUser();
 
         followUser.setOnClickListener(v -> {
+            UserModel me = PreferencesManager.getStoredUser(getContext());
+            UserModel user = recipe.getUser();
+
+            if (user == null) return;
+
             String username = user.getUsername();
 
             String token = PreferencesManager.getToken(getContext());

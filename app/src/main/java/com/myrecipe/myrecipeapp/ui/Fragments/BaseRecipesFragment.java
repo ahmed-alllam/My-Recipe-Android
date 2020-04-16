@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 23:38
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 19:32
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -37,7 +37,7 @@ public abstract class BaseRecipesFragment extends Fragment {
     MutableLiveData<RecipesResultModel> recipes;
     MutableLiveData<Integer> error;
     int limitPerRequest = 25;
-    protected BaseRecipesAdapter adapter;
+    BaseRecipesAdapter adapter;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -53,18 +53,8 @@ public abstract class BaseRecipesFragment extends Fragment {
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 super.onBindViewHolder(holder, position);
                 if (this.getItemViewType(position) == BaseRecipesAdapter.VIEW_TYPE_RECIPE) {
-
                     BaseRecipesAdapter.RecipeViewHolder viewHolder = (BaseRecipesAdapter.RecipeViewHolder) holder;
-
                     setOnFavouriteButtonPressed(viewHolder, position, this, view);
-
-                    viewHolder.recipeItem.setOnClickListener(v -> {
-                        RecipeDetailFragment recipeFragment = new RecipeDetailFragment(this.get(position));
-                        getActivity().getSupportFragmentManager().beginTransaction()
-                                .add(view.getId(), recipeFragment)
-                                .addToBackStack(null)
-                                .commit();
-                    });
                 }
             }
         };

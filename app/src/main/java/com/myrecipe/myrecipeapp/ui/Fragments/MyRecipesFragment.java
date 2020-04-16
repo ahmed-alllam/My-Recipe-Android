@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 23:38
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 19:32
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -40,7 +40,6 @@ public class MyRecipesFragment extends BaseRecipesFragment implements OnRecipeDa
                     .beginTransaction()
                     .remove(this)
                     .commit();
-            getActivity().getSupportFragmentManager().popBackStack();
         });
 
         usersRecipesModelView = new ViewModelProvider(this)

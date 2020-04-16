@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 23:36
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 19:32
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -44,13 +44,11 @@ public class SettingsFragment extends Fragment {
             }
 
             fm.beginTransaction().remove(this).commit();
-            fm.popBackStack();
         });
 
         view.findViewById(R.id.backButton).setOnClickListener(v -> {
             FragmentManager fm = getActivity().getSupportFragmentManager();
             fm.beginTransaction().remove(this).commit();
-            fm.popBackStack();
         });
 
         view.findViewById(R.id.changeLanguage).setOnClickListener(v -> {
