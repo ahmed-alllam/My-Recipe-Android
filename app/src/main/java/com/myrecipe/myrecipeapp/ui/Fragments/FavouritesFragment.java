@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -20,7 +20,7 @@ import com.myrecipe.myrecipeapp.data.APIInterface;
 import com.myrecipe.myrecipeapp.data.FavouritesModelView;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
-import com.myrecipe.myrecipeapp.ui.Adapters.BaseRecipesAdapter;
+import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 
 
@@ -40,20 +40,20 @@ public class FavouritesFragment extends BaseRecipesFragment implements OnRecipeD
         favouritesModelView = new ViewModelProvider(this)
                 .get(FavouritesModelView.class);
 
-        recipes = favouritesModelView.favouriteRecipes;
-        error = favouritesModelView.error;
+        favouritesModelView.favouriteRecipes.observe(getViewLifecycleOwner(), recipesResultModel -> onNewData(recipesResultModel.getRecipes(), recipesResultModel.getCount()));
+        favouritesModelView.error.observe(getViewLifecycleOwner(), this::onError);
 
         super.onViewCreated(view, savedInstanceState);
     }
 
-    protected void callModelView(int offset) {
+    protected void callViewModel(int offset) {
         String username = PreferencesManager.getPreference(getContext(), "user_username", "");
         favouritesModelView.getFavouriteRecipes(getContext(), username, limitPerRequest, offset);
     }
 
     @Override
-    protected void setOnFavouriteButtonPressed(BaseRecipesAdapter.RecipeViewHolder holder, int position,
-                                               BaseRecipesAdapter adapter, View view) {
+    protected void setOnFavouriteButtonPressed(RecipesRecyclerAdapter.RecipeViewHolder holder, int position,
+                                               RecipesRecyclerAdapter adapter, View view) {
 
         RecipeModel recipe = adapter.get(position);
 

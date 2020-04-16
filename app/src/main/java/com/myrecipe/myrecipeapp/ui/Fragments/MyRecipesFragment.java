@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 19:32
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -44,14 +44,14 @@ public class MyRecipesFragment extends BaseRecipesFragment implements OnRecipeDa
 
         usersRecipesModelView = new ViewModelProvider(this)
                 .get(UsersRecipesModelView.class);
-        recipes = usersRecipesModelView.recipes;
-        error = usersRecipesModelView.error;
+        usersRecipesModelView.recipes.observe(getViewLifecycleOwner(), recipesResultModel -> onNewData(recipesResultModel.getRecipes(), recipesResultModel.getCount()));
+        usersRecipesModelView.error.observe(getViewLifecycleOwner(), this::onError);
 
         super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
-    protected void callModelView(int offset) {
+    protected void callViewModel(int offset) {
         UserModel user = PreferencesManager.getStoredUser(getContext());
         usersRecipesModelView.getUsersRecipes(getContext(), user.getUsername(),
                 limitPerRequest, offset);

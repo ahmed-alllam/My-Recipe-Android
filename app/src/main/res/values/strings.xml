@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 23:36
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
   -->
 
 <resources>
@@ -53,6 +53,8 @@
     <string name="wrong_email_or_password">Wrong E-mail or Password</string>
     <string name="feed_empty">Your Recipes Feed is Empty</string>
     <string name="loading">Loading…</string>
+    <string name="list_empty">This list is empty</string>
+
 
     <!-- Recipe detail fragment-->
     <string name="about_recipe">About Recipe</string>
@@ -71,10 +73,11 @@
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
 
-    <!-- My Recipes fragment -->
-    <string name="recipes_list_empty">This list is empty</string>
-
     <!-- languages strings -->
     <string name="arabic" translatable="false">العربية</string>
     <string name="english" translatable="false">English</string>
+
+    <!-- related users fragment strings -->
+    <string name="your_followers">Your Followers</string>
+    <string name="your_followings">Your Followings</string>
 </resources>

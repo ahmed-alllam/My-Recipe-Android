@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 18:48
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -118,7 +118,7 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
                     type = RelatedUsersFragment.FOLLOWINGS_TYPE;
             }
 
-            launchFragment(new RelatedUsersFragment(type));
+            launchFragment(new RelatedUsersFragment(type, storedUserModel.getUsername()));
         };
 
         view.findViewById(R.id.followings).setOnClickListener(onRelatedUsersClicked);

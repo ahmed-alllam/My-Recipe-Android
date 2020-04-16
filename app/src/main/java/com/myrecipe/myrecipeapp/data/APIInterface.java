@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 14/04/20 23:38
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -8,6 +8,7 @@ import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.RecipesResultModel;
 import com.myrecipe.myrecipeapp.models.UserLoginModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
+import com.myrecipe.myrecipeapp.models.UsersResultModel;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -61,6 +62,28 @@ public interface APIInterface {
                                              @Path("username") String username,
                                              @Query("limit") int limit,
                                              @Query("offset") int offset);
+
+    @GET("users/{username}/followers/?format=json")
+    Call<UsersResultModel> getUsersFollowers(@Header("Authorization") String token,
+                                             @Path("username") String username,
+                                             @Query("limit") int limit,
+                                             @Query("offset") int offset);
+
+    @GET("users/{username}/followers/?format=json")
+    Call<UsersResultModel> getUsersFollowers(@Path("username") String username,
+                                             @Query("limit") int limit,
+                                             @Query("offset") int offset);
+
+    @GET("users/{username}/followings/?format=json")
+    Call<UsersResultModel> getUsersFollowings(@Header("Authorization") String token,
+                                              @Path("username") String username,
+                                              @Query("limit") int limit,
+                                              @Query("offset") int offset);
+
+    @GET("users/{username}/followings/?format=json")
+    Call<UsersResultModel> getUsersFollowings(@Path("username") String username,
+                                              @Query("limit") int limit,
+                                              @Query("offset") int offset);
 
     @FormUrlEncoded
     @POST("users/token/?format=json")
