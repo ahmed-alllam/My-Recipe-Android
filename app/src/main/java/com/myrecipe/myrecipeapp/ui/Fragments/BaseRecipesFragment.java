@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -26,13 +26,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public abstract class BaseRecipesFragment extends BaseListsFragment<RecipeModel> {
-    RecipesRecyclerAdapter adapter;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        RecyclerView recyclerView = view.findViewById(R.id.recipesRecyclerView);
+        recyclerView = view.findViewById(R.id.recipesRecyclerView);
+        errorLabel = view.findViewById(R.id.errorLabel);
+        swipeRefreshLayout = view.findViewById(R.id.swipeLayout);
 
         adapter = new RecipesRecyclerAdapter(getActivity(), this, recyclerView) {
             @Override
@@ -44,6 +43,8 @@ public abstract class BaseRecipesFragment extends BaseListsFragment<RecipeModel>
                 }
             }
         };
+
+        super.onViewCreated(view, savedInstanceState);
     }
 
     protected void setOnFavouriteButtonPressed(RecipesRecyclerAdapter.RecipeViewHolder holder, int position,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -23,6 +23,7 @@ import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.RecipesFeedViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
+import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
 
@@ -81,6 +82,6 @@ public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataCha
 
     @Override
     public void onRecipeChanged(RecipeModel recipe) {
-        adapter.updateRecipe(recipe);
+        ((RecipesRecyclerAdapter) adapter).updateRecipe(recipe);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -14,13 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.myrecipe.myrecipeapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
 
     boolean isLoadingAdded = false; // todo change loading names
     boolean isLoading = false;
-    List<T> list;
+    ArrayList<T> list = new ArrayList<>();
     Context context;
     RecyclerView recyclerView;
     private int offset;
