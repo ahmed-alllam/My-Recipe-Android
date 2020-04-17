@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -54,7 +54,7 @@
                         android:rotationY="@integer/locale_mirror_flip"
                         android:src="@drawable/back_arrow"
                         android:tint="@color/colorPrimary"
-                        app:layout_constraintBottom_toBottomOf="@+id/myRecipesLabel"
+                        app:layout_constraintBottom_toBottomOf="@+id/relatedUsersLabel"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/relatedUsersLabel"
                         tools:ignore="ContentDescription" />

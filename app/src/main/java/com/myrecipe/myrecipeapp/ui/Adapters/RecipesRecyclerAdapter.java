@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -26,9 +26,8 @@ import java.util.List;
 
 public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
 
-    public static final int VIEW_TYPE_RECIPE = 1;
-    private static final int VIEW_TYPE_EMPTY = 0;
-    private static final int VIEW_TYPE_LOADING = 2;
+    public static final int VIEW_TYPE_RECIPE = 0;
+    private static final int RECIPE_LOADING_ITEM_HEIGHT = 280;
 
     private Fragment fragment;
 
@@ -96,17 +95,16 @@ public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
         startAnimation(viewHolder.itemView, position);
     }
 
-
     @Override
-    public int getItemCount() {
-        return list.size() != 0 || !isLoading ? list.size() : 2;
+    int getLoadingItemHeight() {
+        return RECIPE_LOADING_ITEM_HEIGHT;
     }
 
     @Override
     public int getItemViewType(int position) {
         if (list.size() == 0)
             return VIEW_TYPE_EMPTY;
-        if (position == list.size() - 1 && isLoadingAdded)
+        if (position == list.size() - 1 && isLoadingMore)
             return VIEW_TYPE_LOADING;
         return VIEW_TYPE_RECIPE;
     }

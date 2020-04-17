@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 12/04/20 22:50
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
  */
 
 package com.myrecipe.myrecipeapp.models;
@@ -92,9 +92,12 @@ public class UserModel {
         return followings_count;
     }
 
-    public boolean equals(UserModel user) {
-        if (user == null)
-            return false;
+    @Override
+    public boolean equals(Object userModel) {
+        if (!(userModel instanceof UserModel)) return false;
+
+        UserModel user = (UserModel) userModel;
+
         return user.getName().equals(getName()) &&
                 user.getEmail().equals(getEmail()) &&
                 user.getUsername().equals(getUsername()) &&

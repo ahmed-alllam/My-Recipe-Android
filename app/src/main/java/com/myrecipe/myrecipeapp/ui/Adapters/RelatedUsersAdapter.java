@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -21,9 +21,8 @@ import com.myrecipe.myrecipeapp.models.UserModel;
 
 public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
 
-    private static final int VIEW_TYPE_EMPTY = 0;
-    private static final int VIEW_TYPE_USER = 1;
-    private static final int VIEW_TYPE_LOADING = 2;
+    private static final int VIEW_TYPE_USER = 0;
+    private static final int USER_LOADING_ITEM_HEIGHT = 140;
 
     public RelatedUsersAdapter(Context context, RecyclerView recyclerView) {
         super(context, recyclerView);
@@ -32,32 +31,36 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_USER)
-            return new RelatedUsersAdapter.UserViewHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.user_item, parent, false));
+        if (viewType == VIEW_TYPE_EMPTY)
+            return new RelatedUsersAdapter.EmptyViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.user_empty_item, parent, false));
+
         if (viewType == VIEW_TYPE_LOADING)
             return new RelatedUsersAdapter.LoadingViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.loading_item, parent, false));
-        return new RelatedUsersAdapter.EmptyViewHolder(LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.user_empty_item, parent, false));
+
+        return new RelatedUsersAdapter.UserViewHolder(LayoutInflater.from(parent.getContext()).
+                inflate(R.layout.user_item, parent, false));
     }
 
     @Override
     public int getItemViewType(int position) {
         if (list.size() == 0)
             return VIEW_TYPE_EMPTY;
-        if (position == list.size() - 1 && isLoadingAdded)
+        if (position == list.size() - 1 && isLoadingMore)
             return VIEW_TYPE_LOADING;
         return VIEW_TYPE_USER;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position) != VIEW_TYPE_USER) return;
+        if (getItemViewType(position) != VIEW_TYPE_USER)
+            return;
 
         UserModel user = list.get(position);
 
-        if (user == null) return;
+        if (user == null)
+            return;
 
         UserViewHolder viewHolder = (UserViewHolder) holder;
 
@@ -74,8 +77,8 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
     }
 
     @Override
-    public int getItemCount() {
-        return list.size() != 0 || !isLoading ? list.size() : 7;
+    int getLoadingItemHeight() {
+        return USER_LOADING_ITEM_HEIGHT;
     }
 
     public class UserViewHolder extends RecyclerView.ViewHolder {

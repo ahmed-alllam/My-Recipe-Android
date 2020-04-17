@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -42,7 +42,6 @@ public abstract class BaseListsFragment<T> extends Fragment {
         recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
             @Override
             public void loadMoreRecipes() {
-                adapter.setLoading(true);
                 adapter.addLoadingFooter();
                 callViewModel(adapter.getOffset());
             }
@@ -54,7 +53,7 @@ public abstract class BaseListsFragment<T> extends Fragment {
 
             @Override
             public boolean isLoading() {
-                return adapter.isLoading();
+                return adapter.isFirstLoading() || adapter.isLoadingMore();
             }
         });
 
@@ -62,14 +61,12 @@ public abstract class BaseListsFragment<T> extends Fragment {
         int primaryColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
         swipeRefreshLayout.setColorSchemeColors(primaryColor, Color.YELLOW, Color.GREEN);
 
-        // todo: add checking for duplicates
-
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            if (!adapter.isLoading()) {
+            if (!adapter.isFirstLoading()) {
                 adapter.clear();
                 adapter.setOffset(0);
                 callViewModel(0);
-                adapter.setLoading(true);
+                adapter.setFirstLoading(true);
                 recyclerView.setVisibility(View.VISIBLE);
                 errorLabel.setVisibility(View.GONE);
             } else
@@ -77,14 +74,14 @@ public abstract class BaseListsFragment<T> extends Fragment {
         });
 
         callViewModel(0);
-        adapter.setLoading(true);
+        adapter.setFirstLoading(true);
     }
 
     abstract void callViewModel(int position);
 
     void onNewData(List<T> list, int count) {
         adapter.setOffset(adapter.getOffset() + limitPerRequest);
-        adapter.setLoading(false);
+        adapter.setFirstLoading(false);
         swipeRefreshLayout.setRefreshing(false);
         adapter.removeLoadingFooter();
         adapter.addAll(list);
@@ -92,7 +89,7 @@ public abstract class BaseListsFragment<T> extends Fragment {
     }
 
     void onError(int error) {
-        adapter.setLoading(false);
+        adapter.setFirstLoading(false);
         adapter.removeLoadingFooter();
         swipeRefreshLayout.setRefreshing(false);
 

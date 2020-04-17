@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +42,18 @@ public class RelatedUsersFragment extends BaseListsFragment<UserModel> {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        view.findViewById(R.id.backButton).setOnClickListener(v -> {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(this)
+                    .commit();
+        });
+
+        TextView relatedUsersLabel = view.findViewById(R.id.relatedUsersLabel);
+        if (type == FOLLOWINGS_TYPE)
+            relatedUsersLabel.setText(R.string.followings);
+        else if (type == FOLLOWERS_TYPE)
+            relatedUsersLabel.setText(R.string.followers);
 
         viewModel = new ViewModelProvider(this)
                 .get(RelatedUsersViewModel.class);

@@ -1,10 +1,11 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:56
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,8 +20,11 @@ import java.util.List;
 
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
 
-    boolean isLoadingAdded = false; // todo change loading names
-    boolean isLoading = false;
+    static final int VIEW_TYPE_EMPTY = 1;
+    static final int VIEW_TYPE_LOADING = 2;
+
+    boolean isLoadingMore = false;
+    private boolean isFirstLoading = false;
     ArrayList<T> list = new ArrayList<>();
     Context context;
     RecyclerView recyclerView;
@@ -32,6 +36,20 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
         this.context = context;
         this.recyclerView = recyclerView;
     }
+
+    @Override
+    public int getItemCount() {
+        return list.size() != 0 || !isFirstLoading ? list.size() : getLoadingItemsNum();
+    }
+
+    private int getLoadingItemsNum() {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float parentHeight = recyclerView.getHeight() / displayMetrics.density;
+
+        return (int) (parentHeight / getLoadingItemHeight());
+    }
+
+    abstract int getLoadingItemHeight();
 
     void startAnimation(View viewToAnimate, int position) {
         // If the bound view wasn't previously displayed on screen, it's animated
@@ -80,8 +98,9 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
         });
     }
 
+
     public void addLoadingFooter() {
-        isLoadingAdded = true;
+        isLoadingMore = true;
         recyclerView.post(() -> {
             list.add(null);
             notifyItemInserted(list.size() - 1);
@@ -89,23 +108,27 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
     }
 
     public void removeLoadingFooter() {
-        if (isLoadingAdded) {
-            isLoadingAdded = false;
+        if (isLoadingMore) {
+            isLoadingMore = false;
             int position = list.size() - 1;
             remove(position);
         }
+    }
+
+    public boolean isLoadingMore() {
+        return isLoadingMore;
     }
 
     public boolean isLastPage() {
         return offset >= count;
     }
 
-    public boolean isLoading() {
-        return isLoading;
+    public boolean isFirstLoading() {
+        return isFirstLoading;
     }
 
-    public void setLoading(boolean loading) {
-        isLoading = loading;
+    public void setFirstLoading(boolean firstLoading) {
+        isFirstLoading = firstLoading;
     }
 
     public int getOffset() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 05/04/20 18:52
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
  */
 
 package com.myrecipe.myrecipeapp.models;
@@ -27,6 +27,7 @@ public class RecipeModel {
     private float rating;
     @SerializedName("is_favourited_by_user")
     private boolean isFavouritedByUser;
+
 
     public boolean isFavouritedByUser() {
         return isFavouritedByUser;
@@ -101,7 +102,7 @@ public class RecipeModel {
     }
 
     public String getSlug() {
-        return slug;
+        return slug != null ? slug : "";
     }
 
     public String getMain_image() {
