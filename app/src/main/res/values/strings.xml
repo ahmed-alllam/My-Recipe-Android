@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 23:30
   -->
 
 <resources>
@@ -56,7 +56,7 @@
     <string name="list_empty">This list is empty</string>
 
 
-    <!-- Recipe detail fragment-->
+    <!-- Recipe detail fragment strings-->
     <string name="about_recipe">About Recipe</string>
     <string name="ingredients">Ingredients</string>
     <string name="steps">Steps</string>
@@ -68,7 +68,7 @@
     <string name="see_all_reviews">See all reviews</string>
     <string name="add_a_review">Add a Review</string>
 
-    <!-- Settings fragment -->
+    <!-- Settings fragment strings-->
     <string name="change_language">Change Language</string>
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
@@ -76,4 +76,8 @@
     <!-- languages strings -->
     <string name="arabic" translatable="false">العربية</string>
     <string name="english" translatable="false">English</string>
+
+    <!-- Signup Activity strings -->
+    <string name="confirm_password">Confirm Password</string>
+    <string name="name">Name</string>
 </resources>

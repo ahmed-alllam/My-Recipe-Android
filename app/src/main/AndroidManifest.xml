@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 19:43
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 23:30
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,7 +18,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".ui.Activities.SignupActivity"></activity>
+
+        <activity
+            android:name=".ui.Activities.SignupActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".ui.Activities.LoginActivity"
             android:configChanges="orientation"

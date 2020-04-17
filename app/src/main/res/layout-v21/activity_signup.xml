@@ -15,6 +15,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/white_rounded_corners"
+        android:elevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
@@ -60,6 +61,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/white_rounded_corners"
+        android:elevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameGroup">
@@ -104,6 +106,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/white_rounded_corners"
+        android:elevation="2dp"
         app:layout_constraintEnd_toEndOf="@+id/emailGroup"
         app:layout_constraintStart_toStartOf="@+id/emailGroup"
         app:layout_constraintTop_toBottomOf="@+id/emailGroup">
@@ -148,6 +151,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/white_rounded_corners"
+        android:elevation="2dp"
         app:layout_constraintEnd_toEndOf="@+id/passwordGroup"
         app:layout_constraintStart_toStartOf="@+id/passwordGroup"
         app:layout_constraintTop_toBottomOf="@+id/passwordGroup">
@@ -192,6 +196,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_corner_shape"
+        android:elevation="3dp"
         android:text="@string/sign_up"
         android:textColor="@color/design_default_color_on_primary"
         app:layout_constraintEnd_toEndOf="parent"

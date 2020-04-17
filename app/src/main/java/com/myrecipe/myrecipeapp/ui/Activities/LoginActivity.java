@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 23:36
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 23:30
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -53,6 +53,11 @@ public class LoginActivity extends AppCompatActivity implements OnLanguageChange
         });
 
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
+
+        findViewById(R.id.signUpLabel).setOnClickListener(v -> {
+            startActivity(new Intent(this, SignupActivity.class));
+            finish();
+        });
     }
 
     public void login(View view) {
