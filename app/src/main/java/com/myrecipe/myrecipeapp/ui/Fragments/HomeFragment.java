@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:56
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 16:47
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -66,7 +66,7 @@ public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataCha
         Glide.with(getContext())
                 .load(image)
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
-                .placeholder(R.drawable.user)
+                .placeholder(R.drawable.user_icon)
                 .into(userImage);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 19:32
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 16:47
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -231,7 +231,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         ImageView userImage = view.findViewById(R.id.userImage);
         Glide.with(getContext())
                 .load(user.getImage())
-                .placeholder(R.drawable.user)
+                .placeholder(R.drawable.user_icon)
                 .into(userImage);
 
         TextView userName = view.findViewById(R.id.userName);
@@ -341,7 +341,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
                 Glide.with(getContext())
                         .load(review.getUser().getImage())
-                        .placeholder(R.drawable.user)
+                        .placeholder(R.drawable.user_icon)
                         .into((ImageView) reviewView.findViewById(R.id.userPhoto));
 
                 ((TextView) reviewView.findViewById(R.id.userName)).setText(review.getUser().getName());
