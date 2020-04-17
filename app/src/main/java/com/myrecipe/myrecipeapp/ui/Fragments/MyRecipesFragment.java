@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:56
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 19:43
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
-import com.myrecipe.myrecipeapp.data.UsersRecipesModelView;
+import com.myrecipe.myrecipeapp.data.UsersRecipesViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
@@ -25,7 +25,7 @@ import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 
 public class MyRecipesFragment extends BaseRecipesFragment implements OnRecipeDataChangedListener {
 
-    private UsersRecipesModelView usersRecipesModelView;
+    private UsersRecipesViewModel usersRecipesViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,10 +43,10 @@ public class MyRecipesFragment extends BaseRecipesFragment implements OnRecipeDa
                     .commit();
         });
 
-        usersRecipesModelView = new ViewModelProvider(this)
-                .get(UsersRecipesModelView.class);
-        usersRecipesModelView.recipes.observe(getViewLifecycleOwner(), recipesResultModel -> onNewData(recipesResultModel.getRecipes(), recipesResultModel.getCount()));
-        usersRecipesModelView.error.observe(getViewLifecycleOwner(), this::onError);
+        usersRecipesViewModel = new ViewModelProvider(this)
+                .get(UsersRecipesViewModel.class);
+        usersRecipesViewModel.recipes.observe(getViewLifecycleOwner(), recipesResultModel -> onNewData(recipesResultModel.getRecipes(), recipesResultModel.getCount()));
+        usersRecipesViewModel.error.observe(getViewLifecycleOwner(), this::onError);
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -54,7 +54,7 @@ public class MyRecipesFragment extends BaseRecipesFragment implements OnRecipeDa
     @Override
     protected void callViewModel(int offset) {
         UserModel user = PreferencesManager.getStoredUser(getContext());
-        usersRecipesModelView.getUsersRecipes(getContext(), user.getUsername(),
+        usersRecipesViewModel.getUsersRecipes(getContext(), user.getUsername(),
                 limitPerRequest, offset);
     }
 

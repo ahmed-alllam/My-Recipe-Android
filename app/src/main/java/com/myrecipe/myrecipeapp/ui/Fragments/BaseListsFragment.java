@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 19:43
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -65,10 +65,10 @@ public abstract class BaseListsFragment<T> extends Fragment {
             if (!adapter.isFirstLoading()) {
                 adapter.clear();
                 adapter.setOffset(0);
-                callViewModel(0);
                 adapter.setFirstLoading(true);
                 recyclerView.setVisibility(View.VISIBLE);
                 errorLabel.setVisibility(View.GONE);
+                callViewModel(0);
             } else
                 swipeRefreshLayout.setRefreshing(false);
         });
@@ -92,7 +92,6 @@ public abstract class BaseListsFragment<T> extends Fragment {
         adapter.setFirstLoading(false);
         adapter.removeLoadingFooter();
         swipeRefreshLayout.setRefreshing(false);
-
         if (adapter.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             errorLabel.setVisibility(View.VISIBLE);
