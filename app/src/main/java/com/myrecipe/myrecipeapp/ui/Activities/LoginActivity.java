@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -106,9 +106,9 @@ public class LoginActivity extends AppCompatActivity implements OnLanguageChange
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
                     setResult(RESULT_OK, data);
-                    finish();
                 }
             }
+            finish();
         }
     }
 }
