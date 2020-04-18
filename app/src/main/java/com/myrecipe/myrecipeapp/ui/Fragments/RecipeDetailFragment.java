@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -35,6 +35,7 @@ import com.myrecipe.myrecipeapp.data.RecipeDetailViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.RecipeReviewModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
+import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
 
@@ -84,7 +85,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
 
         view.findViewById(R.id.backButton).setOnClickListener((v) -> {
-            getActivity().getSupportFragmentManager()
+            getParentFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.fragment_exit, R.anim.fragment_exit)
                     .remove(this)
@@ -175,7 +176,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
                 APIInterface.removeFavouriteRecipe(token, recipeSlug).enqueue(new emptyCallBack());
             }
 
-            for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
+            for (Fragment f : ((MainActivity) getActivity()).getFragments()) {
                 if (f instanceof OnRecipeDataChangedListener && f != this) {
                     ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
                 }
@@ -214,7 +215,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
                 me.setFollowings_count(me.getFollowings_count() - 1);
             }
 
-            for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
+            for (Fragment f : ((MainActivity) getActivity()).getFragments()) {
                 if (f instanceof OnRecipeDataChangedListener && f != this) {
                     ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
                 }
@@ -388,6 +389,12 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
             this.recipe = recipe;
             refreshRecipeData(getView(), null);
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity) getActivity()).removeFragment(this);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 19:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -20,6 +20,7 @@ import com.myrecipe.myrecipeapp.data.APIInterface;
 import com.myrecipe.myrecipeapp.data.FavouritesViewModel;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
+import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 
@@ -74,7 +75,7 @@ public class FavouritesFragment extends BaseRecipesFragment implements OnRecipeD
 
             adapter.removeRecipe(slug);
 
-            for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
+            for (Fragment f : ((MainActivity) getActivity()).getFragments()) {
                 if (f instanceof OnRecipeDataChangedListener && f != this) {
                     ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
                 }
@@ -90,5 +91,11 @@ public class FavouritesFragment extends BaseRecipesFragment implements OnRecipeD
             ((RecipesRecyclerAdapter) adapter).removeRecipe(recipe.getSlug());
         else
             ((RecipesRecyclerAdapter) adapter).updateRecipe(recipe);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity) getActivity()).removeFragment(this);
     }
 }

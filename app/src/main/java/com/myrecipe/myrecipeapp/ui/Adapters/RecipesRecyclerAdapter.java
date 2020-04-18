@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 18:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
+import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.Fragments.RecipeDetailFragment;
 
 import java.util.List;
@@ -82,11 +83,12 @@ public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
 
         viewHolder.recipeItem.setOnClickListener(v -> {
             RecipeDetailFragment recipeFragment = new RecipeDetailFragment(get(position));
-            fragment.getActivity().getSupportFragmentManager().beginTransaction()
+            fragment.getChildFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit)
                     .add(fragment.getView().getId(), recipeFragment)
                     .addToBackStack(null)
                     .commit();
+            ((MainActivity) fragment.getActivity()).addFragment(recipeFragment);
         });
 
         startAnimation(viewHolder.itemView, position);

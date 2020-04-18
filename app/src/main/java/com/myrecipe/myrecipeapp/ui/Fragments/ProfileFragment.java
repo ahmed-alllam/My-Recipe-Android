@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 18:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -30,6 +30,7 @@ import com.myrecipe.myrecipeapp.data.MyUserViewModel;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Activities.LoginActivity;
+import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
 
 
@@ -89,7 +90,7 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
                 refreshUserUIINfo(view, userProfile);
                 storeUserInfo(userProfile);
 
-                for (Fragment f : getActivity().getSupportFragmentManager().getFragments()) {
+                for (Fragment f : ((MainActivity) getActivity()).getFragments()) {
                     if (f instanceof OnUserProfileChangedListener && f != this) {
                         ((OnUserProfileChangedListener) f).onUserProfileChanged(userProfile);
                     }
@@ -185,10 +186,17 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
     }
 
     private void launchFragment(Fragment fragment) {
-        getActivity().getSupportFragmentManager().beginTransaction()
+        getChildFragmentManager().beginTransaction()
                 .add(getView().getId(), fragment)
                 .addToBackStack(null)
                 .commit();
+        ((MainActivity) getActivity()).addFragment(fragment);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity) getActivity()).removeFragment(this);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 16:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -17,12 +17,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.RecipesFeedViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
+import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
@@ -65,7 +65,7 @@ public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataCha
         ImageView userImage = getView().findViewById(R.id.userImage);
         Glide.with(getContext())
                 .load(image)
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.user_icon)
                 .into(userImage);
     }
@@ -83,5 +83,11 @@ public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataCha
     @Override
     public void onRecipeChanged(RecipeModel recipe) {
         ((RecipesRecyclerAdapter) adapter).updateRecipe(recipe);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity) getActivity()).removeFragment(this);
     }
 }

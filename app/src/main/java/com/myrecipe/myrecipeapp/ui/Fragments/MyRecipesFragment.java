@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 19:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -20,6 +20,7 @@ import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.UsersRecipesViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
+import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 
@@ -37,7 +38,7 @@ public class MyRecipesFragment extends BaseRecipesFragment implements OnRecipeDa
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ImageButton backButton = view.findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager()
+            getParentFragmentManager()
                     .beginTransaction()
                     .remove(this)
                     .commit();
@@ -56,6 +57,12 @@ public class MyRecipesFragment extends BaseRecipesFragment implements OnRecipeDa
         UserModel user = PreferencesManager.getStoredUser(getContext());
         usersRecipesViewModel.getUsersRecipes(getContext(), user.getUsername(),
                 limitPerRequest, offset);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity) getActivity()).removeFragment(this);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 18:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.models.UserModel;
+import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.Fragments.GeneralUsersProfileFragment;
 
 
@@ -74,10 +75,12 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
 
         viewHolder.userName.setText(user.getName());
         holder.itemView.setOnClickListener(v -> {
-            FragmentTransaction ft = fragment.getActivity().getSupportFragmentManager().beginTransaction();
-            ft.add(fragment.getView().getId(), new GeneralUsersProfileFragment(user.getUsername()))
+            GeneralUsersProfileFragment profileFragment = new GeneralUsersProfileFragment(user.getUsername());
+            FragmentTransaction ft = fragment.getChildFragmentManager().beginTransaction();
+            ft.add(fragment.getView().getId(), profileFragment)
                     .addToBackStack(null)
                     .commit();
+            ((MainActivity) fragment.getActivity()).addFragment(profileFragment);
         });
 
         startAnimation(viewHolder.itemView, position);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 18:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.RelatedUsersViewModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
+import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.Adapters.RelatedUsersAdapter;
 
 
@@ -43,7 +44,7 @@ public class RelatedUsersFragment extends BaseListsFragment<UserModel> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         view.findViewById(R.id.backButton).setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager()
+            getParentFragmentManager()
                     .beginTransaction()
                     .remove(this)
                     .commit();
@@ -76,6 +77,12 @@ public class RelatedUsersFragment extends BaseListsFragment<UserModel> {
         } else if (type == FOLLOWINGS_TYPE) {
             viewModel.getUsersFollowings(getContext(), username, limitPerRequest, position);
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity) getActivity()).removeFragment(this);
     }
 
     // todo: add onuserchanged listener

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 19:32
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
+import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
 
 
@@ -36,24 +37,29 @@ public class SettingsFragment extends Fragment {
         view.findViewById(R.id.logout).setOnClickListener(v -> {
             PreferencesManager.setToken(getContext(), "");
 
-            FragmentManager fm = getActivity().getSupportFragmentManager();
-            for (Fragment f : fm.getFragments()) {
+            for (Fragment f : ((MainActivity) getActivity()).getFragments()) {
                 if (f instanceof OnUserProfileChangedListener) {
                     ((OnUserProfileChangedListener) f).onUserProfileChanged(null);
                 }
             }
 
-            fm.beginTransaction().remove(this).commit();
+            getParentFragmentManager().beginTransaction().remove(this).commit();
         });
 
         view.findViewById(R.id.backButton).setOnClickListener(v -> {
-            FragmentManager fm = getActivity().getSupportFragmentManager();
+            FragmentManager fm = getParentFragmentManager();
             fm.beginTransaction().remove(this).commit();
         });
 
         view.findViewById(R.id.changeLanguage).setOnClickListener(v -> {
             DialogFragment dialog = new ChangeLanguageFragment();
-            dialog.show(getActivity().getSupportFragmentManager(), "ChooseLanguageFragment");
+            dialog.show(getChildFragmentManager(), "ChooseLanguageFragment");
         });
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity) getActivity()).removeFragment(this);
     }
 }

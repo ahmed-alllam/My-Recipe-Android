@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 16:08
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -7,6 +7,7 @@ package com.myrecipe.myrecipeapp.ui.Activities;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearSmoothScroller;
@@ -23,9 +24,13 @@ import com.myrecipe.myrecipeapp.ui.Fragments.HomeFragment;
 import com.myrecipe.myrecipeapp.ui.Fragments.ProfileFragment;
 import com.myrecipe.myrecipeapp.ui.Fragments.SearchFragment;
 
+import java.util.ArrayList;
+
 public class MainActivity extends BaseActivity {
     MainViewPagerAdapter viewPagerAdapter;
     ViewPager2 mainViewPager;
+
+    private ArrayList<Fragment> fragments = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,14 +81,14 @@ public class MainActivity extends BaseActivity {
                 int position = tab.getPosition();
                 Fragment parentFragment = viewPagerAdapter.createFragment(position);
 
-                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                for (Fragment fragment : fragments) {
                     if (fragment.getView() != null && parentFragment.getView() != null) {
                         if (((ViewGroup) fragment.getView().getParent()).getId() ==
                                 parentFragment.getView().getId()) {
                             subFragments = true;
-                            getSupportFragmentManager().beginTransaction().
-                                    remove(fragment).
-                                    commit();
+                            fragment.getParentFragmentManager().beginTransaction()
+                                    .remove(fragment)
+                                    .commit();
                         }
                     }
                 }
@@ -98,28 +103,52 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    public void onAttachFragment(@NonNull Fragment fragment) {
+        super.onAttachFragment(fragment);
+
+        fragments.add(fragment);
+    }
+
+
+    @Override
     public void onBackPressed() {
+        System.out.println(fragments.size());
         Fragment parentFragment = viewPagerAdapter.createFragment(mainViewPager.getCurrentItem());
-        for (int i = getSupportFragmentManager().getFragments().size() - 1; i >= 0; i--) {
-            Fragment fragment = getSupportFragmentManager().getFragments().get(i);
-            if (fragment.getView() != null) {
-                if (parentFragment.getView() == fragment.getView().getParent()) {
-                    getSupportFragmentManager().beginTransaction()
+        for (int i = fragments.size() - 1; i >= 0; i--) {
+            Fragment fragment = fragments.get(i);
+            // todo : next line is wrong because of the id
+            if (fragment != parentFragment && fragment.getView() != null) {
+                if (parentFragment.getView().findViewById(fragment.getView().getId()) != null) {
+                    fragment.getParentFragmentManager().beginTransaction()
                             .remove(fragment)
                             .commit();
                     return;
                 }
             }
         }
-        if (mainViewPager.getCurrentItem() != 0)
-            mainViewPager.setCurrentItem(0);
+        if (mainViewPager.getCurrentItem() != 0) mainViewPager.setCurrentItem(0);
         else {
-            RecyclerView homerecyclerView = parentFragment.getView().findViewById(R.id.recipesRecyclerView);
-            if (homerecyclerView.computeVerticalScrollOffset() != 0)
-                scrollToTop(parentFragment);
-            else
-                finish();
+            if (parentFragment.getView() != null) {
+                RecyclerView homerecyclerView = parentFragment.getView().findViewById(R.id.recipesRecyclerView);
+                if (homerecyclerView.computeVerticalScrollOffset() != 0)
+                    scrollToTop(parentFragment);
+                else
+                    finish();
+            }
         }
+    }
+
+
+    public void addFragment(Fragment fragment) {
+        fragments.add(fragment);
+    }
+
+    public void removeFragment(Fragment fragment) {
+        fragments.remove(fragment);
+    }
+
+    public ArrayList<Fragment> getFragments() {
+        return fragments;
     }
 
     private void scrollToTop(Fragment fragment) {
