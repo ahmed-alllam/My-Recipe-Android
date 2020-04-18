@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 10/04/20 20:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 18:12
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -14,7 +14,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserViewModel extends ViewModel {
+public class MyUserViewModel extends ViewModel {
     public MutableLiveData<UserModel> userProfile = new MutableLiveData<>();
     public MutableLiveData<Integer> error = new MutableLiveData<>();
 

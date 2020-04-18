@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 18:12
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -29,12 +29,9 @@ public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
     public static final int VIEW_TYPE_RECIPE = 0;
     private static final int RECIPE_LOADING_ITEM_HEIGHT = 280;
 
-    private Fragment fragment;
-
 
     protected RecipesRecyclerAdapter(Context context, Fragment fragment, RecyclerView recyclerView) {
-        super(context, recyclerView);
-        this.fragment = fragment;
+        super(context, fragment, recyclerView);
     }
 
     @NonNull

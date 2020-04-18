@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 18:12
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -12,11 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.models.UserModel;
+import com.myrecipe.myrecipeapp.ui.Fragments.GeneralUsersProfileFragment;
 
 
 public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
@@ -24,8 +27,8 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
     private static final int VIEW_TYPE_USER = 0;
     private static final int USER_LOADING_ITEM_HEIGHT = 100;
 
-    public RelatedUsersAdapter(Context context, RecyclerView recyclerView) {
-        super(context, recyclerView);
+    public RelatedUsersAdapter(Context context, Fragment fragment, RecyclerView recyclerView) {
+        super(context, fragment, recyclerView);
     }
 
     @NonNull
@@ -70,7 +73,12 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
                 .into(viewHolder.userPhoto);
 
         viewHolder.userName.setText(user.getName());
-        // todo add listner for opening user fragment
+        holder.itemView.setOnClickListener(v -> {
+            FragmentTransaction ft = fragment.getActivity().getSupportFragmentManager().beginTransaction();
+            ft.add(fragment.getView().getId(), new GeneralUsersProfileFragment(user.getUsername()))
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         startAnimation(viewHolder.itemView, position);
     }

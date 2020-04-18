@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 18:12
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -98,6 +98,9 @@ public interface APIInterface {
 
     @GET("users/me/?format=json")
     Call<UserModel> getMyProfile(@Header("Authorization") String token);
+
+    @GET("users/{username}/?format=json")
+    Call<UserModel> getUserProfile(@Path("username") String username);
 
     @POST("users/{username}/follow/")
     Call<Void> followUser(@Header("Authorization") String token,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 18:12
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -26,8 +26,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.myrecipe.myrecipeapp.R;
+import com.myrecipe.myrecipeapp.data.MyUserViewModel;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
-import com.myrecipe.myrecipeapp.data.UserViewModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Activities.LoginActivity;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
@@ -37,7 +37,7 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
 
     private static final int LAUNCH_LOGIN_ACTIVITY = 0;
 
-    private UserViewModel userViewModel;
+    private MyUserViewModel myUserViewModel;
     private UserModel storedUserModel;
     private String token;
 
@@ -51,13 +51,13 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        myUserViewModel = new ViewModelProvider(this).get(MyUserViewModel.class);
 
         token = PreferencesManager.getToken(getContext());
         if (token.length() > 0) {
             storedUserModel = getStoredUserInfo();
             refreshUserUIINfo(view, storedUserModel);
-            userViewModel.getMyProfile(token);
+            myUserViewModel.getMyProfile(token);
         }
 
         view.findViewById(R.id.loginLabel).setOnClickListener(v -> {
@@ -77,12 +77,12 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
         profileFragmentSwipe.setOnRefreshListener(() -> {
             token = PreferencesManager.getToken(getContext());
             if (token.length() > 0) {
-                userViewModel.getMyProfile(token);
+                myUserViewModel.getMyProfile(token);
             } else
                 profileFragmentSwipe.setRefreshing(false);
         });
 
-        userViewModel.userProfile.observe(getViewLifecycleOwner(), userProfile -> {
+        myUserViewModel.userProfile.observe(getViewLifecycleOwner(), userProfile -> {
             profileFragmentSwipe.setRefreshing(false);
 
             if (storedUserModel == null || !storedUserModel.equals(userProfile)) {
@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
                 }
             }
         });
-        userViewModel.error.observe(getViewLifecycleOwner(), error -> {
+        myUserViewModel.error.observe(getViewLifecycleOwner(), error -> {
             profileFragmentSwipe.setRefreshing(false);
 
             if (storedUserModel == null) {
@@ -133,7 +133,7 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
                     String token = data.getStringExtra("token");
-                    userViewModel.getMyProfile(token);
+                    myUserViewModel.getMyProfile(token);
 
                     getView().findViewById(R.id.loginLabel).setVisibility(View.INVISIBLE);
 

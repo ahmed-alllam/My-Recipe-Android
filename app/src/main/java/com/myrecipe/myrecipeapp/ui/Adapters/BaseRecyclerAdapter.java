@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 18:12
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.myrecipe.myrecipeapp.R;
@@ -28,13 +29,15 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
     ArrayList<T> list = new ArrayList<>();
     Context context;
     RecyclerView recyclerView;
+    Fragment fragment;
     private int offset;
     private int count;
     private int lastPosition = -1;
 
-    BaseRecyclerAdapter(Context context, RecyclerView recyclerView) {
+    BaseRecyclerAdapter(Context context, Fragment fragment, RecyclerView recyclerView) {
         this.context = context;
         this.recyclerView = recyclerView;
+        this.fragment = fragment;
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 18:12
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -59,7 +59,7 @@ public class RelatedUsersFragment extends BaseListsFragment<UserModel> {
                 .get(RelatedUsersViewModel.class);
 
         recyclerView = view.findViewById(R.id.usersRecyclerView);
-        adapter = new RelatedUsersAdapter(getContext(), recyclerView);
+        adapter = new RelatedUsersAdapter(getContext(), this, recyclerView);
         errorLabel = view.findViewById(R.id.errorLabel);
         swipeRefreshLayout = view.findViewById(R.id.swipeLayout);
 
@@ -77,4 +77,6 @@ public class RelatedUsersFragment extends BaseListsFragment<UserModel> {
             viewModel.getUsersFollowings(getContext(), username, limitPerRequest, position);
         }
     }
+
+    // todo: add onuserchanged listener
 }
