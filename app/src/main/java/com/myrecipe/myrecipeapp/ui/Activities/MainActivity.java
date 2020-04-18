@@ -1,15 +1,12 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 19:32
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 16:08
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
 
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearSmoothScroller;
@@ -20,29 +17,19 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.myrecipe.myrecipeapp.R;
-import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.ui.Adapters.MainViewPagerAdapter;
-import com.myrecipe.myrecipeapp.ui.CallBacks.OnLanguageChangedListner;
 import com.myrecipe.myrecipeapp.ui.Fragments.FavouritesFragment;
 import com.myrecipe.myrecipeapp.ui.Fragments.HomeFragment;
 import com.myrecipe.myrecipeapp.ui.Fragments.ProfileFragment;
 import com.myrecipe.myrecipeapp.ui.Fragments.SearchFragment;
 
-import java.util.Locale;
-
-public class MainActivity extends AppCompatActivity implements OnLanguageChangedListner {
+public class MainActivity extends BaseActivity {
     MainViewPagerAdapter viewPagerAdapter;
     ViewPager2 mainViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        String lang;
-        if (!(lang = PreferencesManager.getStoredLanguage(this)).isEmpty()) {
-            onLanguageChanged(lang, false);
-        }
-
         setContentView(R.layout.activity_main);
 
         mainViewPager = findViewById(R.id.mainViewPager);
@@ -150,20 +137,5 @@ public class MainActivity extends AppCompatActivity implements OnLanguageChanged
         AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
         if (behavior != null)
             behavior.setTopAndBottomOffset(0);
-    }
-
-    @Override
-    public void onLanguageChanged(String language, boolean refresh) {
-        Locale locale = new Locale(language);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
-
-        if (refresh) {
-            startActivity(new Intent(this, this.getClass()));
-            finish();
-        }
     }
 }

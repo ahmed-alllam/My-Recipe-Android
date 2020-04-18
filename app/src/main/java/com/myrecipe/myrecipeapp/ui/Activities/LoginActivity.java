@@ -1,12 +1,11 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 16:08
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -14,29 +13,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.LoginViewModel;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
-import com.myrecipe.myrecipeapp.ui.CallBacks.OnLanguageChangedListner;
 
-import java.util.Locale;
-
-public class LoginActivity extends AppCompatActivity implements OnLanguageChangedListner {
+public class LoginActivity extends BaseActivity {
     private static final int LAUNCH_SIGNUP_ACTIVITY = 0;
     private LoginViewModel loginViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        String lang;
-        if (!(lang = PreferencesManager.getStoredLanguage(this)).isEmpty()) {
-            onLanguageChanged(lang, false);
-        }
-
         setContentView(R.layout.activity_login);
 
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
@@ -83,20 +72,6 @@ public class LoginActivity extends AppCompatActivity implements OnLanguageChange
         return password.length() >= 5;
     }
 
-    @Override
-    public void onLanguageChanged(String lang, boolean refresh) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
-
-        if (refresh) {
-            startActivity(new Intent(this, this.getClass()));
-            finish();
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

@@ -1,30 +1,25 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 16:08
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.LoginViewModel;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.SignupViewModel;
-import com.myrecipe.myrecipeapp.ui.CallBacks.OnLanguageChangedListner;
 
-import java.util.Locale;
-
-public class SignupActivity extends AppCompatActivity implements OnLanguageChangedListner {
+public class SignupActivity extends BaseActivity {
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private String email;
@@ -33,12 +28,6 @@ public class SignupActivity extends AppCompatActivity implements OnLanguageChang
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        String lang;
-        if (!(lang = PreferencesManager.getStoredLanguage(this)).isEmpty()) {
-            onLanguageChanged(lang, false);
-        }
-
         setContentView(R.layout.activity_signup);
 
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
@@ -103,20 +92,5 @@ public class SignupActivity extends AppCompatActivity implements OnLanguageChang
 
     private boolean validPassword(String password, String password2) {
         return password.equals(password2) && password.length() >= 5;
-    }
-
-    @Override
-    public void onLanguageChanged(String lang, boolean refresh) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
-
-        if (refresh) {
-            startActivity(new Intent(this, this.getClass()));
-            finish();
-        }
     }
 }

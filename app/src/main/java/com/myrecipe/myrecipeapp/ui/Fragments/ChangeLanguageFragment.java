@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 23:36
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 16:08
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -18,7 +18,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.PreferencesManager;
-import com.myrecipe.myrecipeapp.ui.CallBacks.OnLanguageChangedListner;
+import com.myrecipe.myrecipeapp.ui.Activities.BaseActivity;
 
 
 public class ChangeLanguageFragment extends DialogFragment {
@@ -47,7 +47,7 @@ public class ChangeLanguageFragment extends DialogFragment {
                     }
                     int result = PreferencesManager.changeLanguage(getContext(), language);
                     if (result == 0)
-                        ((OnLanguageChangedListner) getActivity()).onLanguageChanged(language, true);
+                        ((BaseActivity) getActivity()).changeLanguage(language, true);
                 });
         return builder.create();
     }
