@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
  */
 
 package com.myrecipe.myrecipeapp.models;
@@ -8,6 +8,7 @@ public class UserModel {
 
     private String name;
     private String email;
+    private String password;
     private String username;
     private String bio;
     private String image;
@@ -26,6 +27,14 @@ public class UserModel {
         this.image = image;
         this.followers_count = followers_count;
         this.followings_count = followings_count;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public boolean isFollowedByUser() {

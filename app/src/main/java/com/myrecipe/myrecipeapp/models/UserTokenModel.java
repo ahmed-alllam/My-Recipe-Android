@@ -1,10 +1,10 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 03/04/20 21:32
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
  */
 
 package com.myrecipe.myrecipeapp.models;
 
-public class UserLoginModel {
+public class UserTokenModel {
 
     private String token;
 

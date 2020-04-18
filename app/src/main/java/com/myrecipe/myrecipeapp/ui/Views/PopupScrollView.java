@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 11/04/20 23:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
  */
 
 package com.myrecipe.myrecipeapp.ui.Views;
@@ -60,6 +60,7 @@ public class PopupScrollView extends ScrollView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        // todo: buggy
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 y = ev.getRawY();

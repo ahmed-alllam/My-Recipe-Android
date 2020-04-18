@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 19:43
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -87,35 +87,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/profilePhotoContainer" />
 
-                <TextView
-                    android:id="@+id/bio"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="32dp"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-condensed-medium"
-                    android:maxLines="1"
-                    android:textAlignment="center"
-                    android:textColor="#C1FFFFFF"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/name" />
-
                 <LinearLayout
                     android:id="@+id/followers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="24dp"
                     android:layout_marginBottom="16dp"
                     android:orientation="vertical"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="@+id/voidView"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bio">
+                    app:layout_constraintTop_toBottomOf="@+id/loginLabel">
 
                     <TextView
                         android:id="@+id/followersNumber"
@@ -141,13 +124,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp"
                     android:orientation="vertical"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="@+id/voidView"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bio">
+                    app:layout_constraintTop_toBottomOf="@+id/loginLabel">
 
                     <TextView
                         android:id="@+id/followingsNumber"

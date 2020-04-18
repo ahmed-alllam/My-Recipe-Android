@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -149,7 +149,6 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
         ImageView imageView = view.findViewById(R.id.profilePhoto);
         TextView loginLabel = view.findViewById(R.id.loginLabel);
         TextView name = view.findViewById(R.id.name);
-        TextView bio = view.findViewById(R.id.bio);
         TextView followersNumber = view.findViewById(R.id.followersNumber);
         TextView followingsNumber = view.findViewById(R.id.followingsNumber);
         LinearLayout followers = view.findViewById(R.id.followers);
@@ -167,9 +166,6 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
             name.setVisibility(View.VISIBLE);
             name.setText(user.getName());
 
-            bio.setVisibility(View.VISIBLE);
-            bio.setText(user.getBio());
-
             followers.setVisibility(View.VISIBLE);
             followersNumber.setText(String.valueOf(user.getFollowers_count()));
 
@@ -179,7 +175,6 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
             imageView.setImageResource(R.drawable.user);
             loginLabel.setVisibility(View.VISIBLE);
             name.setVisibility(View.INVISIBLE);
-            bio.setVisibility(View.INVISIBLE);
             followers.setVisibility(View.INVISIBLE);
             followings.setVisibility(View.INVISIBLE);
         }

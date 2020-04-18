@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -22,7 +22,7 @@ import com.myrecipe.myrecipeapp.models.UserModel;
 public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
 
     private static final int VIEW_TYPE_USER = 0;
-    private static final int USER_LOADING_ITEM_HEIGHT = 140;
+    private static final int USER_LOADING_ITEM_HEIGHT = 100;
 
     public RelatedUsersAdapter(Context context, RecyclerView recyclerView) {
         super(context, recyclerView);
@@ -70,7 +70,6 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
                 .into(viewHolder.userPhoto);
 
         viewHolder.userName.setText(user.getName());
-        viewHolder.userBio.setText(user.getBio());
         // todo add listner for opening user fragment
 
         startAnimation(viewHolder.itemView, position);
@@ -84,14 +83,12 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
     public class UserViewHolder extends RecyclerView.ViewHolder {
         ImageView userPhoto;
         TextView userName;
-        TextView userBio;
 
         UserViewHolder(@NonNull View itemView) {
             super(itemView);
 
             userPhoto = itemView.findViewById(R.id.userPhoto);
             userName = itemView.findViewById(R.id.userName);
-            userBio = itemView.findViewById(R.id.userBio);
         }
     }
 }

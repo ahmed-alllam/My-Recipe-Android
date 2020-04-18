@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 16:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -74,7 +74,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
         viewModel.recipe.observe(getViewLifecycleOwner(), (recipe) -> {
             this.recipe = recipe;
-            refreshRecipeData(view);
+            refreshRecipeData(view, null);
         });
 
 
@@ -226,7 +226,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         });
     }
 
-    private void refreshRecipeData(View view) {
+    private void refreshRecipeData(View view, UserModel me) {
         UserModel user = recipe.getUser();
         ImageView userImage = view.findViewById(R.id.userImage);
         Glide.with(getContext())
@@ -239,7 +239,9 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
 
         Button followUser = view.findViewById(R.id.followUser);
-        UserModel me = PreferencesManager.getStoredUser(getContext());
+
+        if (me == null)
+            me = PreferencesManager.getStoredUser(getContext());
 
         if (!me.getUsername().equals("") && !user.getUsername().equals(me.getUsername())) {
             followUser.setVisibility(View.VISIBLE);
@@ -384,13 +386,13 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
     public void onRecipeChanged(RecipeModel recipe) {
         if (this.recipe.getSlug() != null && this.recipe.getSlug().equals(recipe.getSlug())) {
             this.recipe = recipe;
-            refreshRecipeData(getView());
+            refreshRecipeData(getView(), null);
         }
     }
 
     @Override
     public void onUserProfileChanged(UserModel user) {
-        refreshRecipeData(getView());
+        refreshRecipeData(getView(), user);
     }
 
     private class emptyCallBack implements Callback<Void> {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 23:30
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -24,7 +25,8 @@ import com.myrecipe.myrecipeapp.ui.CallBacks.OnLanguageChangedListner;
 import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity implements OnLanguageChangedListner {
-    LoginViewModel loginViewModel;
+    private static final int LAUNCH_SIGNUP_ACTIVITY = 0;
+    private LoginViewModel loginViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +57,7 @@ public class LoginActivity extends AppCompatActivity implements OnLanguageChange
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
 
         findViewById(R.id.signUpLabel).setOnClickListener(v -> {
-            startActivity(new Intent(this, SignupActivity.class));
-            finish();
+            startActivityForResult(new Intent(this, SignupActivity.class), LAUNCH_SIGNUP_ACTIVITY);
         });
     }
 
@@ -94,6 +95,20 @@ public class LoginActivity extends AppCompatActivity implements OnLanguageChange
         if (refresh) {
             startActivity(new Intent(this, this.getClass()));
             finish();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LAUNCH_SIGNUP_ACTIVITY) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    setResult(RESULT_OK, data);
+                    finish();
+                }
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 23:30
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
   -->
 
 <resources>
@@ -54,6 +54,10 @@
     <string name="feed_empty">Your Recipes Feed is Empty</string>
     <string name="loading">Loading…</string>
     <string name="list_empty">This list is empty</string>
+    <string name="wrong_name">Invalid Name</string>
+    <string name="wrong_email">Invalid Email</string>
+    <string name="wrong_password">Invalid Password</string>
+    <string name="duplicate_email">This email is already used</string>
 
 
     <!-- Recipe detail fragment strings-->

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 23:30
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
   -->
 
 <resources>
@@ -53,8 +53,11 @@
     <string name="wrong_email_or_password">البريد الإكتروني أو كلمه السر خطئ</string>
     <string name="feed_empty">لا يوجد وصفات لك حالياً</string>
     <string name="loading">جارٍ التحميل…</string>
-    <string name="list_empty">This list is empty</string>
-
+    <string name="list_empty">لا يوجد شئ في هذه القائمة</string>
+    <string name="wrong_name">اسم مستخدم غير صالح</string>
+    <string name="wrong_email">بريد الكتروني غير صالح</string>
+    <string name="wrong_password">كلمة سر عير صالحة</string>
+    <string name="duplicate_email">هذا البريد الالكتروني محجوز</string>
 
     <!-- Recipe detail fragment strings-->
     <string name="about_recipe">عن الوصفة</string>

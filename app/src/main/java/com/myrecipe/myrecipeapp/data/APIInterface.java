@@ -1,13 +1,13 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 16/04/20 23:47
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
  */
 
 package com.myrecipe.myrecipeapp.data;
 
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.RecipesResultModel;
-import com.myrecipe.myrecipeapp.models.UserLoginModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
+import com.myrecipe.myrecipeapp.models.UserTokenModel;
 import com.myrecipe.myrecipeapp.models.UsersResultModel;
 
 import retrofit2.Call;
@@ -87,8 +87,14 @@ public interface APIInterface {
 
     @FormUrlEncoded
     @POST("users/token/?format=json")
-    Call<UserLoginModel> loginUser(@Field("email") String email,
+    Call<UserTokenModel> loginUser(@Field("email") String email,
                                    @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("users/signup/?format=json")
+    Call<UserModel> signup(@Field("name") String name,
+                           @Field("email") String email,
+                           @Field("password") String password);
 
     @GET("users/me/?format=json")
     Call<UserModel> getMyProfile(@Header("Authorization") String token);
