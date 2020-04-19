@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:03
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -75,7 +75,7 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
 
         viewHolder.userName.setText(user.getName());
         holder.itemView.setOnClickListener(v -> {
-            GeneralUsersProfileFragment profileFragment = new GeneralUsersProfileFragment(user.getUsername());
+            GeneralUsersProfileFragment profileFragment = new GeneralUsersProfileFragment(user);
             FragmentTransaction ft = fragment.getChildFragmentManager().beginTransaction();
             ft.add(fragment.getView().getId(), profileFragment)
                     .addToBackStack(null)

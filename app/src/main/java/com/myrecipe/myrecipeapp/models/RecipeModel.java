@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 15:55
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:03
  */
 
 package com.myrecipe.myrecipeapp.models;
@@ -28,6 +28,31 @@ public class RecipeModel {
     @SerializedName("is_favourited_by_user")
     private boolean isFavouritedByUser;
 
+
+    public RecipeModel checkNull(RecipeModel newRecipe) {
+        if (newRecipe.getUser() == null && getUser() != null)
+            newRecipe.setUser(getUser());
+
+        if (newRecipe.getBody() == null && getBody() != null)
+            newRecipe.setBody(getBody());
+
+        if (newRecipe.getTimestamp() == null && getTimestamp() != null)
+            newRecipe.setTimestamp(getTimestamp());
+
+        if (newRecipe.getIngredients() == null && getIngredients() != null)
+            newRecipe.setIngredients(getIngredients());
+
+        if (newRecipe.getImages() == null && getImages() != null)
+            newRecipe.setImages(getImages());
+
+        if (newRecipe.getReviews() == null && getReviews() != null)
+            newRecipe.setReviews(getReviews());
+
+        if (newRecipe.getReviews_count() == 0 && getReviews_count() != 0)
+            newRecipe.setReviews_count(getReviews_count());
+
+        return newRecipe;
+    }
 
     public boolean isFavouritedByUser() {
         return isFavouritedByUser;
@@ -91,6 +116,38 @@ public class RecipeModel {
 
     public void setIngredients(ArrayList<String> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public void setMain_image(String main_image) {
+        this.main_image = main_image;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setImages(ArrayList<String> images) {
+        this.images = images;
+    }
+
+    public void setReviews(ArrayList<RecipeReviewModel> reviews) {
+        this.reviews = reviews;
+    }
+
+    public void setReviews_count(int reviews_count) {
+        this.reviews_count = reviews_count;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
     public ArrayList<String> getImages() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:03
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -54,6 +54,7 @@ import retrofit2.Response;
 public class RecipeDetailFragment extends Fragment implements OnRecipeDataChangedListener, OnUserProfileChangedListener {
 
     private RecipeModel recipe;
+    private boolean loading = true;
 
     public RecipeDetailFragment(RecipeModel recipe) {
         this.recipe = recipe;
@@ -75,6 +76,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
         viewModel.recipe.observe(getViewLifecycleOwner(), (recipe) -> {
             this.recipe = recipe;
+            loading = false;
             refreshRecipeData(view, null);
         });
 
@@ -225,6 +227,15 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
                 }
             }
         });
+
+        view.findViewById(R.id.recipesUserContainer).setOnClickListener(v -> {
+            GeneralUsersProfileFragment fragment = new GeneralUsersProfileFragment(recipe.getUser());
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .add(view.getId(), fragment)
+                    .commit();
+            ((MainActivity) getActivity()).addFragment(fragment);
+        });
     }
 
     private void refreshRecipeData(View view, UserModel me) {
@@ -247,7 +258,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         if (!me.getUsername().equals("") && !user.getUsername().equals(me.getUsername())) {
             followUser.setVisibility(View.VISIBLE);
 
-            if (recipe.getUser().isFollowedByUser())
+            if (user.isFollowedByUser())
                 followUser.setText(R.string.unfollow);
             else
                 followUser.setText(R.string.follow);
@@ -384,9 +395,9 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
     }
 
     @Override
-    public void onRecipeChanged(RecipeModel recipe) {
-        if (this.recipe.getSlug() != null && this.recipe.getSlug().equals(recipe.getSlug())) {
-            this.recipe = recipe;
+    public void onRecipeChanged(RecipeModel newRecipe) {
+        if (recipe.getSlug() != null && recipe.getSlug().equals(newRecipe.getSlug()) && !loading) {
+            recipe = recipe.checkNull(newRecipe);
             refreshRecipeData(getView(), null);
         }
     }
@@ -399,7 +410,8 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
     @Override
     public void onUserProfileChanged(UserModel user) {
-        refreshRecipeData(getView(), user);
+        if (!loading)
+            refreshRecipeData(getView(), user);
     }
 
     private class emptyCallBack implements Callback<Void> {

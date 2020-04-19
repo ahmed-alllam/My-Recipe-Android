@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:03
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -21,19 +21,21 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
-import com.myrecipe.myrecipeapp.data.GeneralUserViewModel;
+import com.myrecipe.myrecipeapp.data.APIClient;
+import com.myrecipe.myrecipeapp.data.APIInterface;
+import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.UsersRecipesViewModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
+import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
 
 
 public class GeneralUsersProfileFragment extends BaseRecipesFragment {
     private UsersRecipesViewModel recipesViewModel;
-    private GeneralUserViewModel userViewModel;
-    private String username;
+    private UserModel user;
 
-    public GeneralUsersProfileFragment(String username) {
-        this.username = username;
+    public GeneralUsersProfileFragment(UserModel user) {
+        this.user = user;
     }
 
     @Override
@@ -46,32 +48,65 @@ public class GeneralUsersProfileFragment extends BaseRecipesFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recipesViewModel = new ViewModelProvider(this)
                 .get(UsersRecipesViewModel.class);
-        userViewModel = new ViewModelProvider(this)
-                .get(GeneralUserViewModel.class);
-
-
-        userViewModel.user.observe(getViewLifecycleOwner(), this::refreshUserData);
-        userViewModel.error.observe(getViewLifecycleOwner(), this::onError);
 
         recipesViewModel.recipes.observe(getViewLifecycleOwner(), recipesResultModel -> onNewData(recipesResultModel.getRecipes(), recipesResultModel.getCount()));
         recipesViewModel.error.observe(getViewLifecycleOwner(), super::onError);
 
         view.findViewById(R.id.followUser).setOnClickListener(v -> {
-            // todo
+            UserModel me = PreferencesManager.getStoredUser(getContext());
+
+            if (user == null) return;
+
+            String username = user.getUsername();
+
+            String token = PreferencesManager.getToken(getContext());
+            if (token.length() <= 0 || username.length() <= 0) {
+                return;
+            }
+            token = "Token " + token;
+
+            APIInterface recipesAPIInterface = APIClient.getClient().create(APIInterface.class);
+
+            if (!user.isFollowedByUser()) {
+                recipesAPIInterface.followUser(token, username).enqueue(new emptyCallBack());
+                ((Button) v).setText(R.string.unfollow);
+                user.setFollowedByUser(true);
+                me.setFollowings_count(me.getFollowings_count() + 1);
+            } else {
+                recipesAPIInterface.unFollowUser(token, username).enqueue(new emptyCallBack());
+                ((Button) v).setText(R.string.follow);
+                user.setFollowedByUser(false);
+                me.setFollowings_count(me.getFollowings_count() - 1);
+            }
+
+            for (Fragment f : ((MainActivity) getActivity()).getFragments()) {
+                if (f instanceof OnUserProfileChangedListener && f != this) {
+                    ((OnUserProfileChangedListener) f).onUserProfileChanged(me);
+                }
+            }
         });
 
         view.findViewById(R.id.followers).setOnClickListener(v -> {
-            launchFragment(new RelatedUsersFragment(RelatedUsersFragment.FOLLOWERS_TYPE, username));
+            launchFragment(new RelatedUsersFragment(RelatedUsersFragment.FOLLOWERS_TYPE, user.getUsername()));
         });
 
         view.findViewById(R.id.followings).setOnClickListener(v -> {
-            launchFragment(new RelatedUsersFragment(RelatedUsersFragment.FOLLOWINGS_TYPE, username));
+            launchFragment(new RelatedUsersFragment(RelatedUsersFragment.FOLLOWINGS_TYPE, user.getUsername()));
         });
+
+        view.findViewById(R.id.backButton).setOnClickListener(v -> {
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .remove(this)
+                    .commit();
+        });
+
+        refreshUserData();
 
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void refreshUserData(UserModel user) {
+    private void refreshUserData() {
         getView().findViewById(R.id.followers).setVisibility(View.VISIBLE);
         getView().findViewById(R.id.followings).setVisibility(View.VISIBLE);
 
@@ -85,12 +120,17 @@ public class GeneralUsersProfileFragment extends BaseRecipesFragment {
         followingsNumber.setText(String.valueOf(user.getFollowings_count()));
 
         Button followUser = getView().findViewById(R.id.followUser);
-        followUser.setVisibility(View.VISIBLE);
 
-        if (user.isFollowedByUser())
-            followUser.setText(R.string.unfollow);
-        else
-            followUser.setText(R.string.follow);
+        if (!PreferencesManager.getToken(getContext()).isEmpty()) {
+            followUser.setVisibility(View.VISIBLE);
+
+            if (user.isFollowedByUser())
+                followUser.setText(R.string.unfollow);
+            else
+                followUser.setText(R.string.follow);
+        } else {
+            followUser.setVisibility(View.INVISIBLE);
+        }
 
         ImageView profilePhoto = getView().findViewById(R.id.profilePhoto);
         Glide.with(getContext())
@@ -109,19 +149,12 @@ public class GeneralUsersProfileFragment extends BaseRecipesFragment {
 
     @Override
     void callViewModel(int position) {
-        userViewModel.getUserProfile(username);
-        recipesViewModel.getUsersRecipes(getContext(), username, limitPerRequest, position);
+        recipesViewModel.getUsersRecipes(getContext(), user.getUsername(), limitPerRequest, position);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         ((MainActivity) getActivity()).removeFragment(this);
-    }
-
-    @Override
-    void onError(int error) {
-        super.onError(error);
-        ((TextView) getView().findViewById(R.id.name)).setText(R.string.profile_network_error);
     }
 }
