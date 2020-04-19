@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
  */
 
 package com.myrecipe.myrecipeapp.models;
@@ -107,12 +107,18 @@ public class UserModel {
 
         UserModel user = (UserModel) userModel;
 
-        return user.getName().equals(getName()) &&
-                user.getEmail().equals(getEmail()) &&
-                user.getUsername().equals(getUsername()) &&
-                user.getBio().equals(getBio()) &&
-                user.getImage().equals(getImage()) &&
-                user.getFollowers_count() == getFollowers_count() &&
-                user.getFollowings_count() == getFollowings_count();
+        return user.getUsername().equals(getUsername());
+    }
+
+    public boolean sameUserData(UserModel userModel) {
+        if (userModel == null) return false;
+
+        return userModel.getName().equals(getName()) &&
+                userModel.getEmail().equals(getEmail()) &&
+                userModel.getUsername().equals(getUsername()) &&
+                userModel.getBio().equals(getBio()) &&
+                userModel.getImage().equals(getImage()) &&
+                userModel.getFollowers_count() == getFollowers_count() &&
+                userModel.getFollowings_count() == getFollowings_count();
     }
 }

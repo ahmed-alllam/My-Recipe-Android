@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:03
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
+import com.myrecipe.myrecipeapp.ui.Fragments.BaseListsFragment;
 import com.myrecipe.myrecipeapp.ui.Fragments.GeneralUsersProfileFragment;
 
 
@@ -28,7 +28,7 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
     private static final int VIEW_TYPE_USER = 0;
     private static final int USER_LOADING_ITEM_HEIGHT = 100;
 
-    public RelatedUsersAdapter(Context context, Fragment fragment, RecyclerView recyclerView) {
+    public RelatedUsersAdapter(Context context, BaseListsFragment fragment, RecyclerView recyclerView) {
         super(context, fragment, recyclerView);
     }
 
@@ -84,6 +84,47 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
         });
 
         startAnimation(viewHolder.itemView, position);
+    }
+
+    public void updateUser(UserModel user) {
+        String username = user.getUsername();
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) == null)
+                continue;
+
+            if (list.get(i).getUsername().equals(username)) {
+                int j = i;
+                recyclerView.post(() -> {
+                    list.set(j, user);
+                    notifyItemChanged(j);
+                });
+                break;
+            }
+        }
+    }
+
+    public void removeUser(String slug) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) == null)
+                continue;
+
+            if (list.get(i).getUsername().equals(slug)) {
+                int j = i;
+                recyclerView.post(() -> {
+                    list.remove(j);
+                    notifyItemRemoved(j);
+                    if (isEmpty()) {
+                        if (fragment.getView() != null) {
+                            fragment.recyclerView.setVisibility(View.INVISIBLE);
+                            fragment.errorLabel.setText(R.string.favourites_empty);
+                            fragment.errorLabel.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+                break;
+            }
+        }
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:28
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -39,7 +39,7 @@ public class SettingsFragment extends Fragment {
 
             for (Fragment f : ((MainActivity) getActivity()).getFragments()) {
                 if (f instanceof OnUserProfileChangedListener) {
-                    ((OnUserProfileChangedListener) f).onUserProfileChanged(null);
+                    ((OnUserProfileChangedListener) f).onUserProfileChanged(null, true);
                 }
             }
 

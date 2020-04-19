@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 19:43
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -26,9 +26,9 @@ import java.util.List;
 public abstract class BaseListsFragment<T> extends Fragment {
     int limitPerRequest = 25;
     BaseRecyclerAdapter<T> adapter;
-    RecyclerView recyclerView;
+    public RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
-    TextView errorLabel;
+    public TextView errorLabel;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

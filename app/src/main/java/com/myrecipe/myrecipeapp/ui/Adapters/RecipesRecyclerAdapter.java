@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -14,13 +14,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
+import com.myrecipe.myrecipeapp.ui.Fragments.BaseListsFragment;
 import com.myrecipe.myrecipeapp.ui.Fragments.RecipeDetailFragment;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
     private static final int RECIPE_LOADING_ITEM_HEIGHT = 280;
 
 
-    protected RecipesRecyclerAdapter(Context context, Fragment fragment, RecyclerView recyclerView) {
+    protected RecipesRecyclerAdapter(Context context, BaseListsFragment fragment, RecyclerView recyclerView) {
         super(context, fragment, recyclerView);
     }
 
@@ -121,10 +121,9 @@ public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
                     notifyItemRemoved(j);
                     if (isEmpty()) {
                         if (fragment.getView() != null) {
-                            TextView errorLabel = fragment.getView().findViewById(R.id.errorLabel);
-                            fragment.getView().findViewById(R.id.recipesRecyclerView).setVisibility(View.INVISIBLE);
-                            errorLabel.setText(R.string.favourites_empty);
-                            errorLabel.setVisibility(View.VISIBLE);
+                            fragment.recyclerView.setVisibility(View.INVISIBLE);
+                            fragment.errorLabel.setText(R.string.favourites_empty);
+                            fragment.errorLabel.setVisibility(View.VISIBLE);
                         }
                     }
                 });

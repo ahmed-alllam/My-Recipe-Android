@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:28
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -209,11 +209,13 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
                 recipesAPIInterface.followUser(token, username).enqueue(new emptyCallBack());
                 ((Button) v).setText(R.string.unfollow);
                 user.setFollowedByUser(true);
+                user.setFollowers_count(user.getFollowers_count() + 1);
                 me.setFollowings_count(me.getFollowings_count() + 1);
             } else {
                 recipesAPIInterface.unFollowUser(token, username).enqueue(new emptyCallBack());
                 ((Button) v).setText(R.string.follow);
                 user.setFollowedByUser(false);
+                user.setFollowers_count(user.getFollowers_count() - 1);
                 me.setFollowings_count(me.getFollowings_count() - 1);
             }
 
@@ -223,7 +225,8 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
                 }
 
                 if (f instanceof OnUserProfileChangedListener && f != this) {
-                    ((OnUserProfileChangedListener) f).onUserProfileChanged(me);
+                    ((OnUserProfileChangedListener) f).onUserProfileChanged(me, true);
+                    ((OnUserProfileChangedListener) f).onUserProfileChanged(user, false);
                 }
             }
         });
@@ -409,9 +412,11 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
     }
 
     @Override
-    public void onUserProfileChanged(UserModel user) {
-        if (!loading)
-            refreshRecipeData(getView(), user);
+    public void onUserProfileChanged(UserModel user, boolean isCurrentUser) {
+        if (!loading && !isCurrentUser) {
+            recipe.setUser(user);
+            refreshRecipeData(getView(), null);
+        }
     }
 
     private class emptyCallBack implements Callback<Void> {

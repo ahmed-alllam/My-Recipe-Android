@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:03
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -117,7 +117,6 @@ public class MainActivity extends BaseActivity {
         for (int i = fragments.size() - 1; i >= 0; i--) {
             Fragment fragment = fragments.get(i);
             if (fragment != parentFragment && fragment.getView() != null) {
-                // todo : next line is wrong because of the id
                 if (parentFragment.getView().findViewById(fragment.getView().getId()) != null) {
                     fragment.getParentFragmentManager().beginTransaction()
                             .remove(fragment)

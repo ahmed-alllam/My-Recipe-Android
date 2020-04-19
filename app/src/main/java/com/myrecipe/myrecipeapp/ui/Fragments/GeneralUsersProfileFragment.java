@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:28
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -30,7 +30,7 @@ import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
 
 
-public class GeneralUsersProfileFragment extends BaseRecipesFragment {
+public class GeneralUsersProfileFragment extends BaseRecipesFragment implements OnUserProfileChangedListener {
     private UsersRecipesViewModel recipesViewModel;
     private UserModel user;
 
@@ -71,17 +71,20 @@ public class GeneralUsersProfileFragment extends BaseRecipesFragment {
                 recipesAPIInterface.followUser(token, username).enqueue(new emptyCallBack());
                 ((Button) v).setText(R.string.unfollow);
                 user.setFollowedByUser(true);
+                user.setFollowers_count(user.getFollowers_count() + 1);
                 me.setFollowings_count(me.getFollowings_count() + 1);
             } else {
                 recipesAPIInterface.unFollowUser(token, username).enqueue(new emptyCallBack());
                 ((Button) v).setText(R.string.follow);
                 user.setFollowedByUser(false);
+                user.setFollowers_count(user.getFollowers_count() - 1);
                 me.setFollowings_count(me.getFollowings_count() - 1);
             }
 
             for (Fragment f : ((MainActivity) getActivity()).getFragments()) {
                 if (f instanceof OnUserProfileChangedListener && f != this) {
-                    ((OnUserProfileChangedListener) f).onUserProfileChanged(me);
+                    ((OnUserProfileChangedListener) f).onUserProfileChanged(me, true);
+                    ((OnUserProfileChangedListener) f).onUserProfileChanged(user, false);
                 }
             }
         });
@@ -121,7 +124,8 @@ public class GeneralUsersProfileFragment extends BaseRecipesFragment {
 
         Button followUser = getView().findViewById(R.id.followUser);
 
-        if (!PreferencesManager.getToken(getContext()).isEmpty()) {
+        UserModel me = PreferencesManager.getStoredUser(getContext());
+        if (!me.getUsername().isEmpty() && !me.getUsername().equals(user.getUsername())) {
             followUser.setVisibility(View.VISIBLE);
 
             if (user.isFollowedByUser())
@@ -150,6 +154,12 @@ public class GeneralUsersProfileFragment extends BaseRecipesFragment {
     @Override
     void callViewModel(int position) {
         recipesViewModel.getUsersRecipes(getContext(), user.getUsername(), limitPerRequest, position);
+    }
+
+    @Override
+    public void onUserProfileChanged(UserModel user, boolean isCurrentUser) {
+        this.user = user;
+        refreshUserData();
     }
 
     @Override

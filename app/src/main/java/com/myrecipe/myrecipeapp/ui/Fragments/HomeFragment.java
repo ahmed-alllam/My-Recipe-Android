@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:28
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -71,13 +71,15 @@ public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataCha
     }
 
     @Override
-    public void onUserProfileChanged(UserModel user) {
-        String image;
-        if (user != null)
-            image = user.getImage();
-        else
-            image = "";
-        refreshUserImage(image);
+    public void onUserProfileChanged(UserModel user, boolean isCurrentUser) {
+        if (isCurrentUser) {
+            String image;
+            if (user != null)
+                image = user.getImage();
+            else
+                image = "";
+            refreshUserImage(image);
+        }
     }
 
     @Override

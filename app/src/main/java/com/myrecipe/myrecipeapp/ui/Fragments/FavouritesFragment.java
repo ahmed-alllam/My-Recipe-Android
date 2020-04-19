@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:28
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -89,8 +89,12 @@ public class FavouritesFragment extends BaseRecipesFragment implements OnRecipeD
     public void onRecipeChanged(RecipeModel recipe) {
         if (!recipe.isFavouritedByUser())
             ((RecipesRecyclerAdapter) adapter).removeRecipe(recipe.getSlug());
-        else
-            ((RecipesRecyclerAdapter) adapter).updateRecipe(recipe);
+        else {
+            if (adapter.contains(recipe))
+                ((RecipesRecyclerAdapter) adapter).updateRecipe(recipe);
+            else
+                adapter.add(recipe);
+        }
     }
 
     @Override

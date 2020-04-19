@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:28
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -86,13 +86,13 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
         myUserViewModel.userProfile.observe(getViewLifecycleOwner(), userProfile -> {
             profileFragmentSwipe.setRefreshing(false);
 
-            if (storedUserModel == null || !storedUserModel.equals(userProfile)) {
+            if (storedUserModel == null || !storedUserModel.sameUserData(userProfile)) {
                 refreshUserUIINfo(view, userProfile);
                 storeUserInfo(userProfile);
 
                 for (Fragment f : ((MainActivity) getActivity()).getFragments()) {
                     if (f instanceof OnUserProfileChangedListener && f != this) {
-                        ((OnUserProfileChangedListener) f).onUserProfileChanged(userProfile);
+                        ((OnUserProfileChangedListener) f).onUserProfileChanged(userProfile, true);
                     }
                 }
             }
@@ -200,9 +200,11 @@ public class ProfileFragment extends Fragment implements OnUserProfileChangedLis
     }
 
     @Override
-    public void onUserProfileChanged(UserModel user) {
-        storeUserInfo(user);
-        refreshUserUIINfo(getView(), user);
+    public void onUserProfileChanged(UserModel user, boolean isCurrentUser) {
+        if (isCurrentUser) {
+            storeUserInfo(user);
+            refreshUserUIINfo(getView(), user);
+        }
     }
 
     private void storeUserInfo(UserModel user) {

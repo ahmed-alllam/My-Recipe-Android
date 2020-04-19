@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 18:12
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -11,10 +11,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.myrecipe.myrecipeapp.R;
+import com.myrecipe.myrecipeapp.ui.Fragments.BaseListsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +29,12 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
     ArrayList<T> list = new ArrayList<>();
     Context context;
     RecyclerView recyclerView;
-    Fragment fragment;
+    BaseListsFragment fragment;
     private int offset;
     private int count;
     private int lastPosition = -1;
 
-    BaseRecyclerAdapter(Context context, Fragment fragment, RecyclerView recyclerView) {
+    BaseRecyclerAdapter(Context context, BaseListsFragment fragment, RecyclerView recyclerView) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.fragment = fragment;
@@ -72,6 +72,13 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
         return list.get(position);
     }
 
+    public void add(T item) {
+        recyclerView.post(() -> {
+            list.add(item);
+            notifyItemInserted(list.size() - 1);
+        });
+    }
+
     public void addAll(List<T> objects) {
         if (list.size() != 0) {
             recyclerView.post(() -> {
@@ -92,6 +99,10 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
             list.clear();
             notifyDataSetChanged();
         });
+    }
+
+    public boolean contains(T item) {
+        return list.contains(item);
     }
 
     private void remove(int position) {
