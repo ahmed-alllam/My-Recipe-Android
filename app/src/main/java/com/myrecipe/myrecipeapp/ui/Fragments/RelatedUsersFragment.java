@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 23:38
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -90,37 +90,28 @@ public class RelatedUsersFragment extends BaseListsFragment<UserModel> implement
     @Override
     public void onUserProfileChanged(UserModel user, boolean isCurrentUser) {
         UserModel me = PreferencesManager.getStoredUser(getContext());
+        int requiredType;
+        UserModel requiredUser;
+
         if (me.getUsername().equals(username)) {
-            if (type == FOLLOWINGS_TYPE && !isCurrentUser) {
-                if (!user.isFollowedByUser()) {
-                    if (adapter.contains(user))
-                        ((RelatedUsersAdapter) adapter).removeUser(user.getUsername());
-                    else
-                        ((RelatedUsersAdapter) adapter).updateUser(user);
-                } else {
-                    if (!adapter.contains(user)) {
-                        errorLabel.setVisibility(View.INVISIBLE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        adapter.add(user);
-                    } else
-                        ((RelatedUsersAdapter) adapter).updateUser(user);
-                }
-            }
+            requiredType = FOLLOWINGS_TYPE;
+            requiredUser = user;
         } else {
-            if (type == FOLLOWERS_TYPE && !isCurrentUser) {
-                if (!user.isFollowedByUser()) {
-                    if (adapter.contains(me))
-                        ((RelatedUsersAdapter) adapter).removeUser(me.getUsername());
-                    else
-                        ((RelatedUsersAdapter) adapter).updateUser(user);
-                } else {
-                    if (!adapter.contains(me)) {
-                        errorLabel.setVisibility(View.INVISIBLE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        adapter.add(me);
-                    } else
-                        ((RelatedUsersAdapter) adapter).updateUser(user);
-                }
+            requiredType = FOLLOWERS_TYPE;
+            requiredUser = me;
+        }
+
+        if (type == requiredType && !isCurrentUser) {
+            if (!user.isFollowedByUser()) {
+                if (adapter.contains(requiredUser))
+                    ((RelatedUsersAdapter) adapter).removeUser(requiredUser.getUsername());
+            } else {
+                if (!adapter.contains(requiredUser)) {
+                    errorLabel.setVisibility(View.INVISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    adapter.add(requiredUser);
+                } else
+                    ((RelatedUsersAdapter) adapter).updateUser(requiredUser);
             }
         }
     }
