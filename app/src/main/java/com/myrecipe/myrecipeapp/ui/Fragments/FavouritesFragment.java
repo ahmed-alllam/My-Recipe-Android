@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:28
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -94,8 +94,8 @@ public class FavouritesFragment extends BaseRecipesFragment implements OnRecipeD
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroyView() {
+        super.onDestroyView();
         ((MainActivity) getActivity()).removeFragment(this);
     }
 }

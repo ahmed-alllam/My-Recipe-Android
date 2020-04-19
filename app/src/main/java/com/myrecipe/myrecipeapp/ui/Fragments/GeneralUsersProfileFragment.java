@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:03
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:28
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -153,8 +153,8 @@ public class GeneralUsersProfileFragment extends BaseRecipesFragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroyView() {
+        super.onDestroyView();
         ((MainActivity) getActivity()).removeFragment(this);
     }
 }
