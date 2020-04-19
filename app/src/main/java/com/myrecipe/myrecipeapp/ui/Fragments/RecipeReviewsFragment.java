@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 23:38
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 23:52
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -14,6 +14,12 @@ import com.myrecipe.myrecipeapp.R;
 
 
 public class RecipeReviewsFragment extends BaseRecipesFragment {
+    private String recipeSlug;
+
+    RecipeReviewsFragment(String recipeSlug) {
+        this.recipeSlug = recipeSlug;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

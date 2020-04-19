@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 23:52
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -232,12 +232,11 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         });
 
         view.findViewById(R.id.recipesUserContainer).setOnClickListener(v -> {
-            GeneralUsersProfileFragment fragment = new GeneralUsersProfileFragment(recipe.getUser());
-            getChildFragmentManager()
-                    .beginTransaction()
-                    .add(view.getId(), fragment)
-                    .commit();
-            ((MainActivity) getActivity()).addFragment(fragment);
+            launchFragment(new GeneralUsersProfileFragment(recipe.getUser()));
+        });
+
+        view.findViewById(R.id.allreviewsLabel).setOnClickListener(v -> {
+            launchFragment(new RecipeReviewsFragment(recipe.getSlug()));
         });
     }
 
@@ -397,6 +396,14 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         }
     }
 
+    private void launchFragment(Fragment fragment) {
+        getChildFragmentManager()
+                .beginTransaction()
+                .add(getView().getId(), fragment)
+                .commit();
+        ((MainActivity) getActivity()).addFragment(fragment);
+    }
+
     @Override
     public void onRecipeChanged(RecipeModel newRecipe) {
         if (recipe.getSlug() != null && recipe.getSlug().equals(newRecipe.getSlug()) && !loading) {
@@ -415,8 +422,8 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
     public void onUserProfileChanged(UserModel user, boolean isCurrentUser) {
         if (!loading && !isCurrentUser) {
             recipe.setUser(user);
-            refreshRecipeData(getView(), null);
         }
+        refreshRecipeData(getView(), null);
     }
 
     private class emptyCallBack implements Callback<Void> {
