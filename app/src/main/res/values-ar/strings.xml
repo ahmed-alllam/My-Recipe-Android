@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 22:59
   -->
 
 <resources>
@@ -70,6 +70,8 @@
     <string name="reviews">التعليقات</string>
     <string name="see_all_reviews">اعرض جميع التعليقات</string>
     <string name="add_a_review">اضف تعليق</string>
+    <string name="send">إرسال</string>
+    <string name="cancel">إلغاء</string>
 
     <!-- Settings fragment strings-->
     <string name="change_language">تغيير اللغة</string>
@@ -79,4 +81,6 @@
     <!-- Signup Activity strings -->
     <string name="confirm_password">تأكيد كلمة المرور</string>
     <string name="name">الإسم</string>
+
+    <string name="write_review">اكتب تعليق لهذه الوصفة</string>
 </resources>

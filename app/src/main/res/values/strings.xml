@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 22:59
   -->
 
 <resources>
@@ -71,6 +71,8 @@
     <string name="reviews">Reviews</string>
     <string name="see_all_reviews">See all reviews</string>
     <string name="add_a_review">Add a Review</string>
+    <string name="send">Send</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Settings fragment strings-->
     <string name="change_language">Change Language</string>
@@ -84,4 +86,6 @@
     <!-- Signup Activity strings -->
     <string name="confirm_password">Confirm Password</string>
     <string name="name">Name</string>
+
+    <string name="write_review">Write a Review for that recipe</string>
 </resources>

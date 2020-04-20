@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 21:11
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 22:59
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -227,6 +228,14 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         view.findViewById(R.id.recipesUserContainer).setOnClickListener(v -> launchFragment(new GeneralUsersProfileFragment(recipe.getUser())));
 
         view.findViewById(R.id.allreviewsLabel).setOnClickListener(v -> launchFragment(new RecipeReviewsFragment(recipe.getSlug())));
+
+        ((RatingBar) view.findViewById(R.id.ratingBar2)).setOnRatingBarChangeListener((ratingBar1, rating, fromUser) -> {
+            if (fromUser) {
+                DialogFragment dialog = new AddReviewFragment(recipe.getSlug(), rating, null);
+                ((MainActivity) getActivity()).addFragment(dialog);
+                dialog.show(getChildFragmentManager(), "AddReviewDialog");
+            }
+        });
     }
 
     private void loadNewRecipeData(View view) {
