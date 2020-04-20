@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -36,14 +36,14 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_EMPTY)
-            return new RelatedUsersAdapter.EmptyViewHolder(LayoutInflater.from(parent.getContext())
+            return new EmptyViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.user_empty_item, parent, false));
 
         if (viewType == VIEW_TYPE_LOADING)
-            return new RelatedUsersAdapter.LoadingViewHolder(LayoutInflater.from(parent.getContext())
+            return new LoadingViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.loading_item, parent, false));
 
-        return new RelatedUsersAdapter.UserViewHolder(LayoutInflater.from(parent.getContext()).
+        return new UserViewHolder(LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.user_item, parent, false));
     }
 
@@ -132,7 +132,7 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
         return USER_LOADING_ITEM_HEIGHT;
     }
 
-    public class UserViewHolder extends RecyclerView.ViewHolder {
+    private class UserViewHolder extends RecyclerView.ViewHolder {
         ImageView userPhoto;
         TextView userName;
 

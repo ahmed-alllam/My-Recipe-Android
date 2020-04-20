@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -39,12 +39,12 @@ public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_RECIPE)
-            return new RecipesRecyclerAdapter.RecipeViewHolder(LayoutInflater.from(parent.getContext())
+            return new RecipeViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recipe_item, parent, false));
         if (viewType == VIEW_TYPE_LOADING)
-            return new RecipesRecyclerAdapter.LoadingViewHolder(LayoutInflater.from(parent.getContext())
+            return new LoadingViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.loading_item, parent, false));
-        return new RecipesRecyclerAdapter.EmptyViewHolder(LayoutInflater.from(parent.getContext()).
+        return new EmptyViewHolder(LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.recipe_empty_item, parent, false));
     }
 

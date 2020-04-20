@@ -4,7 +4,7 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/userItem"
+    android:id="@+id/reviewItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="10dp"
@@ -49,6 +49,7 @@
             android:layout_marginEnd="16dp"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
+            android:text="@string/loading"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/ratingBar"
@@ -62,6 +63,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:ellipsize="end"
+            android:text="@string/loading"
             app:layout_constraintBottom_toBottomOf="@+id/cardView"
             app:layout_constraintEnd_toStartOf="@+id/ratingBar"
             app:layout_constraintStart_toStartOf="@+id/userName"
@@ -72,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:text="@string/loading"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/cardView"
             app:layout_constraintTop_toBottomOf="@+id/cardView" />

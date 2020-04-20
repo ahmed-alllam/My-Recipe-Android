@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 16:08
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -17,8 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.myrecipe.myrecipeapp.R;
-import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.ui.Activities.BaseActivity;
+import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 
 public class ChangeLanguageFragment extends DialogFragment {

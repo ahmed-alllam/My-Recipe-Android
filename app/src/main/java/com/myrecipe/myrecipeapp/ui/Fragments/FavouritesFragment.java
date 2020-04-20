@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -18,11 +18,11 @@ import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.APIClient;
 import com.myrecipe.myrecipeapp.data.APIInterface;
 import com.myrecipe.myrecipeapp.data.FavouritesViewModel;
-import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
+import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 
 public class FavouritesFragment extends BaseRecipesFragment implements OnRecipeDataChangedListener {
@@ -87,6 +87,7 @@ public class FavouritesFragment extends BaseRecipesFragment implements OnRecipeD
 
     @Override
     public void onRecipeChanged(RecipeModel recipe) {
+        // todo: test it
         if (!recipe.isFavouritedByUser())
             ((RecipesRecyclerAdapter) adapter).removeRecipe(recipe.getSlug());
         else {

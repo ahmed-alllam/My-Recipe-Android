@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 16:08
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
@@ -11,7 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.myrecipe.myrecipeapp.data.PreferencesManager;
+import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 import java.util.Locale;
 

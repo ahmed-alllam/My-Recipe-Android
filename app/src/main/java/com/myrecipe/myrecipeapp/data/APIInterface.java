@@ -1,11 +1,12 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:03
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
  */
 
 package com.myrecipe.myrecipeapp.data;
 
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.RecipesResultModel;
+import com.myrecipe.myrecipeapp.models.ReviewsResultModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.models.UserTokenModel;
 import com.myrecipe.myrecipeapp.models.UsersResultModel;
@@ -37,6 +38,17 @@ public interface APIInterface {
     @GET("recipes/{slug}/?format=json")
     Call<RecipeModel> getRecipe(@Header("Authorization") String token,
                                 @Path("slug") String Slug);
+
+    @GET("recipes/{slug}/reviews/?format=json")
+    Call<ReviewsResultModel> getRecipeReviews(@Path("slug") String Slug,
+                                              @Query("limit") int limit,
+                                              @Query("offset") int offset);
+
+    @GET("recipes/{slug}/reviews/?format=json")
+    Call<ReviewsResultModel> getRecipeReviews(@Header("Authorization") String token,
+                                              @Path("slug") String Slug,
+                                              @Query("limit") int limit,
+                                              @Query("offset") int offset);
 
     @POST("recipes/{slug}/favourite/?format=json")
     Call<Void> addFavouriteRecipe(@Header("Authorization") String token,

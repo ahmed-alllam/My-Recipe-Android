@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:28
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -16,13 +16,13 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.myrecipe.myrecipeapp.R;
-import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.UsersRecipesViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
+import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 public class MyRecipesFragment extends BaseRecipesFragment implements OnRecipeDataChangedListener {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -18,7 +18,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.myrecipe.myrecipeapp.R;
-import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.RecipesFeedViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
@@ -26,6 +25,7 @@ import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
+import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 
 public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataChangedListener, OnUserProfileChangedListener {

@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 15/04/20 23:36
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
  */
 
-package com.myrecipe.myrecipeapp.data;
+package com.myrecipe.myrecipeapp.util;
 
 import android.app.Activity;
 import android.content.Context;

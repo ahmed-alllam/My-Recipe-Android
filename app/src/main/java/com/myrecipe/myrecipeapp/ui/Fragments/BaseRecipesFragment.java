@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 23:42
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -16,11 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.APIClient;
 import com.myrecipe.myrecipeapp.data.APIInterface;
-import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
+import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;

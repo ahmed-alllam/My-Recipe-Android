@@ -11,44 +11,44 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.myrecipe.myrecipeapp.R;
-import com.myrecipe.myrecipeapp.models.RecipesResultModel;
+import com.myrecipe.myrecipeapp.models.ReviewsResultModel;
 import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecipesFeedViewModel extends ViewModel {
-    public MutableLiveData<RecipesResultModel> recipes = new MutableLiveData<>();
+public class RecipeReviewsViewModel extends ViewModel {
+    public MutableLiveData<ReviewsResultModel> reviews = new MutableLiveData<>();
     public MutableLiveData<Integer> error = new MutableLiveData<>();
 
-    public void getFeed(Context context, int limit, int offset) {
+    public void getReviews(Context context, String slug, int limit, int offset) {
         APIInterface RecipesAPIInterface = APIClient.getClient().create(APIInterface.class);
 
         String token = PreferencesManager.getToken(context);
 
-        Call<RecipesResultModel> call;
+        Call<ReviewsResultModel> call;
 
         if (token.length() > 0) {
             token = "Token " + token;
-            call = RecipesAPIInterface.getFeed(token, limit, offset);
+            call = RecipesAPIInterface.getRecipeReviews(token, slug, limit, offset);
         } else {
-            call = RecipesAPIInterface.getFeed(limit, offset);
+            call = RecipesAPIInterface.getRecipeReviews(slug, limit, offset);
         }
 
-        call.enqueue(new Callback<RecipesResultModel>() {
+        call.enqueue(new Callback<ReviewsResultModel>() {
             @Override
-            public void onResponse(@NonNull Call<RecipesResultModel> call, @NonNull Response<RecipesResultModel> response) {
+            public void onResponse(@NonNull Call<ReviewsResultModel> call, @NonNull Response<ReviewsResultModel> response) {
                 if (!response.isSuccessful())
                     error.setValue(R.string.network_error);
-                else if (response.body().getRecipes().isEmpty())
-                    error.setValue(R.string.feed_empty);
+                else if (response.body().getReviews().isEmpty())
+                    error.setValue(R.string.list_empty);
                 else
-                    recipes.setValue(response.body());
+                    reviews.setValue(response.body());
             }
 
             @Override
-            public void onFailure(@NonNull Call<RecipesResultModel> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ReviewsResultModel> call, @NonNull Throwable t) {
                 error.setValue(R.string.network_error);
             }
         });

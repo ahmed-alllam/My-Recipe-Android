@@ -1,14 +1,12 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 23:52
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
 
 
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +28,6 @@ import com.bumptech.glide.Glide;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.APIClient;
 import com.myrecipe.myrecipeapp.data.APIInterface;
-import com.myrecipe.myrecipeapp.data.PreferencesManager;
 import com.myrecipe.myrecipeapp.data.RecipeDetailViewModel;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.RecipeReviewModel;
@@ -38,13 +35,10 @@ import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnRecipeDataChangedListener;
 import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
+import com.myrecipe.myrecipeapp.util.PreferencesManager;
+import com.myrecipe.myrecipeapp.util.TimeParser;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,13 +80,11 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         viewModel.getRecipe(getContext(), recipeSlug);
 
 
-        view.findViewById(R.id.backButton).setOnClickListener((v) -> {
-            getParentFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.fragment_exit, R.anim.fragment_exit)
-                    .remove(this)
-                    .commit();
-        });
+        view.findViewById(R.id.backButton).setOnClickListener((v) -> getParentFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_exit, R.anim.fragment_exit)
+                .remove(this)
+                .commit());
 
         ImageView recipeImage = view.findViewById(R.id.recipeImage);
         Glide.with(getContext())
@@ -231,13 +223,9 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
             }
         });
 
-        view.findViewById(R.id.recipesUserContainer).setOnClickListener(v -> {
-            launchFragment(new GeneralUsersProfileFragment(recipe.getUser()));
-        });
+        view.findViewById(R.id.recipesUserContainer).setOnClickListener(v -> launchFragment(new GeneralUsersProfileFragment(recipe.getUser())));
 
-        view.findViewById(R.id.allreviewsLabel).setOnClickListener(v -> {
-            launchFragment(new RecipeReviewsFragment(recipe.getSlug()));
-        });
+        view.findViewById(R.id.allreviewsLabel).setOnClickListener(v -> launchFragment(new RecipeReviewsFragment(recipe.getSlug())));
     }
 
     private void refreshRecipeData(View view, UserModel me) {
@@ -270,7 +258,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
 
         TextView timeStamp = view.findViewById(R.id.timeStamp);
-        timeStamp.setText(parseTime(recipe.getTimestamp()));
+        timeStamp.setText(TimeParser.parseTime(getContext(), recipe.getTimestamp()));
 
         TextView favouritesCount = view.findViewById(R.id.favouritesCount);
         favouritesCount.setText(String.valueOf(recipe.getFavourites_count()));
@@ -361,7 +349,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
                         .into((ImageView) reviewView.findViewById(R.id.userPhoto));
 
                 ((TextView) reviewView.findViewById(R.id.userName)).setText(review.getUser().getName());
-                ((TextView) reviewView.findViewById(R.id.timeStamp)).setText(parseTime(review.getTimestamp()));
+                ((TextView) reviewView.findViewById(R.id.timeStamp)).setText(TimeParser.parseTime(getContext(), review.getTimestamp()));
                 ((TextView) reviewView.findViewById(R.id.body)).setText(review.getBody());
                 ((RatingBar) reviewView.findViewById(R.id.ratingBar)).setRating(review.getRating());
 
@@ -377,31 +365,18 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         }
     }
 
-    private String parseTime(String time) {
-        Locale currentLocale;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            currentLocale = getResources().getConfiguration().getLocales().get(0);
-        } else {
-            currentLocale = getResources().getConfiguration().locale;
-        }
-
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", currentLocale);
-        inputFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        try {
-            Date parsedDate = inputFormat.parse(time);
-            return String.valueOf(DateUtils.getRelativeTimeSpanString(parsedDate.getTime(), System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS));
-        } catch (ParseException e) {
-            return "";
-        }
-    }
-
     private void launchFragment(Fragment fragment) {
         getChildFragmentManager()
                 .beginTransaction()
                 .add(getView().getId(), fragment)
                 .commit();
         ((MainActivity) getActivity()).addFragment(fragment);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity) getActivity()).removeFragment(this);
     }
 
     @Override
@@ -413,17 +388,15 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ((MainActivity) getActivity()).removeFragment(this);
-    }
-
-    @Override
     public void onUserProfileChanged(UserModel user, boolean isCurrentUser) {
-        if (!loading && !isCurrentUser) {
+        //todo: test it
+        if (!loading && !isCurrentUser && recipe.getUser().getUsername().equals(user.getUsername())) {
             recipe.setUser(user);
+            refreshRecipeData(getView(), null);
         }
-        refreshRecipeData(getView(), null);
+
+        if (!loading && isCurrentUser)
+            refreshRecipeData(getView(), user);
     }
 
     private class emptyCallBack implements Callback<Void> {
