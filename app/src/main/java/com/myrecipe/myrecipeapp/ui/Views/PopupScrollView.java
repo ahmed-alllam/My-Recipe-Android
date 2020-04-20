@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 18/04/20 15:41
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 21:11
  */
 
 package com.myrecipe.myrecipeapp.ui.Views;
@@ -7,9 +7,9 @@ package com.myrecipe.myrecipeapp.ui.Views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class PopupScrollView extends ScrollView {
 
@@ -28,7 +28,7 @@ public class PopupScrollView extends ScrollView {
 
     private boolean isScrollable(boolean scrollUp) {
         if (topMargin == 0) {
-            int topMarginInPX = ((ConstraintLayout.LayoutParams) getLayoutParams()).topMargin;
+            int topMarginInPX = ((RelativeLayout.LayoutParams) ((View) getParent()).getLayoutParams()).topMargin;
             topMargin = (int) (topMarginInPX / getContext().getResources().getDisplayMetrics().density);
         }
 
@@ -38,7 +38,7 @@ public class PopupScrollView extends ScrollView {
     }
 
     private boolean moveView(float dy) {
-        ConstraintLayout.LayoutParams layoutParams = ((ConstraintLayout.LayoutParams) getLayoutParams());
+        RelativeLayout.LayoutParams layoutParams = ((RelativeLayout.LayoutParams) ((View) getParent()).getLayoutParams());
 
         float density = getContext().getResources().getDisplayMetrics().density;
 
@@ -53,7 +53,7 @@ public class PopupScrollView extends ScrollView {
 
         topMargin = (int) (layoutParams.topMargin / density);
 
-        setLayoutParams(layoutParams);
+        ((View) getParent()).setLayoutParams(layoutParams);
 
         return true;
     }

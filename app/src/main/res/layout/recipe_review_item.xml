@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 21:11
   -->
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -36,6 +36,7 @@
 
             <ImageView
                 android:id="@+id/userPhoto"
+                android:scaleType="centerCrop"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/user_icon" />

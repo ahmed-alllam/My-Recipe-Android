@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 21:11
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -71,6 +71,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         viewModel.recipe.observe(getViewLifecycleOwner(), (recipe) -> {
             this.recipe = recipe;
             loading = false;
+            loadNewRecipeData(view);
             refreshRecipeData(view, null);
         });
 
@@ -228,7 +229,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         view.findViewById(R.id.allreviewsLabel).setOnClickListener(v -> launchFragment(new RecipeReviewsFragment(recipe.getSlug())));
     }
 
-    private void refreshRecipeData(View view, UserModel me) {
+    private void loadNewRecipeData(View view) {
         UserModel user = recipe.getUser();
         ImageView userImage = view.findViewById(R.id.userImage);
         Glide.with(getContext())
@@ -239,36 +240,8 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         TextView userName = view.findViewById(R.id.userName);
         userName.setText(user.getName());
 
-
-        Button followUser = view.findViewById(R.id.followUser);
-
-        if (me == null)
-            me = PreferencesManager.getStoredUser(getContext());
-
-        if (!me.getUsername().equals("") && !user.getUsername().equals(me.getUsername())) {
-            followUser.setVisibility(View.VISIBLE);
-
-            if (user.isFollowedByUser())
-                followUser.setText(R.string.unfollow);
-            else
-                followUser.setText(R.string.follow);
-        } else {
-            followUser.setVisibility(View.INVISIBLE);
-        }
-
-
         TextView timeStamp = view.findViewById(R.id.timeStamp);
         timeStamp.setText(TimeParser.parseTime(getContext(), recipe.getTimestamp()));
-
-        TextView favouritesCount = view.findViewById(R.id.favouritesCount);
-        favouritesCount.setText(String.valueOf(recipe.getFavourites_count()));
-
-        ImageButton favourite = view.findViewById(R.id.favourite);
-
-        if (recipe.isFavouritedByUser())
-            favourite.setImageResource(R.drawable.favourite2);
-        else
-            favourite.setImageResource(R.drawable.favourite_border);
 
         TextView recipeIngredients = view.findViewById(R.id.recipeIngredients);
 
@@ -284,10 +257,8 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
         recipeIngredients.setText(sb.toString());
 
-
         TextView recipeBody = view.findViewById(R.id.recipeBody);
         recipeBody.setText(recipe.getBody());
-
 
         if (!recipe.getImages().isEmpty()) {
             LinearLayout images = view.findViewById(R.id.images);
@@ -322,11 +293,6 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
             view.findViewById(R.id.imagesScrollView).setVisibility(View.GONE);
         }
 
-        if (PreferencesManager.getToken(getContext()).length() > 0) {
-            view.findViewById(R.id.ratingBar2).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.addReviewLabel).setVisibility(View.VISIBLE);
-        }
-
         if (!recipe.getReviews().isEmpty()) {
             if (recipe.getReviews().size() > 3) {
                 view.findViewById(R.id.allreviewsLabel).setVisibility(View.VISIBLE);
@@ -335,10 +301,10 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
             TextView reviewsCount = view.findViewById(R.id.reviewsCount);
             reviewsCount.setText(String.format("(%s)", recipe.getReviews_count()));
 
+            LinearLayout reviewsLayout = view.findViewById(R.id.reviews);
+
             for (int i = 0; i < recipe.getReviews().size(); i++) {
                 RecipeReviewModel review = recipe.getReviews().get(i);
-
-                LinearLayout reviewsLayout = view.findViewById(R.id.reviews);
 
                 View reviewView = LayoutInflater.from(getContext()).
                         inflate(R.layout.recipe_review_item, reviewsLayout, false);
@@ -362,6 +328,42 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         } else {
             view.findViewById(R.id.reviewsLabel).setVisibility(View.GONE);
             view.findViewById(R.id.reviews).setVisibility(View.GONE);
+        }
+    }
+
+    private void refreshRecipeData(View view, UserModel me) {
+        UserModel user = recipe.getUser();
+
+        Button followUser = view.findViewById(R.id.followUser);
+
+        if (me == null)
+            me = PreferencesManager.getStoredUser(getContext());
+
+        if (!me.getUsername().equals("") && !user.getUsername().equals(me.getUsername())) {
+            followUser.setVisibility(View.VISIBLE);
+
+            if (user.isFollowedByUser())
+                followUser.setText(R.string.unfollow);
+            else
+                followUser.setText(R.string.follow);
+        } else {
+            followUser.setVisibility(View.INVISIBLE);
+        }
+
+        TextView favouritesCount = view.findViewById(R.id.favouritesCount);
+        favouritesCount.setText(String.valueOf(recipe.getFavourites_count()));
+
+        ImageButton favourite = view.findViewById(R.id.favourite);
+
+        if (recipe.isFavouritedByUser())
+            favourite.setImageResource(R.drawable.favourite2);
+        else
+            favourite.setImageResource(R.drawable.favourite_border);
+
+
+        if (PreferencesManager.getToken(getContext()).length() > 0) {
+            view.findViewById(R.id.ratingBar2).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.addReviewLabel).setVisibility(View.VISIBLE);
         }
     }
 
@@ -390,7 +392,8 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
     @Override
     public void onUserProfileChanged(UserModel user, boolean isCurrentUser) {
         //todo: test it
-        if (!loading && !isCurrentUser && recipe.getUser().getUsername().equals(user.getUsername())) {
+        if (!loading && !isCurrentUser && recipe.getUser() != null &&
+                recipe.getUser().getUsername().equals(user.getUsername())) {
             recipe.setUser(user);
             refreshRecipeData(getView(), null);
         }

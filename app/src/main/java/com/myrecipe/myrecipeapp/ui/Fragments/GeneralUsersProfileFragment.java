@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 21:11
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -158,8 +158,13 @@ public class GeneralUsersProfileFragment extends BaseRecipesFragment implements 
 
     @Override
     public void onUserProfileChanged(UserModel user, boolean isCurrentUser) {
-        this.user = user;
-        refreshUserData();
+        if (user != null && !isCurrentUser && user.getUsername().equals(this.user.getUsername())) {
+            this.user = user;
+            refreshUserData();
+        }
+
+        if (isCurrentUser)
+            refreshUserData();
     }
 
     @Override
