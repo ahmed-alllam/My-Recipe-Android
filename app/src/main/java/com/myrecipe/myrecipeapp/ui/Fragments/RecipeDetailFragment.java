@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 22:59
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 23:53
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -301,43 +301,6 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
             view.findViewById(R.id.imagesLabel).setVisibility(View.GONE);
             view.findViewById(R.id.imagesScrollView).setVisibility(View.GONE);
         }
-
-        if (!recipe.getReviews().isEmpty()) {
-            if (recipe.getReviews().size() > 3) {
-                view.findViewById(R.id.allreviewsLabel).setVisibility(View.VISIBLE);
-            }
-
-            TextView reviewsCount = view.findViewById(R.id.reviewsCount);
-            reviewsCount.setText(String.format("(%s)", recipe.getReviews_count()));
-
-            LinearLayout reviewsLayout = view.findViewById(R.id.reviews);
-
-            for (int i = 0; i < recipe.getReviews().size(); i++) {
-                RecipeReviewModel review = recipe.getReviews().get(i);
-
-                View reviewView = LayoutInflater.from(getContext()).
-                        inflate(R.layout.recipe_review_item, reviewsLayout, false);
-
-                Glide.with(getContext())
-                        .load(review.getUser().getImage())
-                        .placeholder(R.drawable.user_icon)
-                        .into((ImageView) reviewView.findViewById(R.id.userPhoto));
-
-                ((TextView) reviewView.findViewById(R.id.userName)).setText(review.getUser().getName());
-                ((TextView) reviewView.findViewById(R.id.timeStamp)).setText(TimeParser.parseTime(getContext(), review.getTimestamp()));
-                ((TextView) reviewView.findViewById(R.id.body)).setText(review.getBody());
-                ((RatingBar) reviewView.findViewById(R.id.ratingBar)).setRating(review.getRating());
-
-                reviewsLayout.addView(reviewView);
-
-                if (i == 2) {
-                    break;
-                }
-            }
-        } else {
-            view.findViewById(R.id.reviewsLabel).setVisibility(View.GONE);
-            view.findViewById(R.id.reviews).setVisibility(View.GONE);
-        }
     }
 
     private void refreshRecipeData(View view, UserModel me) {
@@ -373,6 +336,44 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         if (PreferencesManager.getToken(getContext()).length() > 0) {
             view.findViewById(R.id.ratingBar2).setVisibility(View.VISIBLE);
             view.findViewById(R.id.addReviewLabel).setVisibility(View.VISIBLE);
+        }
+
+        if (!recipe.getReviews().isEmpty()) {
+            if (recipe.getReviews().size() > 3) {
+                view.findViewById(R.id.allreviewsLabel).setVisibility(View.VISIBLE);
+            }
+
+            TextView reviewsCount = view.findViewById(R.id.reviewsCount);
+            reviewsCount.setText(String.format("(%s)", recipe.getReviews_count()));
+
+            LinearLayout reviewsLayout = view.findViewById(R.id.reviews);
+            reviewsLayout.removeAllViews();
+
+            for (int i = 0; i < recipe.getReviews().size(); i++) {
+                RecipeReviewModel review = recipe.getReviews().get(i);
+
+                View reviewView = LayoutInflater.from(getContext()).
+                        inflate(R.layout.recipe_review_item, reviewsLayout, false);
+
+                Glide.with(getContext())
+                        .load(review.getUser().getImage())
+                        .placeholder(R.drawable.user_icon)
+                        .into((ImageView) reviewView.findViewById(R.id.userPhoto));
+
+                ((TextView) reviewView.findViewById(R.id.userName)).setText(review.getUser().getName());
+                ((TextView) reviewView.findViewById(R.id.timeStamp)).setText(TimeParser.parseTime(getContext(), review.getTimestamp()));
+                ((TextView) reviewView.findViewById(R.id.body)).setText(review.getBody());
+                ((RatingBar) reviewView.findViewById(R.id.ratingBar)).setRating(review.getRating());
+
+                reviewsLayout.addView(reviewView);
+
+                if (i == 2) {
+                    break;
+                }
+            }
+        } else {
+            view.findViewById(R.id.reviewsLabel).setVisibility(View.GONE);
+            view.findViewById(R.id.reviews).setVisibility(View.GONE);
         }
     }
 
