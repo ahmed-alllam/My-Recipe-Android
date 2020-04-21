@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 13/04/20 16:57
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 21:25
  */
 
 package com.myrecipe.myrecipeapp.models;
@@ -12,6 +12,13 @@ public class RecipeReviewModel {
     private String timestamp;
     private int rating;
 
+    public RecipeReviewModel() {
+    }
+
+    public RecipeReviewModel(String body, int rating) {
+        this.body = body;
+        this.rating = rating;
+    }
 
     public String getBody() {
         return body;

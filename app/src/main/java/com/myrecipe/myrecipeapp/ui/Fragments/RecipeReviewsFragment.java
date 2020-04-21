@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 21:25
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -47,7 +47,7 @@ public class RecipeReviewsFragment extends BaseListsFragment<RecipeReviewModel> 
                 .get(RecipeReviewsViewModel.class);
 
         recyclerView = view.findViewById(R.id.reviewsRecyclerView);
-        adapter = new RecipeReviewsAdapter(getContext(), this, recyclerView);
+        adapter = new RecipeReviewsAdapter(getContext(), this, recyclerView, recipeSlug);
         errorLabel = view.findViewById(R.id.errorLabel);
         swipeRefreshLayout = view.findViewById(R.id.swipeLayout);
 

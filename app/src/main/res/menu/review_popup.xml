@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 21:25
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/editReview"
+        android:title="@string/edit_review" />
+
+    <item
+        android:id="@+id/deleteReview"
+        android:title="@string/delete_review" />
+</menu>

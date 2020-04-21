@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 23:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 21:25
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -231,7 +231,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
         ((RatingBar) view.findViewById(R.id.ratingBar2)).setOnRatingBarChangeListener((ratingBar1, rating, fromUser) -> {
             if (fromUser) {
-                DialogFragment dialog = new AddReviewFragment(recipe.getSlug(), rating, null);
+                DialogFragment dialog = new AddReviewFragment(recipeSlug, rating, null);
                 ((MainActivity) getActivity()).addFragment(dialog);
                 dialog.show(getChildFragmentManager(), "AddReviewDialog");
             }

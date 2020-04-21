@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 22:59
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 21:25
   -->
 
 <resources>
@@ -87,5 +87,8 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="name">Name</string>
 
+    <!-- Reviews Strings -->
     <string name="write_review">Write a Review for that recipe</string>
+    <string name="edit_review">Edit</string>
+    <string name="delete_review">Delete</string>
 </resources>

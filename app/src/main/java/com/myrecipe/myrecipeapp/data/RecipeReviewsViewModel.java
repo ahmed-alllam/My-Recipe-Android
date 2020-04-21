@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 21:25
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.myrecipe.myrecipeapp.R;
+import com.myrecipe.myrecipeapp.models.RecipeReviewModel;
 import com.myrecipe.myrecipeapp.models.ReviewsResultModel;
 import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
@@ -20,7 +21,9 @@ import retrofit2.Response;
 
 public class RecipeReviewsViewModel extends ViewModel {
     public MutableLiveData<ReviewsResultModel> reviews = new MutableLiveData<>();
+    public MutableLiveData<RecipeReviewModel> review = new MutableLiveData<>();
     public MutableLiveData<Integer> error = new MutableLiveData<>();
+
 
     public void getReviews(Context context, String slug, int limit, int offset) {
         APIInterface RecipesAPIInterface = APIClient.getClient().create(APIInterface.class);
@@ -50,6 +53,67 @@ public class RecipeReviewsViewModel extends ViewModel {
             @Override
             public void onFailure(@NonNull Call<ReviewsResultModel> call, @NonNull Throwable t) {
                 error.setValue(R.string.network_error);
+            }
+        });
+    }
+
+    public void addReview(Context context, String slug, RecipeReviewModel reviewModel) {
+        APIInterface RecipesAPIInterface = APIClient.getClient().create(APIInterface.class);
+
+        String token = PreferencesManager.getToken(context);
+        token = "Token " + token;
+
+        RecipesAPIInterface.addRecipeReview(token, slug, reviewModel).enqueue(new Callback<RecipeReviewModel>() {
+            @Override
+            public void onResponse(@NonNull Call<RecipeReviewModel> call, @NonNull Response<RecipeReviewModel> response) {
+                if (!response.isSuccessful())
+                    error.setValue(R.string.network_error);
+                else
+                    review.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RecipeReviewModel> call, @NonNull Throwable t) {
+                error.setValue(R.string.network_error);
+            }
+        });
+    }
+
+    public void editReview(Context context, String recipeSlug, String slug, RecipeReviewModel reviewModel) {
+        APIInterface RecipesAPIInterface = APIClient.getClient().create(APIInterface.class);
+
+        String token = PreferencesManager.getToken(context);
+        token = "Token " + token;
+
+        RecipesAPIInterface.editRecipeReview(token, recipeSlug, slug, reviewModel).enqueue(new Callback<RecipeReviewModel>() {
+            @Override
+            public void onResponse(@NonNull Call<RecipeReviewModel> call, @NonNull Response<RecipeReviewModel> response) {
+                if (!response.isSuccessful())
+                    error.setValue(R.string.network_error);
+                else
+                    review.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RecipeReviewModel> call, @NonNull Throwable t) {
+                error.setValue(R.string.network_error);
+            }
+        });
+    }
+
+    public void deleteReview(Context context, String recipeSlug, String slug) {
+        APIInterface RecipesAPIInterface = APIClient.getClient().create(APIInterface.class);
+
+        String token = PreferencesManager.getToken(context);
+        token = "Token " + token;
+
+        RecipesAPIInterface.deleteRecipeReview(token, recipeSlug, slug).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
             }
         });
     }

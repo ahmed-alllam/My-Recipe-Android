@@ -1,10 +1,11 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 21:25
  */
 
 package com.myrecipe.myrecipeapp.data;
 
 import com.myrecipe.myrecipeapp.models.RecipeModel;
+import com.myrecipe.myrecipeapp.models.RecipeReviewModel;
 import com.myrecipe.myrecipeapp.models.RecipesResultModel;
 import com.myrecipe.myrecipeapp.models.ReviewsResultModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
@@ -12,12 +13,14 @@ import com.myrecipe.myrecipeapp.models.UserTokenModel;
 import com.myrecipe.myrecipeapp.models.UsersResultModel;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -49,6 +52,22 @@ public interface APIInterface {
                                               @Path("slug") String Slug,
                                               @Query("limit") int limit,
                                               @Query("offset") int offset);
+
+    @POST("recipes/{slug}/reviews/?format=json")
+    Call<RecipeReviewModel> addRecipeReview(@Header("Authorization") String token,
+                                            @Path("slug") String Slug,
+                                            @Body RecipeReviewModel review);
+
+    @PUT("recipes/{recipeSlug}/reviews/{slug}/?format=json")
+    Call<RecipeReviewModel> editRecipeReview(@Header("Authorization") String token,
+                                             @Path("recipeSlug") String recipeSlug,
+                                             @Path("slug") String Slug,
+                                             @Body RecipeReviewModel review);
+
+    @DELETE("recipes/{recipeSlug}/reviews/{slug}/?format=json")
+    Call<Void> deleteRecipeReview(@Header("Authorization") String token,
+                                  @Path("recipeSlug") String recipeSlug,
+                                  @Path("slug") String Slug);
 
     @POST("recipes/{slug}/favourite/?format=json")
     Call<Void> addFavouriteRecipe(@Header("Authorization") String token,
