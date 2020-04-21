@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 17:01
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -38,7 +38,7 @@ public abstract class BaseRecipesFragment extends BaseListsFragment<RecipeModel>
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 super.onBindViewHolder(holder, position);
-                if (this.getItemViewType(position) == RecipesRecyclerAdapter.VIEW_TYPE_RECIPE) {
+                if ((holder instanceof RecipeViewHolder)) {
                     RecipesRecyclerAdapter.RecipeViewHolder viewHolder = (RecipesRecyclerAdapter.RecipeViewHolder) holder;
                     setOnFavouriteButtonPressed(viewHolder, position, this, view);
                 }

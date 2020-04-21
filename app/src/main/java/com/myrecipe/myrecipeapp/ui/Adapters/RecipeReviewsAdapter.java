@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 17:01
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -79,7 +79,7 @@ public class RecipeReviewsAdapter extends BaseRecyclerAdapter<RecipeReviewModel>
     public int getItemViewType(int position) {
         if (list.size() == 0)
             return VIEW_TYPE_EMPTY;
-        if (position == list.size() - 1 && isLoadingMore)
+        if ((position == list.size() - 1 && isLoadingMore) || list.get(position) == null)
             return VIEW_TYPE_LOADING;
         return VIEW_TYPE_REVIEW;
     }

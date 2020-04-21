@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 17:01
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -50,13 +50,10 @@ public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position) != VIEW_TYPE_RECIPE)
+        if (!(holder instanceof RecipeViewHolder))
             return;
 
         RecipeModel recipe = list.get(position);
-
-        if (recipe == null)
-            return;
 
         RecipeViewHolder viewHolder = (RecipeViewHolder) holder;
 
@@ -103,7 +100,7 @@ public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
     public int getItemViewType(int position) {
         if (list.size() == 0)
             return VIEW_TYPE_EMPTY;
-        if (position == list.size() - 1 && isLoadingMore)
+        if ((position == list.size() - 1 && isLoadingMore) || list.get(position) == null)
             return VIEW_TYPE_LOADING;
         return VIEW_TYPE_RECIPE;
     }
