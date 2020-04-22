@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 15:36
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -25,12 +25,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.myrecipe.myrecipeapp.CallBacks.OnUserProfileChangedListener;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.MyUserViewModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Activities.LoginActivity;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
-import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
 import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 

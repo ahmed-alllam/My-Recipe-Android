@@ -20,13 +20,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.myrecipe.myrecipeapp.CallBacks.OnUserProfileChangedListener;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.APIClient;
 import com.myrecipe.myrecipeapp.data.APIInterface;
 import com.myrecipe.myrecipeapp.data.UsersRecipesViewModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
-import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
 import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 

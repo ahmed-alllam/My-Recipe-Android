@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 15:36
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -16,9 +16,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.myrecipe.myrecipeapp.CallBacks.OnUserProfileChangedListener;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
-import com.myrecipe.myrecipeapp.ui.CallBacks.OnUserProfileChangedListener;
 import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 
