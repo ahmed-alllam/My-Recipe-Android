@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 21:25
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 15:33
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -52,10 +53,13 @@ public class AddReviewFragment extends DialogFragment {
         RecipeReviewsViewModel viewModel = new ViewModelProvider(this).get(RecipeReviewsViewModel.class);
 
         viewModel.review.observe(this, recipeReviewModel -> {
-
+            progressBar.setVisibility(View.GONE);
+            dismiss();
         });
-        viewModel.error.observe(this, integer -> {
-
+        viewModel.error.observe(this, errorint -> {
+            progressBar.setVisibility(View.GONE);
+            error.setVisibility(View.VISIBLE);
+            error.setText(errorint);
         });
 
 
@@ -68,18 +72,24 @@ public class AddReviewFragment extends DialogFragment {
             body.setText(review.getBody());
 
         builder.setView(view)
-                .setPositiveButton(R.string.send, (dialog, id) -> {
-                    RecipeReviewModel reviewModel = new RecipeReviewModel(body.getText().toString(), (int) ratingBar.getRating());
-                    if (review == null)
-                        viewModel.addReview(getContext(), recipeSlug, reviewModel);
-                    else
-                        viewModel.editReview(getContext(), recipeSlug, review.getSlug(), reviewModel);
-                })
+                .setPositiveButton(R.string.send, null)
                 .setNegativeButton(R.string.cancel, (dialog, id) -> getDialog().cancel());
 
         AlertDialog dialog = builder.create();
         dialog.show();
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setEnabled(false);
+        positiveButton.setOnClickListener(v -> {
+            RecipeReviewModel reviewModel = new RecipeReviewModel(body.getText().toString(), (int) ratingBar.getRating());
+            if (review == null)
+                viewModel.addReview(getContext(), recipeSlug, reviewModel);
+            else
+                viewModel.editReview(getContext(), recipeSlug, review.getSlug(), reviewModel);
+            error.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        });
+
 
         body.addTextChangedListener(new TextWatcher() {
             @Override
@@ -89,14 +99,13 @@ public class AddReviewFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //todo : buggy
                 if (TextUtils.isEmpty(s)) {
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                    positiveButton.setEnabled(false);
                 } else {
-                    if (review != null && s.equals(review.getBody()))
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                    if (review != null && s.toString().equals(review.getBody()))
+                        positiveButton.setEnabled(false);
                     else {
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                        positiveButton.setEnabled(true);
                     }
                 }
             }
