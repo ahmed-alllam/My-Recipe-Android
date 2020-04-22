@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 15:36
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -102,16 +102,18 @@ public class RelatedUsersFragment extends BaseListsFragment<UserModel> implement
         }
 
         if (type == requiredType && !isCurrentUser) {
+            int position = adapter.indexOf(requiredUser);
+
             if (!user.isFollowedByUser()) {
-                if (adapter.contains(requiredUser))
-                    ((RelatedUsersAdapter) adapter).removeUser(requiredUser.getUsername());
+                if (position >= 0)
+                    adapter.remove(position);
             } else {
-                if (!adapter.contains(requiredUser)) {
+                if (position >= 0) {
                     errorLabel.setVisibility(View.INVISIBLE);
                     recyclerView.setVisibility(View.VISIBLE);
                     adapter.add(requiredUser);
                 } else
-                    ((RelatedUsersAdapter) adapter).updateUser(requiredUser);
+                    adapter.update(requiredUser, position);
             }
         }
     }

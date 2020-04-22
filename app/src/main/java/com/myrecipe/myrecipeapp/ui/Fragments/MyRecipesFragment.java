@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 15:36
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -15,16 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.myrecipe.myrecipeapp.CallBacks.OnRecipeDataChangedListener;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.UsersRecipesViewModel;
-import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
-import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
 import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
-public class MyRecipesFragment extends BaseRecipesFragment implements OnRecipeDataChangedListener {
+public class MyRecipesFragment extends BaseRecipesFragment {
 
     private UsersRecipesViewModel usersRecipesViewModel;
 
@@ -63,10 +60,5 @@ public class MyRecipesFragment extends BaseRecipesFragment implements OnRecipeDa
     public void onDestroyView() {
         super.onDestroyView();
         ((MainActivity) getActivity()).removeFragment(this);
-    }
-
-    @Override
-    public void onRecipeChanged(RecipeModel recipe) {
-        ((RecipesRecyclerAdapter) adapter).updateRecipe(recipe);
     }
 }

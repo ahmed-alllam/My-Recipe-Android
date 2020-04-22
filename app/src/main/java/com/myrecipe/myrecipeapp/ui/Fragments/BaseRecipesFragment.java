@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 15:36
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -26,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public abstract class BaseRecipesFragment extends BaseListsFragment<RecipeModel> {
+public abstract class BaseRecipesFragment extends BaseListsFragment<RecipeModel> implements OnRecipeDataChangedListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -102,5 +102,12 @@ public abstract class BaseRecipesFragment extends BaseListsFragment<RecipeModel>
         public void onFailure(Call<Void> call, Throwable t) {
 
         }
+    }
+
+    @Override
+    public void onRecipeChanged(RecipeModel recipe) {
+        int position = adapter.indexOf(recipe);
+        if (position >= 0)
+            adapter.update(recipe, position);
     }
 }

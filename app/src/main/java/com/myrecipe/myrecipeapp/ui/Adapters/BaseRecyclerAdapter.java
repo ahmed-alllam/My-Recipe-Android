@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -105,10 +105,28 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
         return list.contains(item);
     }
 
-    private void remove(int position) {
+    public int indexOf(T item) {
+        return list.indexOf(item);
+    }
+
+    public void remove(int position) {
         recyclerView.post(() -> {
             list.remove(position);
             notifyItemRemoved(position);
+            if (isEmpty()) {
+                if (fragment.getView() != null) {
+                    fragment.recyclerView.setVisibility(View.INVISIBLE);
+                    fragment.errorLabel.setText(R.string.favourites_empty);
+                    fragment.errorLabel.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    public void update(T item, int position) {
+        recyclerView.post(() -> {
+            list.set(position, item);
+            notifyItemChanged(position);
         });
     }
 

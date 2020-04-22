@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 15:36
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -227,11 +227,11 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
         view.findViewById(R.id.recipesUserContainer).setOnClickListener(v -> launchFragment(new GeneralUsersProfileFragment(recipe.getUser())));
 
-        view.findViewById(R.id.allreviewsLabel).setOnClickListener(v -> launchFragment(new RecipeReviewsFragment(recipe.getSlug())));
+        view.findViewById(R.id.allreviewsLabel).setOnClickListener(v -> launchFragment(new RecipeReviewsFragment(recipe)));
 
         ((RatingBar) view.findViewById(R.id.ratingBar2)).setOnRatingBarChangeListener((ratingBar1, rating, fromUser) -> {
             if (fromUser) {
-                DialogFragment dialog = new AddReviewFragment(recipeSlug, rating, null);
+                DialogFragment dialog = new AddReviewFragment(recipe, rating, null);
                 ((MainActivity) getActivity()).addFragment(dialog);
                 dialog.show(getChildFragmentManager(), "AddReviewDialog");
             }
@@ -334,7 +334,15 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
 
 
         if (PreferencesManager.getToken(getContext()).length() > 0) {
-            view.findViewById(R.id.ratingBar2).setVisibility(View.VISIBLE);
+            RatingBar ratingBar = view.findViewById(R.id.ratingBar2);
+            ratingBar.setVisibility(View.VISIBLE);
+
+            ratingBar.setRating(recipe.getUsersRating());
+            if (recipe.getUsersRating() != 0)
+                ratingBar.setIsIndicator(true);
+            else
+                ratingBar.setIsIndicator(false);
+
             view.findViewById(R.id.addReviewLabel).setVisibility(View.VISIBLE);
         }
 
@@ -394,7 +402,7 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
     @Override
     public void onRecipeChanged(RecipeModel newRecipe) {
         if (recipe.getSlug() != null && recipe.getSlug().equals(newRecipe.getSlug()) && !loading) {
-            recipe = recipe.checkNull(newRecipe);
+            recipe = recipe.checkNullFields(newRecipe);
             refreshRecipeData(getView(), null);
         }
     }

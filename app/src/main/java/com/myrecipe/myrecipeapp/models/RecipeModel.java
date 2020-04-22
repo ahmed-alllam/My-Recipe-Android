@@ -1,8 +1,10 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:03
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.models;
+
+import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -27,9 +29,17 @@ public class RecipeModel {
     private float rating;
     @SerializedName("is_favourited_by_user")
     private boolean isFavouritedByUser;
+    private int usersRating;
 
 
-    public RecipeModel checkNull(RecipeModel newRecipe) {
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof RecipeModel)) return false;
+
+        return getSlug().equals(((RecipeModel) obj).getSlug());
+    }
+
+    public RecipeModel checkNullFields(RecipeModel newRecipe) {
         if (newRecipe.getUser() == null && getUser() != null)
             newRecipe.setUser(getUser());
 
@@ -52,6 +62,14 @@ public class RecipeModel {
             newRecipe.setReviews_count(getReviews_count());
 
         return newRecipe;
+    }
+
+    public int getUsersRating() {
+        return usersRating;
+    }
+
+    public void setUsersRating(int usersRating) {
+        this.usersRating = usersRating;
     }
 
     public boolean isFavouritedByUser() {

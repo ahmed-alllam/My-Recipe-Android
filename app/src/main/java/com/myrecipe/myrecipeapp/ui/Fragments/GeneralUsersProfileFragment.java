@@ -158,13 +158,8 @@ public class GeneralUsersProfileFragment extends BaseRecipesFragment implements 
 
     @Override
     public void onUserProfileChanged(UserModel user, boolean isCurrentUser) {
-        if (user != null && !isCurrentUser && user.getUsername().equals(this.user.getUsername())) {
-            this.user = user;
-            refreshUserData();
-        }
-
-        if (isCurrentUser)
-            refreshUserData();
+        this.user = user;
+        refreshUserData();
     }
 
     @Override

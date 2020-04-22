@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 15:33
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -9,7 +9,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,26 +18,32 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.myrecipe.myrecipeapp.CallBacks.OnRecipeDataChangedListener;
+import com.myrecipe.myrecipeapp.CallBacks.OnReviewChangedListener;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.RecipeReviewsViewModel;
+import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.RecipeReviewModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 
 
 public class AddReviewFragment extends DialogFragment {
-    private String recipeSlug;
     private float rating;
     private RecipeReviewModel review;
+    private RecipeModel recipe;
 
-    public AddReviewFragment(String recipeSlug, float rating, RecipeReviewModel review) {
-        this.recipeSlug = recipeSlug;
+    public AddReviewFragment(RecipeModel recipe, float rating, RecipeReviewModel review) {
+        this.recipe = recipe;
         this.rating = rating;
         this.review = review;
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -54,6 +59,27 @@ public class AddReviewFragment extends DialogFragment {
 
         viewModel.review.observe(this, recipeReviewModel -> {
             progressBar.setVisibility(View.GONE);
+
+            recipe.getReviews().add(recipeReviewModel);
+
+            int prevRating = 0;
+            int isEditing = 0;
+            if (review != null) {
+                prevRating = review.getRating();
+                isEditing = 1;
+            }
+
+            recipe.setRating(((recipe.getRating() * recipe.getReviews_count()) - prevRating + recipeReviewModel.getRating()) / (recipe.getReviews_count() + 1 - isEditing)); // upadting rating
+            recipe.setUsersRating(recipeReviewModel.getRating());
+            for (Fragment f : ((MainActivity) getActivity()).getFragments()) {
+                if (f instanceof OnRecipeDataChangedListener) {
+                    ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
+                }
+
+                if (f instanceof OnReviewChangedListener) {
+                    ((OnReviewChangedListener) f).onReviewChanged(recipeReviewModel);
+                }
+            }
             dismiss();
         });
         viewModel.error.observe(this, errorint -> {
@@ -83,11 +109,20 @@ public class AddReviewFragment extends DialogFragment {
         positiveButton.setOnClickListener(v -> {
             RecipeReviewModel reviewModel = new RecipeReviewModel(body.getText().toString(), (int) ratingBar.getRating());
             if (review == null)
-                viewModel.addReview(getContext(), recipeSlug, reviewModel);
+                viewModel.addReview(getContext(), recipe.getSlug(), reviewModel);
             else
-                viewModel.editReview(getContext(), recipeSlug, review.getSlug(), reviewModel);
+                viewModel.editReview(getContext(), recipe.getSlug(), review.getSlug(), reviewModel);
             error.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
+        });
+
+        ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, fromUser) -> {
+            if (review != null && !body.getText().toString().isEmpty()) {
+                if (rating == review.getRating() && body.getText().toString().equals(review.getBody()))
+                    positiveButton.setEnabled(false);
+                else
+                    positiveButton.setEnabled(true);
+            }
         });
 
 
@@ -99,14 +134,11 @@ public class AddReviewFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (TextUtils.isEmpty(s)) {
-                    positiveButton.setEnabled(false);
-                } else {
-                    if (review != null && s.toString().equals(review.getBody()))
+                if (review != null && !body.getText().toString().isEmpty()) {
+                    if (ratingBar.getRating() == review.getRating() && body.getText().toString().equals(review.getBody()))
                         positiveButton.setEnabled(false);
-                    else {
+                    else
                         positiveButton.setEnabled(true);
-                    }
                 }
             }
 

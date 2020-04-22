@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 21:25
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.models;
@@ -18,6 +18,17 @@ public class RecipeReviewModel {
     public RecipeReviewModel(String body, int rating) {
         this.body = body;
         this.rating = rating;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof RecipeReviewModel)) return false;
+
+        return getSlug().equals(((RecipeReviewModel) o).getSlug());
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
     }
 
     public String getBody() {
@@ -41,7 +52,7 @@ public class RecipeReviewModel {
     }
 
     public String getSlug() {
-        return slug;
+        return slug != null ? slug : "";
     }
 
     public String getTimestamp() {

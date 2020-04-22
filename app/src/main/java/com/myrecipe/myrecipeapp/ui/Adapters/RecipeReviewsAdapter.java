@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 21:25
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -17,12 +17,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.myrecipe.myrecipeapp.CallBacks.OnRecipeDataChangedListener;
+import com.myrecipe.myrecipeapp.CallBacks.OnReviewChangedListener;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.RecipeReviewsViewModel;
+import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.RecipeReviewModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.Fragments.AddReviewFragment;
@@ -36,12 +40,12 @@ public class RecipeReviewsAdapter extends BaseRecyclerAdapter<RecipeReviewModel>
     private static final int REVIEW_LOADING_ITEM_HEIGHT = 120;
 
     private RecipeReviewsViewModel viewModel;
-    private String recipeSlug;
+    private RecipeModel recipe;
 
-    public RecipeReviewsAdapter(Context context, BaseListsFragment fragment, RecyclerView recyclerView, String recipeSlug) {
+    public RecipeReviewsAdapter(Context context, BaseListsFragment fragment, RecyclerView recyclerView, RecipeModel recipe) {
         super(context, fragment, recyclerView);
         viewModel = new ViewModelProvider(fragment).get(RecipeReviewsViewModel.class);
-        this.recipeSlug = recipeSlug;
+        this.recipe = recipe;
     }
 
     @Override
@@ -98,7 +102,7 @@ public class RecipeReviewsAdapter extends BaseRecyclerAdapter<RecipeReviewModel>
                             editReview(review);
                             return true;
                         case R.id.deleteReview:
-                            deleteReview(review);
+                            deleteReview(review, position);
                             return true;
                         default:
                             return false;
@@ -123,13 +127,29 @@ public class RecipeReviewsAdapter extends BaseRecyclerAdapter<RecipeReviewModel>
     }
 
     private void editReview(RecipeReviewModel review) {
-        DialogFragment dialog = new AddReviewFragment(recipeSlug, 0, review);
+        DialogFragment dialog = new AddReviewFragment(recipe, 0, review);
         ((MainActivity) context).addFragment(dialog);
         dialog.show(fragment.getChildFragmentManager(), "AddReviewDialog");
     }
 
-    private void deleteReview(RecipeReviewModel review) {
-        viewModel.deleteReview(context, recipeSlug, review.getSlug());
+    private void deleteReview(RecipeReviewModel review, int position) {
+        viewModel.deleteReview(context, recipe.getSlug(), review.getSlug());
+
+        remove(position);
+
+        review.setUser(null);
+        recipe.getReviews().remove(review);
+        recipe.setRating(((recipe.getRating() * recipe.getReviews_count()) - review.getRating()) / (recipe.getReviews_count() - 1)); // upadting rating
+        recipe.setUsersRating(0);
+        for (Fragment f : ((MainActivity) context).getFragments()) {
+            if (f instanceof OnRecipeDataChangedListener) {
+                ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
+            }
+
+            if (f instanceof OnReviewChangedListener) {
+                ((OnReviewChangedListener) f).onReviewChanged(review);
+            }
+        }
     }
 
     private class ReviewViewHolder extends RecyclerView.ViewHolder {

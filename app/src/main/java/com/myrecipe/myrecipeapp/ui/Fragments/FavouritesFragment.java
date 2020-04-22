@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 15:36
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -25,7 +25,7 @@ import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
 import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 
-public class FavouritesFragment extends BaseRecipesFragment implements OnRecipeDataChangedListener {
+public class FavouritesFragment extends BaseRecipesFragment {
 
     private FavouritesViewModel favouritesViewModel;
 
@@ -73,7 +73,7 @@ public class FavouritesFragment extends BaseRecipesFragment implements OnRecipeD
             recipe.setFavouritedByUser(false);
             recipe.setFavourites_count(recipe.getFavourites_count() - 1);
 
-            adapter.removeRecipe(slug);
+            adapter.remove(adapter.indexOf(recipe));
 
             for (Fragment f : ((MainActivity) getActivity()).getFragments()) {
                 if (f instanceof OnRecipeDataChangedListener && f != this) {
@@ -87,11 +87,14 @@ public class FavouritesFragment extends BaseRecipesFragment implements OnRecipeD
 
     @Override
     public void onRecipeChanged(RecipeModel recipe) {
-        if (!recipe.isFavouritedByUser())
-            ((RecipesRecyclerAdapter) adapter).removeRecipe(recipe.getSlug());
-        else {
-            if (adapter.contains(recipe))
-                ((RecipesRecyclerAdapter) adapter).updateRecipe(recipe);
+        int position = adapter.indexOf(recipe);
+
+        if (position >= 0) {
+            if (!recipe.isFavouritedByUser())
+                adapter.remove(position);
+            else {
+                adapter.update(recipe, position);
+            }
         }
     }
 

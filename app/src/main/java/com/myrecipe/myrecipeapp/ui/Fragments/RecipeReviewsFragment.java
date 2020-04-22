@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 21:25
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -14,18 +14,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.myrecipe.myrecipeapp.CallBacks.OnReviewChangedListener;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.RecipeReviewsViewModel;
+import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.RecipeReviewModel;
 import com.myrecipe.myrecipeapp.ui.Adapters.RecipeReviewsAdapter;
 
 
-public class RecipeReviewsFragment extends BaseListsFragment<RecipeReviewModel> {
-    private String recipeSlug;
+public class RecipeReviewsFragment extends BaseListsFragment<RecipeReviewModel> implements OnReviewChangedListener {
+    private RecipeModel recipe;
     private RecipeReviewsViewModel viewModel;
 
-    RecipeReviewsFragment(String recipeSlug) {
-        this.recipeSlug = recipeSlug;
+    RecipeReviewsFragment(RecipeModel recipe) {
+        this.recipe = recipe;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class RecipeReviewsFragment extends BaseListsFragment<RecipeReviewModel> 
                 .get(RecipeReviewsViewModel.class);
 
         recyclerView = view.findViewById(R.id.reviewsRecyclerView);
-        adapter = new RecipeReviewsAdapter(getContext(), this, recyclerView, recipeSlug);
+        adapter = new RecipeReviewsAdapter(getContext(), this, recyclerView, recipe);
         errorLabel = view.findViewById(R.id.errorLabel);
         swipeRefreshLayout = view.findViewById(R.id.swipeLayout);
 
@@ -60,6 +62,17 @@ public class RecipeReviewsFragment extends BaseListsFragment<RecipeReviewModel> 
 
     @Override
     void callViewModel(int position) {
-        viewModel.getReviews(getContext(), recipeSlug, limitPerRequest, position);
+        viewModel.getReviews(getContext(), recipe.getSlug(), limitPerRequest, position);
+    }
+
+    @Override
+    public void onReviewChanged(RecipeReviewModel review) {
+        int position = adapter.indexOf(review);
+        if (position >= 0) {
+            if (review.getUser() == null)
+                adapter.remove(position);
+            else
+                adapter.update(review, position);
+        }
     }
 }

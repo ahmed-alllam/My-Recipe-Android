@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 21/04/20 17:01
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -103,48 +103,6 @@ public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
         if ((position == list.size() - 1 && isLoadingMore) || list.get(position) == null)
             return VIEW_TYPE_LOADING;
         return VIEW_TYPE_RECIPE;
-    }
-
-
-    public void removeRecipe(String slug) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) == null)
-                continue;
-
-            if (list.get(i).getSlug().equals(slug)) {
-                int j = i;
-                recyclerView.post(() -> {
-                    list.remove(j);
-                    notifyItemRemoved(j);
-                    if (isEmpty()) {
-                        if (fragment.getView() != null) {
-                            fragment.recyclerView.setVisibility(View.INVISIBLE);
-                            fragment.errorLabel.setText(R.string.favourites_empty);
-                            fragment.errorLabel.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
-                break;
-            }
-        }
-    }
-
-    public void updateRecipe(RecipeModel recipe) {
-        String slug = recipe.getSlug();
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) == null)
-                continue;
-
-            if (list.get(i).getSlug().equals(slug)) {
-                int j = i;
-                recyclerView.post(() -> {
-                    list.set(j, recipe);
-                    notifyItemChanged(j);
-                });
-                break;
-            }
-        }
     }
 
 

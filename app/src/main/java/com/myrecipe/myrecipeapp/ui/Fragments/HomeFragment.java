@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 15:36
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -17,18 +17,15 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.myrecipe.myrecipeapp.CallBacks.OnRecipeDataChangedListener;
 import com.myrecipe.myrecipeapp.CallBacks.OnUserProfileChangedListener;
 import com.myrecipe.myrecipeapp.R;
 import com.myrecipe.myrecipeapp.data.RecipesFeedViewModel;
-import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.UserModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
-import com.myrecipe.myrecipeapp.ui.Adapters.RecipesRecyclerAdapter;
 import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 
-public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataChangedListener, OnUserProfileChangedListener {
+public class HomeFragment extends BaseRecipesFragment implements OnUserProfileChangedListener {
 
     private RecipesFeedViewModel recipesFeedViewModel;
 
@@ -80,11 +77,6 @@ public class HomeFragment extends BaseRecipesFragment implements OnRecipeDataCha
                 image = "";
             refreshUserImage(image);
         }
-    }
-
-    @Override
-    public void onRecipeChanged(RecipeModel recipe) {
-        ((RecipesRecyclerAdapter) adapter).updateRecipe(recipe);
     }
 
     @Override
