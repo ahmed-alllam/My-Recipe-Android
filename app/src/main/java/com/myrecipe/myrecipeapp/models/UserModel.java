@@ -1,8 +1,10 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 23:35
  */
 
 package com.myrecipe.myrecipeapp.models;
+
+import com.google.gson.annotations.SerializedName;
 
 public class UserModel {
 
@@ -14,6 +16,7 @@ public class UserModel {
     private String image;
     private int followers_count;
     private int followings_count;
+    @SerializedName("is_followed_by_user")
     private boolean isFollowedByUser;
 
     public UserModel() {

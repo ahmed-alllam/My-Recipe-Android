@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 23:35
  */
 
 package com.myrecipe.myrecipeapp.models;
@@ -29,6 +29,7 @@ public class RecipeModel {
     private float rating;
     @SerializedName("is_favourited_by_user")
     private boolean isFavouritedByUser;
+    @SerializedName("users_rating")
     private int usersRating;
 
 
@@ -60,6 +61,9 @@ public class RecipeModel {
 
         if (newRecipe.getReviews_count() == 0 && getReviews_count() != 0)
             newRecipe.setReviews_count(getReviews_count());
+
+        if (newRecipe.getUsersRating() == 0 && getUsersRating() != 0)
+            newRecipe.setUsersRating(getUsersRating());
 
         return newRecipe;
     }

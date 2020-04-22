@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 23:35
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -322,6 +322,9 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
             followUser.setVisibility(View.INVISIBLE);
         }
 
+        RatingBar ratingBar = view.findViewById(R.id.ratingBar);
+        ratingBar.setRating(recipe.getRating());
+
         TextView favouritesCount = view.findViewById(R.id.favouritesCount);
         favouritesCount.setText(String.valueOf(recipe.getFavourites_count()));
 
@@ -332,28 +335,30 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
         else
             favourite.setImageResource(R.drawable.favourite_border);
 
-
+        RatingBar ratingBar2 = view.findViewById(R.id.ratingBar2);
         if (PreferencesManager.getToken(getContext()).length() > 0) {
-            RatingBar ratingBar = view.findViewById(R.id.ratingBar2);
-            ratingBar.setVisibility(View.VISIBLE);
-
-            ratingBar.setRating(recipe.getUsersRating());
-            if (recipe.getUsersRating() != 0)
-                ratingBar.setIsIndicator(true);
-            else
-                ratingBar.setIsIndicator(false);
-
+            ratingBar2.setVisibility(View.VISIBLE);
             view.findViewById(R.id.addReviewLabel).setVisibility(View.VISIBLE);
+
+            ratingBar2.setRating(recipe.getUsersRating());
+            if (recipe.getUsersRating() != 0)
+                ratingBar2.setIsIndicator(true);
+            else
+                ratingBar2.setIsIndicator(false);
+        } else {
+            ratingBar2.setVisibility(View.GONE);
+            view.findViewById(R.id.addReviewLabel).setVisibility(View.GONE);
         }
 
+        TextView reviewsCount = view.findViewById(R.id.reviewsCount);
+        reviewsCount.setVisibility(View.VISIBLE);
+        reviewsCount.setText(String.format("(%s)", recipe.getReviews_count()));
+
+        view.findViewById(R.id.allreviewsLabel).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.reviewsLabel).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.reviews).setVisibility(View.VISIBLE);
+
         if (!recipe.getReviews().isEmpty()) {
-            if (recipe.getReviews().size() > 3) {
-                view.findViewById(R.id.allreviewsLabel).setVisibility(View.VISIBLE);
-            }
-
-            TextView reviewsCount = view.findViewById(R.id.reviewsCount);
-            reviewsCount.setText(String.format("(%s)", recipe.getReviews_count()));
-
             LinearLayout reviewsLayout = view.findViewById(R.id.reviews);
             reviewsLayout.removeAllViews();
 
@@ -380,6 +385,8 @@ public class RecipeDetailFragment extends Fragment implements OnRecipeDataChange
                 }
             }
         } else {
+            reviewsCount.setVisibility(View.GONE);
+            view.findViewById(R.id.allreviewsLabel).setVisibility(View.GONE);
             view.findViewById(R.id.reviewsLabel).setVisibility(View.GONE);
             view.findViewById(R.id.reviews).setVisibility(View.GONE);
         }

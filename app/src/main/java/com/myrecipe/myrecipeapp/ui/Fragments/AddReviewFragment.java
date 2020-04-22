@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 19:26
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 23:35
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -31,6 +31,10 @@ import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.models.RecipeReviewModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 
 public class AddReviewFragment extends DialogFragment {
     private float rating;
@@ -60,16 +64,30 @@ public class AddReviewFragment extends DialogFragment {
         viewModel.review.observe(this, recipeReviewModel -> {
             progressBar.setVisibility(View.GONE);
 
-            recipe.getReviews().add(recipeReviewModel);
+
+            if (review == null)
+                recipe.getReviews().add(recipeReviewModel);
+            else
+                recipe.getReviews().set(recipe.getReviews().indexOf(review), recipeReviewModel);
 
             int prevRating = 0;
-            int isEditing = 0;
+            int isAdding = 1;
             if (review != null) {
                 prevRating = review.getRating();
-                isEditing = 1;
+                isAdding = 0;
             }
 
-            recipe.setRating(((recipe.getRating() * recipe.getReviews_count()) - prevRating + recipeReviewModel.getRating()) / (recipe.getReviews_count() + 1 - isEditing)); // upadting rating
+            float rating = ((recipe.getRating() * recipe.getReviews_count()) - prevRating + recipeReviewModel.getRating()) / (recipe.getReviews_count() + isAdding);
+
+            DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+            DecimalFormat decimalFormat = new DecimalFormat(".#");
+            decimalFormat.setDecimalFormatSymbols(otherSymbols);
+
+            float formattedRating = Float.parseFloat(decimalFormat.format(rating));
+            recipe.setRating(Float.isNaN(formattedRating) ? 0 : formattedRating);
+
+            recipe.setReviews_count(recipe.getReviews_count() + 1);
+
             recipe.setUsersRating(recipeReviewModel.getRating());
             for (Fragment f : ((MainActivity) getActivity()).getFragments()) {
                 if (f instanceof OnRecipeDataChangedListener) {

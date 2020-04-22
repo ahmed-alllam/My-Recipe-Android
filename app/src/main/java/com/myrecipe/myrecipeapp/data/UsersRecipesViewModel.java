@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 16:53
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 23:35
  */
 
 package com.myrecipe.myrecipeapp.data;
@@ -47,7 +47,7 @@ public class UsersRecipesViewModel extends ViewModel {
                 if (!response.isSuccessful())
                     error.setValue(R.string.network_error);
                 else if (response.body().getRecipes().isEmpty())
-                    error.setValue(R.string.feed_empty);
+                    error.setValue(R.string.list_empty);
                 else
                     recipes.setValue(response.body());
             }

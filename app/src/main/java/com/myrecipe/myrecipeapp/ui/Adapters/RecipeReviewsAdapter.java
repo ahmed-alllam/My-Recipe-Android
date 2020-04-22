@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 23:35
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -33,6 +33,10 @@ import com.myrecipe.myrecipeapp.ui.Fragments.AddReviewFragment;
 import com.myrecipe.myrecipeapp.ui.Fragments.BaseListsFragment;
 import com.myrecipe.myrecipeapp.util.PreferencesManager;
 import com.myrecipe.myrecipeapp.util.TimeParser;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 
 public class RecipeReviewsAdapter extends BaseRecyclerAdapter<RecipeReviewModel> {
@@ -135,11 +139,20 @@ public class RecipeReviewsAdapter extends BaseRecyclerAdapter<RecipeReviewModel>
     private void deleteReview(RecipeReviewModel review, int position) {
         viewModel.deleteReview(context, recipe.getSlug(), review.getSlug());
 
-        remove(position);
-
         review.setUser(null);
         recipe.getReviews().remove(review);
-        recipe.setRating(((recipe.getRating() * recipe.getReviews_count()) - review.getRating()) / (recipe.getReviews_count() - 1)); // upadting rating
+
+        float rating = ((recipe.getRating() * recipe.getReviews_count()) - review.getRating()) / (recipe.getReviews_count() - 1);
+
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+        DecimalFormat decimalFormat = new DecimalFormat(".#");
+        decimalFormat.setDecimalFormatSymbols(otherSymbols);
+
+        float formattedRating = Float.parseFloat(decimalFormat.format(rating));
+        recipe.setRating(Float.isNaN(formattedRating) ? 0 : formattedRating);
+
+        recipe.setReviews_count(recipe.getReviews_count() - 1);
+
         recipe.setUsersRating(0);
         for (Fragment f : ((MainActivity) context).getFragments()) {
             if (f instanceof OnRecipeDataChangedListener) {
