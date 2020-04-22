@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 19:26
  */
 
 package com.myrecipe.myrecipeapp.ui.Fragments;
@@ -134,12 +134,16 @@ public class AddReviewFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (review != null && !body.getText().toString().isEmpty()) {
-                    if (ratingBar.getRating() == review.getRating() && body.getText().toString().equals(review.getBody()))
-                        positiveButton.setEnabled(false);
-                    else
+                if (!body.getText().toString().isEmpty()) {
+                    if (review != null) {
+                        if (ratingBar.getRating() == review.getRating() && body.getText().toString().equals(review.getBody()))
+                            positiveButton.setEnabled(false);
+                        else
+                            positiveButton.setEnabled(true);
+                    } else
                         positiveButton.setEnabled(true);
-                }
+                } else
+                    positiveButton.setEnabled(false);
             }
 
             @Override
