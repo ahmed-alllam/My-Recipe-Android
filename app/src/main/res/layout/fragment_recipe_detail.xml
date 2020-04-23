@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 23:35
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 23/04/20 19:14
   -->
 
 
@@ -109,10 +109,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        tools:rating="4"
                         app:layout_constraintBottom_toBottomOf="@+id/timeToFinish"
                         app:layout_constraintStart_toEndOf="@+id/timeToFinish"
-                        app:layout_constraintTop_toTopOf="@+id/timeToFinish" />
+                        app:layout_constraintTop_toTopOf="@+id/timeToFinish"
+                        tools:rating="4" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/recipesUserContainer"
@@ -131,7 +131,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shape="ring"
-                            app:cardCornerRadius="100dp"
+                            app:cardCornerRadius="20dp"
                             app:cardElevation="0dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

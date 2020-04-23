@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 17/04/20 16:47
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 23/04/20 19:14
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -52,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
                         android:shape="ring"
-                        app:cardCornerRadius="100dp"
+                        app:cardCornerRadius="20dp"
                         app:cardElevation="0dp"
                         app:layout_constraintBottom_toBottomOf="@+id/homeLabel"
                         app:layout_constraintStart_toStartOf="parent"

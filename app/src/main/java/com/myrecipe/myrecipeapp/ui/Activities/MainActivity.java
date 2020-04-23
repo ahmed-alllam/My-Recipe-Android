@@ -1,14 +1,18 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 22:04
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 23/04/20 19:14
  */
 
 package com.myrecipe.myrecipeapp.ui.Activities;
 
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +52,14 @@ public class MainActivity extends BaseActivity {
         mainViewPager.setAdapter(viewPagerAdapter);
 
         TabLayout nav_view = findViewById(R.id.tab_layout);
+
+        ColorStateList colors;
+        if (Build.VERSION.SDK_INT >= 23) {
+            colors = getResources().getColorStateList(R.color.tab_layout_colors, getTheme());
+        } else {
+            colors = getResources().getColorStateList(R.color.tab_layout_colors);
+        }
+
         new TabLayoutMediator(nav_view, mainViewPager, (tab, position) -> {
             switch (position) {
                 case 0:
@@ -61,6 +73,13 @@ public class MainActivity extends BaseActivity {
                     break;
                 case 3:
                     tab.setIcon(R.drawable.profile);
+            }
+
+            Drawable icon = tab.getIcon();
+
+            if (icon != null) {
+                icon = DrawableCompat.wrap(icon);
+                DrawableCompat.setTintList(icon, colors);
             }
         }).attach();
 

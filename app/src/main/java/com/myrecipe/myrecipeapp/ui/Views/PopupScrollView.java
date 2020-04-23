@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 20/04/20 21:11
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 23/04/20 19:14
  */
 
 package com.myrecipe.myrecipeapp.ui.Views;
@@ -29,11 +29,11 @@ public class PopupScrollView extends ScrollView {
     private boolean isScrollable(boolean scrollUp) {
         if (topMargin == 0) {
             int topMarginInPX = ((RelativeLayout.LayoutParams) ((View) getParent()).getLayoutParams()).topMargin;
-            topMargin = (int) (topMarginInPX / getContext().getResources().getDisplayMetrics().density);
+            topMargin = (int) Math.floor((topMarginInPX / getContext().getResources().getDisplayMetrics().density));
         }
-
-        if (scrollUp)
-            return topMargin == MIN_MARGIN;
+        if (scrollUp) {
+            return topMargin <= MIN_MARGIN;
+        }
         return topMargin < MAX_MARGIN && computeVerticalScrollOffset() != 0;
     }
 
@@ -43,15 +43,15 @@ public class PopupScrollView extends ScrollView {
         float density = getContext().getResources().getDisplayMetrics().density;
 
         if (layoutParams.topMargin - dy > MAX_MARGIN * density)
-            layoutParams.topMargin = (int) (MAX_MARGIN * density);
+            layoutParams.topMargin = (int) Math.floor(MAX_MARGIN * density);
 
         else if (layoutParams.topMargin - dy < MIN_MARGIN * density)
-            layoutParams.topMargin = (int) (MIN_MARGIN * density);
+            layoutParams.topMargin = (int) Math.floor((MIN_MARGIN * density));
 
         else
             layoutParams.topMargin -= dy;
 
-        topMargin = (int) (layoutParams.topMargin / density);
+        topMargin = (int) Math.floor((layoutParams.topMargin / density));
 
         ((View) getParent()).setLayoutParams(layoutParams);
 
@@ -60,7 +60,6 @@ public class PopupScrollView extends ScrollView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        // todo: buggy
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 y = ev.getRawY();

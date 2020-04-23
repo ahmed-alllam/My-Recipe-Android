@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 19/04/20 18:03
+  ~ Copyright (c) Code Written and Tested by Ahmed Emad in 23/04/20 19:14
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/generalUserProfileFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:id="@+id/generalUserProfileFragment"
     android:clickable="true"
     android:focusable="true">
 
@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
                         android:shape="ring"
-                        app:cardCornerRadius="100dp"
+                        app:cardCornerRadius="65dp"
                         app:cardElevation="0dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
