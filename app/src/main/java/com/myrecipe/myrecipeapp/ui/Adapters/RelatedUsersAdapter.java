@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 24/04/20 00:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -74,14 +74,6 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
                 .into(viewHolder.userPhoto);
 
         viewHolder.userName.setText(user.getName());
-        holder.itemView.setOnClickListener(v -> {
-            GeneralUsersProfileFragment profileFragment = new GeneralUsersProfileFragment(user);
-            FragmentTransaction ft = fragment.getChildFragmentManager().beginTransaction();
-            ft.add(fragment.getView().getId(), profileFragment)
-                    .addToBackStack(null)
-                    .commit();
-            ((MainActivity) fragment.getActivity()).addFragment(profileFragment);
-        });
 
         startAnimation(viewHolder.itemView, position);
     }
@@ -92,7 +84,7 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
         return USER_LOADING_ITEM_HEIGHT;
     }
 
-    private class UserViewHolder extends RecyclerView.ViewHolder {
+    private class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView userPhoto;
         TextView userName;
 
@@ -101,6 +93,19 @@ public class RelatedUsersAdapter extends BaseRecyclerAdapter<UserModel> {
 
             userPhoto = itemView.findViewById(R.id.userPhoto);
             userName = itemView.findViewById(R.id.userName);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            UserModel user = list.get(getLayoutPosition());
+            GeneralUsersProfileFragment profileFragment = new GeneralUsersProfileFragment(user);
+            FragmentTransaction ft = fragment.getChildFragmentManager().beginTransaction();
+            ft.add(fragment.getView().getId(), profileFragment)
+                    .addToBackStack(null)
+                    .commit();
+            ((MainActivity) fragment.getActivity()).addFragment(profileFragment);
         }
     }
 }

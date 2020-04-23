@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 24/04/20 00:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -13,25 +13,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.myrecipe.myrecipeapp.CallBacks.OnRecipeDataChangedListener;
 import com.myrecipe.myrecipeapp.R;
+import com.myrecipe.myrecipeapp.data.APIClient;
+import com.myrecipe.myrecipeapp.data.APIInterface;
 import com.myrecipe.myrecipeapp.models.RecipeModel;
 import com.myrecipe.myrecipeapp.ui.Activities.MainActivity;
 import com.myrecipe.myrecipeapp.ui.Fragments.BaseListsFragment;
+import com.myrecipe.myrecipeapp.ui.Fragments.BaseRecipesFragment;
+import com.myrecipe.myrecipeapp.ui.Fragments.FavouritesFragment;
 import com.myrecipe.myrecipeapp.ui.Fragments.RecipeDetailFragment;
+import com.myrecipe.myrecipeapp.util.PreferencesManager;
 
 import java.util.List;
 
 public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
 
-    public static final int VIEW_TYPE_RECIPE = 0;
+    private static final int VIEW_TYPE_RECIPE = 0;
     private static final int RECIPE_LOADING_ITEM_HEIGHT = 280;
 
 
-    protected RecipesRecyclerAdapter(Context context, BaseListsFragment fragment, RecyclerView recyclerView) {
+    public RecipesRecyclerAdapter(Context context, BaseListsFragment fragment, RecyclerView recyclerView) {
         super(context, fragment, recyclerView);
     }
 
@@ -78,15 +84,10 @@ public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
         }
         viewHolder.tags.setText(sb.toString());
 
-        viewHolder.recipeItem.setOnClickListener(v -> {
-            RecipeDetailFragment recipeFragment = new RecipeDetailFragment(get(position));
-            fragment.getChildFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit)
-                    .add(fragment.getView().getId(), recipeFragment)
-                    .addToBackStack(null)
-                    .commit();
-            ((MainActivity) fragment.getActivity()).addFragment(recipeFragment);
-        });
+        if (recipe.isFavouritedByUser())
+            viewHolder.favourite.setImageResource(R.drawable.favourite2);
+        else
+            viewHolder.favourite.setImageResource(R.drawable.favourite_border);
 
         startAnimation(viewHolder.itemView, position);
     }
@@ -106,18 +107,16 @@ public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
     }
 
 
-    public class RecipeViewHolder extends RecyclerView.ViewHolder {
-        public ImageButton favourite;
-        public TextView favourites_count;
-        CardView recipeItem;
+    public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private ImageButton favourite;
+        private TextView favourites_count;
         private ImageView mainImage;
         private TextView name, description,
                 timeToFinish, tags, rating;
 
-        RecipeViewHolder(@NonNull View itemView) {
+        public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            recipeItem = itemView.findViewById(R.id.recipeItem);
             mainImage = itemView.findViewById(R.id.mainImage);
             favourite = itemView.findViewById(R.id.favourite);
             rating = itemView.findViewById(R.id.rating);
@@ -126,6 +125,61 @@ public class RecipesRecyclerAdapter extends BaseRecyclerAdapter<RecipeModel> {
             description = itemView.findViewById(R.id.description);
             timeToFinish = itemView.findViewById(R.id.timeToFinish);
             tags = itemView.findViewById(R.id.tags);
+
+            itemView.setOnClickListener(this);
+            favourite.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.recipeItem:
+                    RecipeDetailFragment recipeFragment = new RecipeDetailFragment(get(getLayoutPosition()));
+                    fragment.getChildFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit)
+                            .add(fragment.getView().getId(), recipeFragment)
+                            .addToBackStack(null)
+                            .commit();
+                    ((MainActivity) fragment.getActivity()).addFragment(recipeFragment);
+                    break;
+                case R.id.favourite:
+                    String token = PreferencesManager.getToken(context);
+                    if (token.length() <= 0)
+                        return;
+                    token = "Token " + token;
+
+                    APIInterface APIInterface = APIClient.getClient().create(APIInterface.class);
+
+                    RecipeModel recipe = list.get(getLayoutPosition());
+                    String slug = recipe.getSlug();
+
+
+                    if (!recipe.isFavouritedByUser()) {
+                        ((ImageButton) v).setImageResource(R.drawable.favourite2);
+                        recipe.setFavourites_count(recipe.getFavourites_count() + 1);
+                        recipe.setFavouritedByUser(true);
+
+                        APIInterface.addFavouriteRecipe(token, slug).enqueue(new BaseRecipesFragment.emptyCallBack());
+                    } else {
+                        ((ImageButton) v).setImageResource(R.drawable.favourite_border);
+                        recipe.setFavourites_count(recipe.getFavourites_count() - 1);
+                        recipe.setFavouritedByUser(false);
+
+                        if (fragment instanceof FavouritesFragment)
+                            remove(indexOf(recipe));
+
+                        APIInterface.removeFavouriteRecipe(token, slug).enqueue(new BaseRecipesFragment.emptyCallBack());
+                    }
+
+                    for (Fragment f : ((MainActivity) context).getFragments()) {
+                        if (f instanceof OnRecipeDataChangedListener && f != fragment) {
+                            ((OnRecipeDataChangedListener) f).onRecipeChanged(recipe);
+                        }
+                    }
+
+                    favourites_count.setText(String.valueOf(recipe.getFavourites_count()));
+                    break;
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 23:35
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 24/04/20 00:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -96,24 +96,6 @@ public class RecipeReviewsAdapter extends BaseRecyclerAdapter<RecipeReviewModel>
 
         if (review.getUser().getUsername().equals(PreferencesManager.getStoredUser(context).getUsername())) {
             viewHolder.moreButton.setVisibility(View.VISIBLE);
-            viewHolder.moreButton.setOnClickListener(v -> {
-                PopupMenu popup = new PopupMenu(context, v);
-                MenuInflater inflater = popup.getMenuInflater();
-                inflater.inflate(R.menu.review_popup, popup.getMenu());
-                popup.setOnMenuItemClickListener(item -> {
-                    switch (item.getItemId()) {
-                        case R.id.editReview:
-                            editReview(review);
-                            return true;
-                        case R.id.deleteReview:
-                            deleteReview(review, position);
-                            return true;
-                        default:
-                            return false;
-                    }
-                });
-                popup.show();
-            });
         } else {
             viewHolder.moreButton.setVisibility(View.GONE);
         }
@@ -165,7 +147,8 @@ public class RecipeReviewsAdapter extends BaseRecyclerAdapter<RecipeReviewModel>
         }
     }
 
-    private class ReviewViewHolder extends RecyclerView.ViewHolder {
+
+    private class ReviewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView userPhoto;
         private TextView userName;
         private TextView timeStamp;
@@ -182,6 +165,32 @@ public class RecipeReviewsAdapter extends BaseRecyclerAdapter<RecipeReviewModel>
             body = itemView.findViewById(R.id.body);
             ratingBar = itemView.findViewById(R.id.ratingBar);
             moreButton = itemView.findViewById(R.id.moreButton);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            PopupMenu popup = new PopupMenu(context, v);
+            MenuInflater inflater = popup.getMenuInflater();
+
+            int position = getLayoutPosition();
+            RecipeReviewModel review = list.get(position);
+
+            inflater.inflate(R.menu.review_popup, popup.getMenu());
+            popup.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.editReview:
+                        editReview(review);
+                        return true;
+                    case R.id.deleteReview:
+                        deleteReview(review, position);
+                        return true;
+                    default:
+                        return false;
+                }
+            });
+            popup.show();
         }
     }
 }

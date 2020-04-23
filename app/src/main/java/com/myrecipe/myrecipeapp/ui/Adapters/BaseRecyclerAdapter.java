@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Code Written and Tested by Ahmed Emad in 22/04/20 17:56
+ * Copyright (c) Code Written and Tested by Ahmed Emad in 24/04/20 00:55
  */
 
 package com.myrecipe.myrecipeapp.ui.Adapters;
@@ -26,9 +26,9 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
 
     boolean isLoadingMore = false;
     private boolean isFirstLoading = false;
-    ArrayList<T> list = new ArrayList<>();
+    public ArrayList<T> list = new ArrayList<>();
     Context context;
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     BaseListsFragment fragment;
     private int offset;
     private int count;
